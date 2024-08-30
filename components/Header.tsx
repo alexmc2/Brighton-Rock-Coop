@@ -25,13 +25,13 @@ const Header: React.FC = () => {
   return (
     <nav
       className={cn(
-        'fixed top-0 w-full z-50 transition-all duration-500',
+        'fixed top-0 w-full z-50 ',
         isScrolled
           ? 'bg-primary text-primary-foreground'
           : 'bg-transparent text-primary-foreground'
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
             <ThemeToggle />

@@ -20,15 +20,15 @@ const ThemeToggle: React.FC = () => {
       type="button"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       className={`
-        md:w-10 w-12 h-5 rounded-full p-0.5 md:pr-0 pr-1
+        md:w-10 w-10 h-5 rounded-full 
         bg-secondary
-        transition-colors duration-200 ease-in-out focus:outline-none focus:ring-1 focus:ring-offset-1  focus:ring-white 
+        transition-colors duration-200 ease-in-out focus:outline-none  
         mr-4 // Add margin to the right
       `}
     >
       <div
         className={`
-          w-4 h-4 rounded-full bg-white shadow-md transform 
+          w-4 h-4 rounded-full bg-white dark:bg-black shadow-md transform 
           ${theme === 'dark' ? 'translate-x-5' : 'translate-x-0'}
           transition-transform duration-200 ease-in-out
         `}

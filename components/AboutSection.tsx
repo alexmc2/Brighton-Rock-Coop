@@ -9,10 +9,12 @@ const AboutSection: React.FC = () => {
 
   return (
     <section className="pt-12 pb-10 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-card rounded-lg shadow-sm p-8">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">About Us</h2>
-          <p className="mb-5 text-xl text-foreground">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
+            About Us
+          </h2>
+          <p className="mb-5 text-md md:text-lg text-foreground">
             Brighton Rock Housing Co-operative was first established in 1987.
             The co-op consists of three terraced houses (with four bedrooms in
             each house, a large living room, kitchen, bathroom, and bike shed).
@@ -20,7 +22,7 @@ const AboutSection: React.FC = () => {
             houses.
           </p>
           <Button
-            className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-xl"
+            className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
             onClick={() => setIsModalOpen(true)}
           >
             More About Us
@@ -41,7 +43,7 @@ const AboutSection: React.FC = () => {
 };
 
 const AboutUsModalContent: React.FC = () => (
-  <ul className="list-disc pl-5 text-xl text-foreground space-y-4">
+  <ul className="list-disc pl-5 text-md md:text-lg text-foreground space-y-4">
     <li>
       <strong>We are a &quot;self-help&quot; housing co-operative:</strong> We
       utilize properties that are unsuitable for letting for an agreed period of
@@ -50,7 +52,7 @@ const AboutUsModalContent: React.FC = () => (
     </li>
     <li>
       <strong>
-        Brighton Rock is guided by the general co-operative principles:
+        Brighton Rock is guided by the general co-operative principles:{' '}
       </strong>
       It offers members a safe environment and secure tenancy. Brighton Rock has
       12 housed members, all of whom have equal rights - there is no hierarchy.

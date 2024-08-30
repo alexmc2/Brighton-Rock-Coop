@@ -8,9 +8,9 @@ const Contact: React.FC = () => {
     <div>
       <Hero title="Contact Us!" />
       <section className="bg-background pt-12 pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-card rounded-lg shadow-sm p-8">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
               Get in Touch
             </h2>
             <form
@@ -56,9 +56,9 @@ const Contact: React.FC = () => {
         </div>
       </section>
       <section className="bg-background pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-card rounded-lg shadow-sm p-8">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
               Our Location
             </h2>
             <div className="aspect-w-16 aspect-h-9" style={{ height: '400px' }}>
@@ -76,12 +76,12 @@ const Contact: React.FC = () => {
         </div>
       </section>
       <section className="bg-background pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-card rounded-lg shadow-sm p-8 text-center">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
+            <h2 className="text-2xl font-bold mb-4 text-foreground">
               Connect With Us
             </h2>
-            <p className="mb-4 text-xl text-foreground">
+            <p className="mb-4 text-lg text-foreground">
               For inquiries or for further information, feel free to reach out
               to us!
             </p>
@@ -105,11 +105,11 @@ const Contact: React.FC = () => {
             </div>
             <a
               href="mailto:brightonrockhousingco-op@outlook.com"
-              className="text-primary dark:text-secondary hover:underline text-2xl"
+              className="text-primary dark:text-secondary hover:underline text-xl"
             >
               brightonrockhousingco-op@outlook.com
             </a>
-            <p className="mt-4 text-foreground text-xl">
+            <p className="mt-4 text-foreground text-lg">
               Website designed and built by Alex McGarry
             </p>
           </div>

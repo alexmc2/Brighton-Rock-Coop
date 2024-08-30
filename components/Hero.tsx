@@ -31,7 +31,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           {showLogo && (
             <div className="relative z-10 w-full lg:w-1/2 mb-8 lg:mb-0 lg:mr-8">
@@ -54,7 +54,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
             <h1 className="text-5xl sm:text-6xl text-white font-bold mb-6 pr-0 sm:pr-4 ">
               {title}
             </h1>
-            <p className="text-2xl px-2 text-white">{description}</p>
+            <p className="text-xl sm:text-2xl px-2 text-white">{description}</p>
           </div>
         </div>
       </div>

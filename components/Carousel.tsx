@@ -1,11 +1,10 @@
-// components/Carousel.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Carousel as ReactCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // Make sure to install lucide-react
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CarouselImage {
   url: string;
@@ -30,9 +29,9 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
       <ReactCarousel
         showThumbs={false}
         showStatus={false}
-        showIndicators={false} // This removes the dots
+        showIndicators={false}
         autoPlay={true}
-        interval={5000}
+        interval={4000}
         infiniteLoop={true}
         onChange={handleChange}
         className="max-w-full"
@@ -58,22 +57,19 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative w-full"
+            className="relative w-full flex items-center justify-center"
             style={{
-              maxHeight: '600px',
               height: '0',
-              paddingBottom: `${Math.min(
-                (image.height / image.width) * 100,
-                75
-              )}%`,
+              paddingBottom: '56.25%', // 16:9 aspect ratio
             }}
           >
             <Image
               src={image.url}
               alt={image.alt || ''}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ objectFit: 'contain' }}
+              style={{
+                objectFit: 'contain',
+              }}
               quality={100}
             />
           </div>

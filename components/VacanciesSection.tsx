@@ -12,12 +12,12 @@ const VacanciesSection: React.FC = () => {
     <div>
       <Hero title="Current Vacancies" />
       <section className="bg-background pt-12 pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-card rounded-lg shadow-sm p-8">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
               We currently have one vacancy (July 2024)
             </h2>
-            <p className="mb-4 text-xl text-foreground">
+            <p className="mb-4 text-md md:text-lg text-foreground">
               We are looking for a community-minded person with time to
               contribute to our co-op in return for an affordable rent.
               Applicants must attend a house viewing before applying and be
@@ -25,7 +25,7 @@ const VacanciesSection: React.FC = () => {
               September, 2024. The viewings will be on the evenings of 2nd, 3rd
               and 11th September.
             </p>
-            <p className="mb-4 text-xl text-foreground">
+            <p className="mb-4 text-md md:text-lg text-foreground">
               Please text Ian on 07815 906 502 or email{' '}
               <a
                 href="mailto:vacanciesbtnrock@gmail.com"
@@ -36,7 +36,7 @@ const VacanciesSection: React.FC = () => {
               to arrange a viewing.
             </p>
             <Button
-              className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-xl"
+              className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
               onClick={() => setIsModalOpen(true)}
             >
               Our Application Process
@@ -58,7 +58,7 @@ const VacanciesSection: React.FC = () => {
 };
 
 const VacanciesModalContent: React.FC = () => (
-  <ul className="list-disc p-3 text-xl text-foreground space-y-4">
+  <ul className="list-disc p-3 text-md md:text-lg text-foreground space-y-4">
     <p>The application process is as follows:</p>
     <p>
       When vacancies arise, we invite those interested in joining us to visit

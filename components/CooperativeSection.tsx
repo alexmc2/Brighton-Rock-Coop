@@ -9,12 +9,12 @@ const CooperativeSection: React.FC = () => {
 
   return (
     <section className="pb-10 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-card rounded-lg shadow-sm p-8">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
             Co-operative Identity, Values, and Principles
           </h2>
-          <p className="mb-5 text-xl text-foreground">
+          <p className="mb-5 text-md md:text-lg text-foreground">
             Brighton Rock subscribes to the values and principles of the
             international co-operative movement. The Statement on the
             Co-operative Identity states that a co-operative is an
@@ -24,7 +24,7 @@ const CooperativeSection: React.FC = () => {
             enterprise.&quot;
           </p>
           <Button
-            className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-xl"
+            className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
             onClick={() => setIsModalOpen(true)}
           >
             Find Out More
@@ -45,7 +45,7 @@ const CooperativeSection: React.FC = () => {
 };
 
 const CooperativeModalContent: React.FC = () => (
-  <ul className="list-disc pl-5 text-xl text-foreground space-y-4">
+  <ul className="list-disc pl-5 text-md md:text-lg text-foreground space-y-4">
     <li>
       <strong>Voluntary and Open Membership:</strong> Cooperatives are voluntary
       organisations, open to all persons able to use their services and willing
