@@ -1,4 +1,3 @@
-// components/ChibahSection.tsx
 'use client';
 
 import React from 'react';
@@ -15,7 +14,7 @@ const ChibahSection: React.FC = () => {
             Brighton Rock is a member of{' '}
             <a
               href="http://chibah.org/"
-              className="dark:text-secondary text-primary hover:underline font-bold "
+              className="dark:text-secondary text-primary hover:underline font-bold"
             >
               CHIBAH
             </a>{' '}
@@ -23,8 +22,8 @@ const ChibahSection: React.FC = () => {
             housing in Brighton and Hove.
           </p>
           <p className="mb-5 text-xl text-foreground">
-            CHIBAH's purpose is to house both individuals and families who are
-            in need of low-rent, co-operatively managed housing. CHIBAH also
+            CHIBAH&apos;s purpose is to house both individuals and families who
+            are in need of low-rent, co-operatively managed housing. CHIBAH also
             undertakes a programme of permanent stock development.
           </p>
           <p className="mb-5 text-xl text-foreground">

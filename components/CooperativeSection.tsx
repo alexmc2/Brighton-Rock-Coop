@@ -1,4 +1,3 @@
-// components/CooperativeSection.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -18,13 +17,14 @@ const CooperativeSection: React.FC = () => {
           <p className="mb-5 text-xl text-foreground">
             Brighton Rock subscribes to the values and principles of the
             international co-operative movement. The Statement on the
-            Co-operative Identity states that a co-operative is an "autonomous
-            association of persons united voluntarily to meet their common
-            economic, social and cultural needs and aspirations through a
-            jointly owned and democratically-controlled enterprise."
+            Co-operative Identity states that a co-operative is an
+            &quot;autonomous association of persons united voluntarily to meet
+            their common economic, social and cultural needs and aspirations
+            through a jointly owned and democratically-controlled
+            enterprise.&quot;
           </p>
           <Button
-            className="bg-primary dark:bg-secondary  hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-xl"
+            className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-xl"
             onClick={() => setIsModalOpen(true)}
           >
             Find Out More

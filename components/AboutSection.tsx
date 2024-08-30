@@ -1,4 +1,3 @@
-// /components/AboutSection.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -42,12 +41,12 @@ const AboutSection: React.FC = () => {
 };
 
 const AboutUsModalContent: React.FC = () => (
-  <ul className="list-disc pl-5 text-xl text-foreground space-y-4  ">
+  <ul className="list-disc pl-5 text-xl text-foreground space-y-4">
     <li>
-      <strong>We are a "self-help" housing co-operative:</strong> We utilize
-      properties that are unsuitable for letting for an agreed period of time,
-      which can sometimes extend for many years. For more information, please
-      visit self-help-housing.org.
+      <strong>We are a &quot;self-help&quot; housing co-operative:</strong> We
+      utilize properties that are unsuitable for letting for an agreed period of
+      time, which can sometimes extend for many years. For more information,
+      please visit self-help-housing.org.
     </li>
     <li>
       <strong>
@@ -87,20 +86,20 @@ const AboutUsModalContent: React.FC = () => (
       1 and 2 hours.
     </li>
     <li>
-      <strong>We have a co-op handbook with policies and guidelines:</strong>
+      <strong>We have a co-op handbook with policies and guidelines:</strong>{' '}
       for the safe and smooth running of the co-op. The policies and guidelines
       are written and reviewed by co-op members.
     </li>
     <li>
-      <strong>Members are expected to show interest and participate:</strong>
+      <strong>Members are expected to show interest and participate:</strong>{' '}
       This might involve occasional policy and project development groups, in
       addition to garden work and general maintenance workdays.
     </li>
     <li>
-      <strong>The rooms are single occupancy:</strong> and can't be allocated to
-      couples or those with children who live with them. Guests are welcome,
-      however, if agreed by other members of the house. We also have a no-pets
-      policy.
+      <strong>The rooms are single occupancy:</strong> and can&apos;t be
+      allocated to couples or those with children who live with them. Guests are
+      welcome, however, if agreed by other members of the house. We also have a
+      no-pets policy.
     </li>
     <li>
       <strong>To balance all the hard work:</strong> we also have occasional

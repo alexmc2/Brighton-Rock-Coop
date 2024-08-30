@@ -1,4 +1,3 @@
-// src/app/vacancies/page.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -59,7 +58,7 @@ const VacanciesSection: React.FC = () => {
 };
 
 const VacanciesModalContent: React.FC = () => (
-  <ul className="list-disc p-3 text-xl text-foreground space-y-4  ">
+  <ul className="list-disc p-3 text-xl text-foreground space-y-4">
     <p>The application process is as follows:</p>
     <p>
       When vacancies arise, we invite those interested in joining us to visit
@@ -96,7 +95,8 @@ const VacanciesModalContent: React.FC = () => (
     </ul>
     <p>
       If you are invited for an interview, our allocations officer will inform
-      you of the time and place and at least five day's notice will be given.
+      you of the time and place and at least five day&apos;s notice will be
+      given.
     </p>
     <p>
       New members will connect with the secretary and rent officer to sign the

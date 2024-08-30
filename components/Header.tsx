@@ -28,7 +28,7 @@ const Header: React.FC = () => {
         'fixed top-0 w-full z-50 transition-all duration-500',
         isScrolled
           ? 'bg-primary text-primary-foreground'
-          : 'bg-primary text-primary-foreground'
+          : 'bg-transparent text-primary-foreground'
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
