@@ -1,12 +1,12 @@
 // src/app/vacancies/page.tsx
 import React from 'react';
 import Hero from '@/components/Hero';
-import VacanciesSection from '@/components/VacanciesSection';
+import Contact from '@/components/ContactPage';
 
-export default function VacanciesPage() {
+export default function ContactPage () {
   return (
     <div>
-      <VacanciesSection />
+      <Contact />
     </div>
   );
 }

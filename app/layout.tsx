@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/globals.css';
 import { Roboto } from 'next/font/google';
+import ThemeEditor from 'shadcn-theme-editor';
 
 // Initialize the Roboto font
 const roboto = Roboto({
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={roboto.className}>
       <body>
+        {/* <ThemeEditor /> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -36,7 +38,6 @@ export default function RootLayout({
         >
           <Header />
           <main>{children}</main>
-    
         </ThemeProvider>
       </body>
     </html>

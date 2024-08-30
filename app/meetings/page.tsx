@@ -1,12 +1,12 @@
 // src/app/vacancies/page.tsx
 import React from 'react';
 import Hero from '@/components/Hero';
-import VacanciesSection from '@/components/VacanciesSection';
+import MeetingsPage from '@/components/Meetings';
 
-export default function VacanciesPage() {
+export default function Meetings() {
   return (
     <div>
-      <VacanciesSection />
+      <MeetingsPage />
     </div>
   );
 }

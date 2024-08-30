@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
   :root {
     --background: 210 40% 92%;
@@ -14,11 +10,9 @@
     --card-foreground: 222.2 47.4% 11.2%;
     --popover: 0 0% 100%; /* White */
     --popover-foreground: 222.2 47.4% 11.2%;
-    --primary: 190 99% 30.555%;
-    /* --primary: 217.4 20% 20%; */
-
+    --primary: 175 90% 35%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
+    --secondary: 210 80% 18%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -33,20 +27,19 @@
   }
 
   .dark {
-    --background: 210 30% 45%;
+    --background: 210 20% 35%;
     --foreground: 220 15% 90%;
     --card: 210 80% 18%;
     --card-foreground: 220 15% 95%;
     --popover: 220 25% 20%;
     --popover-foreground: 220 15% 95%;
     --primary: 210 80% 18%;
-    --primary-foreground: 220 20% 15%;
-
-    --secondary: 220 15% 25%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 175 90% 35%;
     --secondary-foreground: 220 15% 90%;
     --muted: 220 20% 30%;
     --muted-foreground: 220 15% 70%;
-    --accent: 190 80% 35%;
+    --accent: 175 90% 35%;
     --accent-foreground: 220 15% 95%;
     --destructive: 0 70% 40%;
     --destructive-foreground: 220 15% 95%;
@@ -54,13 +47,34 @@
     --input: 220 20% 25%;
     --ring: 190 90% 40%;
   }
-}
 
-@layer base {
+  /* Narrow scrollbar styles */
+  html ::-webkit-scrollbar {
+    width: 2px !important; /* Ensures it's set to 2px */
+    height: 2px !important; /* For horizontal scrollbars */
+  }
+
+  html ::-webkit-scrollbar-track {
+    background: var(--primary) !important; /* Matches theme background */
+  }
+
+  html ::-webkit-scrollbar-thumb {
+    background-color: var(--primary) !important; /* Matches theme foreground */
+    border-radius: 2px !important;
+    border: 1px solid var(--primary) !important; /* Spacing around the thumb */
+  }
+
+  html {
+    scrollbar-width: thin; /* Narrow scrollbar for Firefox */
+    scrollbar-color: var(--primary) var(--primary) !important; /* Thumb and track colors */
+  }
+
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    overflow-y: scroll; /* Forces scrollbar to be visible always */
   }
 }
