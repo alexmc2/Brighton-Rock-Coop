@@ -51,7 +51,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
               showLogo ? 'lg:w-1/2' : 'w-full'
             }`}
           >
-            <h1 className="text-5xl sm:text-6xl text-white font-bold mb-6  ">
+            <h1 className="text-5xl sm:text-6xl text-white font-bold mb-6 pr-0 sm:pr-4 ">
               {title}
             </h1>
             <p className="text-2xl px-2 text-white">{description}</p>

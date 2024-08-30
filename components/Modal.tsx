@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
         <div className="mb-6">{children}</div>
         <Button
           onClick={onClose}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded"
+          className="bbg-primary dark:bg-background  hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded"
         >
           Close
         </Button>

@@ -24,7 +24,7 @@ const CooperativeSection: React.FC = () => {
             jointly owned and democratically-controlled enterprise."
           </p>
           <Button
-            className="bg-primary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-xl"
+            className="bg-primary dark:bg-background  hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-xl"
             onClick={() => setIsModalOpen(true)}
           >
             Find Out More

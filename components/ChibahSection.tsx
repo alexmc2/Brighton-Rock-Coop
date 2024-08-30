@@ -15,7 +15,7 @@ const ChibahSection: React.FC = () => {
             Brighton Rock is a member of{' '}
             <a
               href="http://chibah.org/"
-              className="text-primary hover:underline font-bold "
+              className="dark:text-background text-primary hover:underline font-bold "
             >
               CHIBAH
             </a>{' '}
