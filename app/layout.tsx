@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import Header from '../components/Header';
 import '../styles/globals.css';
 import { Roboto } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 
 // Initialize the Roboto font
 const roboto = Roboto({
@@ -64,6 +65,7 @@ export default function RootLayout({
         >
           <Header />
           <main>{children}</main>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
