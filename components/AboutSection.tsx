@@ -74,7 +74,7 @@ const AboutUsModalContent: React.FC = () => (
       policy which is rigorously applied.
     </li>
     <li>
-      <strong>All members contribute to the running of the co-op:</strong> by
+      <strong>All members contribute to the running of the co-op</strong> by
       taking on a job, such as maintenance coordinator, rent officer, treasurer,
       secretary, garden coordinator, shopkeeper, and development officer.
       Members report on their role at the monthly meeting and the AGM.
@@ -88,7 +88,7 @@ const AboutUsModalContent: React.FC = () => (
       1 and 2 hours.
     </li>
     <li>
-      <strong>We have a co-op handbook with policies and guidelines:</strong>{' '}
+      <strong>We have a co-op handbook with policies and guidelines</strong>{' '}
       for the safe and smooth running of the co-op. The policies and guidelines
       are written and reviewed by co-op members.
     </li>
@@ -98,13 +98,13 @@ const AboutUsModalContent: React.FC = () => (
       addition to garden work and general maintenance workdays.
     </li>
     <li>
-      <strong>The rooms are single occupancy:</strong> and can&apos;t be
+      <strong>The rooms are single occupancy</strong> and can&apos;t be
       allocated to couples or those with children who live with them. Guests are
       welcome, however, if agreed by other members of the house. We also have a
       no-pets policy.
     </li>
     <li>
-      <strong>To balance all the hard work:</strong> we also have occasional
+      <strong>To balance all the hard work</strong> we also have occasional
       social gatherings in the houses or garden.
     </li>
   </ul>
