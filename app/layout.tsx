@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://www.brighton-rock.org'),
   icons: {
-    icon: '/images/favicon.png',
+    icon: '/images/favicon.ico',
   },
 };
 
