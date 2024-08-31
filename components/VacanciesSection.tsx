@@ -69,7 +69,7 @@ const VacanciesModalContent: React.FC = () => (
     <p>
       Your attendance at a general meeting would also be advantageous so that
       you can get a better understanding of how the co-op works. Our monthly
-      meetings are typically on weekday evenings at 7:30PM and the dates can be
+      meetings are typically on weekday evenings at 7:30 PM and the dates can be
       found{' '}
       <a
         href="https://brighton-rock.org/meeting-dates"
