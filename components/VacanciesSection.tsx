@@ -25,7 +25,7 @@ const VacanciesSection: React.FC = () => {
               September, 2024. The viewings will be on the evenings of 2nd, 3rd
               and 11th September.
             </p>
-            <p className="mb-4 text-md md:text-lg text-foreground">
+            <p className="mb-4 text-md md:text-lg text-foreground font-bold">
               Please text Ian on 07815 906 502 or email{' '}
               <a
                 href="mailto:vacanciesbtnrock@gmail.com"

@@ -105,7 +105,7 @@ const Contact: React.FC = () => {
             </div>
             <a
               href="mailto:brightonrockhousingco-op@outlook.com"
-              className="text-primary dark:text-secondary hover:underline text-xl"
+              className="text-primary dark:text-secondary hover:underline text-xl font-bold"
             >
               brightonrockhousingco-op@outlook.com
             </a>

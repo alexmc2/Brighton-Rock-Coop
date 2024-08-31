@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import { Carousel as ReactCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -57,7 +56,7 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative w-full flex items-center justify-center"
+            className="relative w-full flex items-center justify-center carousel-slide"
             style={{
               height: '0',
               paddingBottom: '56.25%', // 16:9 aspect ratio
@@ -70,11 +69,24 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
               style={{
                 objectFit: 'contain',
               }}
+              sizes="(max-width: 640px) 100vw, 75vw"
               quality={100}
             />
           </div>
         ))}
       </ReactCarousel>
+      <style jsx global>{`
+        @media (max-width: 640px) {
+          .carousel-slide {
+            padding-bottom: 75% !important; // 4:3 aspect ratio for mobile
+          }
+          .carousel .slide img {
+            object-fit: contain !important;
+            max-height: 100% !important;
+            max-width: 100% !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

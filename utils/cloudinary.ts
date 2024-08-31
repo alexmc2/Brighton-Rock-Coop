@@ -10,6 +10,7 @@ cloudinary.config({
 export async function getCloudinaryImages() {
   try {
     const result = await cloudinary.search
+
       .expression('folder:coop-images/*')
       .sort_by('public_id', 'desc')
       .max_results(500)
