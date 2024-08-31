@@ -72,7 +72,7 @@ const VacanciesModalContent: React.FC = () => (
       meetings are typically on weekday evenings at 7:30 PM and the dates can be
       found{' '}
       <a
-        href="https://brighton-rock.org/meeting-dates"
+        href="https://brighton-rock.org/meetings"
         className="text-primary dark:text-secondary hover:underline"
       >
         here
