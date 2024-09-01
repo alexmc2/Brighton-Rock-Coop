@@ -46,7 +46,7 @@ const AboutUsModalContent: React.FC = () => (
   <ul className="list-disc pl-5 text-md md:text-lg text-foreground space-y-4">
     <li>
       <strong>We are a &quot;self-help&quot; housing co-operative:</strong> We
-      utilize properties that are unsuitable for letting for an agreed period of
+      utilise properties that are unsuitable for letting for an agreed period of
       time, which can sometimes extend for many years. For more information,
       please visit self-help-housing.org.
     </li>
