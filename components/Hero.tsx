@@ -41,7 +41,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
                   alt="Hero"
                   width={500}
                   height={500}
-                   className="p-4 lg:p-0 dark-mode-image"// Add padding for small screens
+                  className="p-4 lg:p-0" // Add padding for small screens
                 />
               </div>
             </div>
