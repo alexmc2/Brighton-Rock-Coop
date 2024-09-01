@@ -15,7 +15,7 @@ const VacanciesSection: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-card rounded-lg shadow-sm p-8">
             <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
-              We currently have one vacancy (July 2024)
+              We currently have one vacancy (August 2024)
             </h2>
             <p className="mb-4 text-md md:text-lg text-foreground">
               We are looking for a community-minded person with time to

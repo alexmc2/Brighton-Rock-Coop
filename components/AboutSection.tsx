@@ -84,8 +84,8 @@ const AboutUsModalContent: React.FC = () => (
         Members are expected to attend monthly general meetings and occasional
         emergency meetings:
       </strong>{' '}
-      These take place on weekday evenings at 7.30pm and generally last between
-      1 and 2 hours.
+      These take place on weekday evenings at 7.30 pm and generally last between
+      one and two hours.
     </li>
     <li>
       <strong>We have a co-op handbook with policies and guidelines</strong>{' '}
