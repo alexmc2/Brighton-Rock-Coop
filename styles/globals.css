@@ -84,12 +84,12 @@
   /* Adjusts the filter to modify the image */
   filter: brightness(0.8) saturate(1.2);
   /* Blends the image with the background */
-  mix-blend-mode: multiply; /* Or use 'color' for different effects */
+  mix-blend-mode: multiply; 
 }
 
 /* Adjust for dark mode */
 .dark .dark-mode-image {
   /* Specific adjustments for dark mode */
   filter: brightness(1.2) saturate(1.5);
-  mix-blend-mode: lighten; /* Adjust blend mode for best visibility */
+  mix-blend-mode: lighten; 
 }
