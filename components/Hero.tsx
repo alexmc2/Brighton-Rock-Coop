@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import Illustration from '@/public/hero-illustration.svg';
+// import Illustration from '@/public/hero-illustration.svg';
 import HeroImage from '@/public/hero.png';
 
 interface HeroProps {
@@ -14,12 +14,12 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
     <section className="relative bg-primary pt-32 pb-32 overflow-hidden">
       {/* Background */}
       <div
-        className="absolute inset-0 bg-gradient-to-t from-primary to-primary-light pointer-events-none"
+        // className="absolute inset-0 bg-gradient-to-t from-primary to-primary-light pointer-events-none"
         aria-hidden="true"
       />
 
       {/* SVG Illustration */}
-      <div
+      {/* <div
         className="absolute left-1/2 transform -translate-x-1/2 pointer-events-none top-0"
         aria-hidden="true"
       >
@@ -29,7 +29,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
           className="max-w-none"
           priority
         />
-      </div>
+      </div> */}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between">
@@ -41,7 +41,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
                   alt="Hero"
                   width={500}
                   height={500}
-                  className="p-4 lg:p-0" // Add padding for small screens
+                   className="p-4 lg:p-0 dark-mode-image"// Add padding for small screens
                 />
               </div>
             </div>
@@ -51,10 +51,10 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
               showLogo ? 'lg:w-1/2' : 'w-full'
             }`}
           >
-            <h1 className="text-5xl sm:text-6xl text-white font-bold mb-6 pr-0 sm:pr-4 ">
+            <h1 className="text-5xl sm:text-6xl text-white dark:text-foreground font-bold mb-6 pr-0 sm:pr-4 ">
               {title}
             </h1>
-            <p className="text-xl sm:text-2xl px-2 text-white">{description}</p>
+            <p className="text-xl sm:text-2xl px-2 text-white dark:text-foreground">{description}</p>
           </div>
         </div>
       </div>
