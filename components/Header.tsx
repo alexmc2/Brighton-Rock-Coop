@@ -33,21 +33,24 @@ const Header: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
-          <div className="flex items-center">
+          <div className="flex items-center w-full justify-between lg:justify-start pl-2 sm:pl-3">
+            {' '}
+            {/* Updated: Allow full width and space between */}
             <ThemeToggle />
             <Link
               href="/"
-              className="font-bold text-lg sm:text-xl md:text-2xl ml-2 sm:ml-4"
+              className="font-bold text-lg sm:text-xl md:text-2xl mx-auto lg:mx-0" // Center text within its container on mobile
             >
-              <span className="block md:hidden">BRIGHTON ROCK CO-OP</span>{' '}
-              {/* Mobile view */}
+              <span className="block md:hidden text-center">
+                BRIGHTON ROCK CO-OP
+              </span>{' '}
+              {/* Centered text on mobile */}
               <span className="hidden md:block">
                 BRIGHTON ROCK HOUSING CO-OP
               </span>{' '}
-              {/* Desktop view */}
             </Link>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="ml-10 flex items-baseline space-x-4">
               <NavLink href="/" onClick={handleLinkClick}>
                 HOME
@@ -63,7 +66,7 @@ const Header: React.FC = () => {
               </NavLink>
             </div>
           </div>
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md bg-primary text-primary-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -80,7 +83,7 @@ const Header: React.FC = () => {
       </div>
       <div
         className={cn(
-          'md:hidden bg-primary text-primary-foreground overflow-hidden transition-all duration-500 ease-in-out',
+          'lg:hidden bg-primary text-primary-foreground overflow-hidden transition-all duration-500 ease-in-out',
           isOpen ? 'max-h-64' : 'max-h-0'
         )}
       >
