@@ -65,7 +65,7 @@ const AboutUsModalContent: React.FC = () => (
     </li>
     <li>
       <strong>Brighton Rock aims to be environmentally aware:</strong> We strive
-      to minimize our environmental impact through resource conservation and
+      to minimise our environmental impact through resource conservation and
       reducing waste.
     </li>
     <li>
