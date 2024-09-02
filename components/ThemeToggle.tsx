@@ -23,7 +23,7 @@ const ThemeToggle: React.FC = () => {
         md:w-10 w-10 h-5 rounded-full 
         bg-secondary
         transition-colors duration-200 ease-in-out focus:outline-none  
-        lg:mr-4
+        lg:mr-4 mr-2
       `}
     >
       <div

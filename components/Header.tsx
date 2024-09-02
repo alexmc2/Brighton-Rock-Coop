@@ -33,7 +33,7 @@ const Header: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
-          <div className="flex items-center w-full justify-between lg:justify-start pl-2 sm:pl-3">
+          <div className="flex items-center w-full justify-between lg:justify-start px-2 sm:px-3">
             {' '}
             {/* Updated: Allow full width and space between */}
             <ThemeToggle />
@@ -41,11 +41,11 @@ const Header: React.FC = () => {
               href="/"
               className="font-bold text-lg sm:text-xl md:text-2xl mx-auto lg:mx-0" // Center text within its container on mobile
             >
-              <span className="block md:hidden text-center">
+              <span className="block sm:hidden text-center">
                 BRIGHTON ROCK CO-OP
               </span>{' '}
               {/* Centered text on mobile */}
-              <span className="hidden md:block">
+              <span className="hidden sm:block">
                 BRIGHTON ROCK HOUSING CO-OP
               </span>{' '}
             </Link>
