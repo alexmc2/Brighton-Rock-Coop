@@ -1,8 +1,9 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 // import Illustration from '@/public/hero-illustration.svg';
 import HeroImage from '@/public/hero.png';
-
+import { Slide } from 'react-awesome-reveal';
 
 interface HeroProps {
   title: string;
@@ -36,15 +37,17 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
         <div className="flex flex-col lg:flex-row items-center justify-between">
           {showLogo && (
             <div className="relative z-10 w-full lg:w-1/2 mb-8 lg:mb-0 lg:mr-8">
-              <div className="flex justify-center lg:justify-start">
-                <Image
-                  src={HeroImage}
-                  alt="Hero"
-                  width={500}
-                  height={500}
-                  className="p-4 lg:p-0" // Add padding for small screens
-                />
-              </div>
+              <Slide direction="left" triggerOnce>
+                <div className="flex justify-center lg:justify-start">
+                  <Image
+                    src={HeroImage}
+                    alt="Hero"
+                    width={500}
+                    height={500}
+                    className="p-4 lg:p-0" // Add padding for small screens
+                  />
+                </div>
+              </Slide>
             </div>
           )}
           <div
@@ -52,10 +55,15 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
               showLogo ? 'lg:w-1/2' : 'w-full'
             }`}
           >
-            <h1 className="text-5xl sm:text-6xl text-white dark:text-foreground font-bold mb-6 pr-0 sm:pr-4 ">
-              {title}
-            </h1>
-            <p className="text-xl sm:text-2xl px-2 text-white dark:text-foreground">{description}</p>
+            {' '}
+            <Slide direction="down" triggerOnce>
+              <h1 className="text-5xl sm:text-6xl text-white dark:text-foreground font-bold mb-6 pr-0 sm:pr-4 ">
+                {title}
+              </h1>
+              <p className="text-xl sm:text-2xl px-2 text-white dark:text-foreground">
+                {description}
+              </p>
+            </Slide>
           </div>
         </div>
       </div>
