@@ -60,7 +60,7 @@ const Contact: React.FC = () => {
         </FadeWrapper>
       </section>
       <section className="bg-background pb-10">
-        <FadeWrapper useCustomAnimation delay={800}>
+        <FadeWrapper useCustomAnimation delay={400}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-card rounded-lg shadow-sm p-8">
               <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
