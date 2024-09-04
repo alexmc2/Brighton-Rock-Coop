@@ -47,6 +47,15 @@ export const metadata: Metadata = {
   icons: {
     icon: '/images/favicon.ico',
   },
+
+  other: {
+    'og:title': 'Brighton Rock Housing Co-operative',
+    'og:description':
+      'Brighton Rock is a small housing co-operative in West Hove that provides affordable housing to its members. Please visit our website for more information and current vacancies.',
+    'og:image':
+      'https://d33wubrfki0l68.cloudfront.net/45dc7e2de3f6be14d03156f17331b5b091c918ab/cfeab/images/co-op50.webp',
+    'og:url': 'https://www.brighton-rock.org/',
+  },
 };
 
 export default function RootLayout({
