@@ -52,15 +52,17 @@ const MeetingsPage: React.FC = () => {
                   </FadeWrapper>
                 ))}
               </div>
-              <p className="mt-10 text-xl text-foreground text-center">
-                To attend a meeting, please email the secretary at <br />
-                <a
-                  href="mailto:brightonrockhousingco-op@outlook.com"
-                  className="text-primary dark:text-secondary hover:underline font-semibold"
-                >
-                  brightonrockhousingco-op@outlook.com
-                </a>
-              </p>
+              <FadeWrapper useCustomAnimation delay={meetingDates.length * 25}>
+                <p className="mt-10 text-xl text-foreground text-center">
+                  To attend a meeting, please email the secretary at <br />
+                  <a
+                    href="mailto:brightonrockhousingco-op@outlook.com"
+                    className="text-primary dark:text-secondary hover:underline font-semibold"
+                  >
+                    brightonrockhousingco-op@outlook.com
+                  </a>
+                </p>
+              </FadeWrapper>
             </div>
           </div>
         </FadeWrapper>
