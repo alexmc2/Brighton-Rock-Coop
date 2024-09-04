@@ -9,9 +9,16 @@ interface HeroProps {
   title: string;
   description?: string;
   showLogo?: boolean;
+  useSlideEffect?: boolean;
 }
 
-export default function Hero({ title, description, showLogo }: HeroProps) {
+export default function Hero({
+  title,
+  description,
+  showLogo,
+  useSlideEffect = true,
+}: HeroProps) {
+  const ContentWrapper = useSlideEffect ? Slide : React.Fragment;
   return (
     <section className="relative bg-primary pt-32 pb-32 overflow-hidden">
       {/* Background */}
@@ -37,7 +44,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
         <div className="flex flex-col lg:flex-row items-center justify-between">
           {showLogo && (
             <div className="relative z-10 w-full lg:w-1/2 mb-8 lg:mb-0 lg:mr-8">
-              <Slide direction="left" triggerOnce>
+              <ContentWrapper direction="left" triggerOnce>
                 <div className="flex justify-center lg:justify-start">
                   <Image
                     src={HeroImage}
@@ -47,7 +54,7 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
                     className="p-4 lg:p-0" // Add padding for small screens
                   />
                 </div>
-              </Slide>
+              </ContentWrapper>
             </div>
           )}
           <div
@@ -56,14 +63,14 @@ export default function Hero({ title, description, showLogo }: HeroProps) {
             }`}
           >
             {' '}
-            <Slide direction="down" triggerOnce>
+            <ContentWrapper direction="up" triggerOnce>
               <h1 className="text-5xl sm:text-6xl text-white dark:text-foreground font-bold mb-6 pr-0 sm:pr-4 ">
                 {title}
               </h1>
               <p className="text-xl sm:text-2xl px-2 text-white dark:text-foreground">
                 {description}
               </p>
-            </Slide>
+            </ContentWrapper>
           </div>
         </div>
       </div>

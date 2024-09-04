@@ -20,14 +20,14 @@ const MeetingsPage: React.FC = () => {
 
   return (
     <div>
-      <Hero title="Meeting Dates 2024" />
+      <Hero title="Meeting Dates" useSlideEffect={false} />
 
       <section className="bg-background py-16">
         <FadeWrapper useCustomAnimation delay={0}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-card rounded-lg shadow-lg p-8">
               <h2 className="text-3xl font-bold mb-6 text-foreground text-center">
-                Meeting Dates
+                Meeting Dates - 2024
               </h2>
               <p className="mb-8 text-xl text-foreground text-center">
                 Meetings are held monthly. Visitors are welcome to attend if

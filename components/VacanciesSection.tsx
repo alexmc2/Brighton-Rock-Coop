@@ -12,7 +12,7 @@ const VacanciesSection: React.FC = () => {
 
   return (
     <div>
-      <Hero title="Current Vacancies" />
+      <Hero title="Current Vacancies" useSlideEffect={false} />
       <section className="bg-background pt-12 pb-10">
         <FadeWrapper useCustomAnimation delay={0}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

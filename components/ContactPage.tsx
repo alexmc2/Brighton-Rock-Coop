@@ -7,7 +7,7 @@ import FadeWrapper from './FadeWrapper';
 const Contact: React.FC = () => {
   return (
     <div>
-      <Hero title="Contact Us!" />
+      <Hero title="Contact Us!" useSlideEffect={false} />
 
       <section className="bg-background pt-12 pb-10">
         <FadeWrapper useCustomAnimation delay={0}>
