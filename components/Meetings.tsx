@@ -1,8 +1,6 @@
-// src/app/meetings/page.tsx
 import React from 'react';
 import Hero from '@/components/Hero';
 import FadeWrapper from './FadeWrapper';
-import { Fade } from 'react-awesome-reveal';
 
 const MeetingsPage: React.FC = () => {
   const meetingDates = [
@@ -37,18 +35,21 @@ const MeetingsPage: React.FC = () => {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {meetingDates.map((meeting, index) => (
-                  <div
+                  <FadeWrapper
                     key={index}
-                    className="bg-background p-4 rounded-md shadow-sm"
+                    useCustomAnimation
+                    delay={index * 25}
                   >
-                    <p className="text-lg font-semibold text-foreground">
-                      {meeting.date}
-                    </p>
-                    <p className="text-md text-foreground">{meeting.time}</p>
-                    <p className="text-md text-primary dark:text-secondary">
-                      Location: {meeting.location}
-                    </p>
-                  </div>
+                    <div className="bg-background p-4 rounded-md shadow-sm">
+                      <p className="text-lg font-semibold text-foreground">
+                        {meeting.date}
+                      </p>
+                      <p className="text-md text-foreground">{meeting.time}</p>
+                      <p className="text-md text-primary dark:text-secondary">
+                        Location: {meeting.location}
+                      </p>
+                    </div>
+                  </FadeWrapper>
                 ))}
               </div>
               <p className="mt-10 text-xl text-foreground text-center">
