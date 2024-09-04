@@ -27,8 +27,8 @@ const Header: React.FC = () => {
       className={cn(
         'fixed top-0 w-full z-50 ',
         isScrolled
-          ? 'bg-primary text-primary-foreground'
-          : 'bg-transparent text-primary-foreground'
+          ? 'bg-primary text-white'
+          : 'bg-transparent text-white'
       )}
     >
       <div className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-4">
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md bg-primary text-primary-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="inline-flex items-center justify-center p-2 rounded-md bg-primary text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             >
               <span className="sr-only">Toggle main menu</span>
               {isOpen ? (
@@ -83,7 +83,7 @@ const Header: React.FC = () => {
       </div>
       <div
         className={cn(
-          'lg:hidden bg-primary text-primary-foreground overflow-hidden transition-all duration-500 ease-in-out',
+          'lg:hidden bg-primary text-white overflow-hidden transition-all duration-500 ease-in-out',
           isOpen ? 'max-h-64' : 'max-h-0'
         )}
       >
