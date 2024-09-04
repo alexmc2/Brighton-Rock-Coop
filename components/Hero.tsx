@@ -3,6 +3,7 @@ import Image from 'next/image';
 // import Illustration from '@/public/hero-illustration.svg';
 import HeroImage from '@/public/hero.png';
 
+
 interface HeroProps {
   title: string;
   description?: string;

@@ -84,12 +84,33 @@
   /* Adjusts the filter to modify the image */
   filter: brightness(0.8) saturate(1.2);
   /* Blends the image with the background */
-  mix-blend-mode: multiply; 
+  mix-blend-mode: multiply;
 }
 
 /* Adjust for dark mode */
 .dark .dark-mode-image {
   /* Specific adjustments for dark mode */
   filter: brightness(1.2) saturate(1.5);
-  mix-blend-mode: lighten; 
+  mix-blend-mode: lighten;
+}
+
+section {
+  border: none;
+}
+
+/* styles/globals.css or your existing CSS file */
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content {
+  animation: modalAppear 5s ease-out forwards;
 }

@@ -3,43 +3,46 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import { Button } from '@/components/ui/button';
+import FadeWrapper from './FadeWrapper';
 
 const CooperativeSection: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <section className="pb-10 bg-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-card rounded-lg shadow-sm p-8">
-          <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
-            Co-operative Identity, Values, and Principles
-          </h2>
-          <p className="mb-5 text-md md:text-lg text-foreground">
-            Brighton Rock subscribes to the values and principles of the
-            international co-operative movement. The Statement on the
-            Co-operative Identity states that a co-operative is an
-            &quot;autonomous association of persons united voluntarily to meet
-            their common economic, social and cultural needs and aspirations
-            through a jointly owned and democratically-controlled
-            enterprise.&quot;
-          </p>
-          <Button
-            className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Find Out More
-          </Button>
+      <FadeWrapper useCustomAnimation delay={300}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-card rounded-lg shadow-sm p-8">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
+              Co-operative Identity, Values, and Principles
+            </h2>
+            <p className="mb-5 text-md md:text-lg text-foreground">
+              Brighton Rock subscribes to the values and principles of the
+              international co-operative movement. The Statement on the
+              Co-operative Identity states that a co-operative is an
+              &quot;autonomous association of persons united voluntarily to meet
+              their common economic, social and cultural needs and aspirations
+              through a jointly owned and democratically-controlled
+              enterprise.&quot;
+            </p>
+            <Button
+              className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Find Out More
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <Modal
-        id="cooperativeModal"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Cooperative Identity, Values, and Principles"
-      >
-        <CooperativeModalContent />
-      </Modal>
+        <Modal
+          id="cooperativeModal"
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Cooperative Identity, Values, and Principles"
+        >
+          <CooperativeModalContent />
+        </Modal>
+      </FadeWrapper>
     </section>
   );
 };

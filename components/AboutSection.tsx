@@ -3,41 +3,44 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import { Button } from '@/components/ui/button';
+import FadeWrapper from '@/components/FadeWrapper';
 
 const AboutSection: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <section className="pt-12 pb-10 bg-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-card rounded-lg shadow-sm p-8">
-          <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
-            About Us
-          </h2>
-          <p className="mb-5 text-md md:text-lg text-foreground">
-            Brighton Rock Housing Co-operative was first established in 1987.
-            The co-op consists of three terraced houses (with four bedrooms in
-            each house, a large living room, kitchen, bathroom, and bike shed).
-            The co-op also has a large garden that is shared between the three
-            houses.
-          </p>
-          <Button
-            className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
-            onClick={() => setIsModalOpen(true)}
-          >
-            More About Us
-          </Button>
+      <FadeWrapper useCustomAnimation delay={0}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-card rounded-lg shadow-sm p-8">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
+              About Us
+            </h2>
+            <p className="mb-5 text-md md:text-lg text-foreground">
+              Brighton Rock Housing Co-operative was first established in 1987.
+              The co-op consists of three terraced houses (with four bedrooms in
+              each house, a large living room, kitchen, bathroom, and bike
+              shed). The co-op also has a large garden that is shared between
+              the three houses.
+            </p>
+            <Button
+              className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
+              onClick={() => setIsModalOpen(true)}
+            >
+              More About Us
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <Modal
-        id="aboutUsModal"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Brighton Rock Housing Co-operative"
-      >
-        <AboutUsModalContent />
-      </Modal>
+        <Modal
+          id="aboutUsModal"
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Brighton Rock Housing Co-operative"
+        >
+          <AboutUsModalContent />
+        </Modal>
+      </FadeWrapper>
     </section>
   );
 };
@@ -88,9 +91,9 @@ const AboutUsModalContent: React.FC = () => (
       one and two hours.
     </li>
     <li>
-      <strong>We have a co-op handbook with policies and guidelines</strong>{' '}
-      for the safe and smooth running of the co-op. The policies and guidelines
-      are written and reviewed by co-op members.
+      <strong>We have a co-op handbook with policies and guidelines</strong> for
+      the safe and smooth running of the co-op. The policies and guidelines are
+      written and reviewed by co-op members.
     </li>
     <li>
       <strong>Members are expected to show interest and participate:</strong>{' '}

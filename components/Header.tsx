@@ -31,7 +31,7 @@ const Header: React.FC = () => {
           : 'bg-transparent text-primary-foreground'
       )}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-4">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
           <div className="flex items-center w-full justify-between lg:justify-start px-2 sm:px-3">
             {' '}

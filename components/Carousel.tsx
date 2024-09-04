@@ -4,6 +4,8 @@ import { Carousel as ReactCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import FadeWrapper from './FadeWrapper';
+import { Fade } from 'react-awesome-reveal';
 
 interface CarouselImage {
   url: string;
@@ -62,16 +64,18 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
               paddingBottom: '56.25%', // 16:9 aspect ratio
             }}
           >
-            <Image
-              src={image.url}
-              alt={image.alt || ''}
-              fill
-              style={{
-                objectFit: 'contain',
-              }}
-              sizes="(max-width: 640px) 100vw, 75vw"
-              quality={100}
-            />
+            <FadeWrapper duration={700} triggerOnce={false}>
+              <Image
+                src={image.url}
+                alt={image.alt || ''}
+                fill
+                style={{
+                  objectFit: 'contain',
+                }}
+                sizes="(max-width: 640px) 100vw, 75vw"
+                quality={100}
+              />
+            </FadeWrapper>
           </div>
         ))}
       </ReactCarousel>
