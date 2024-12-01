@@ -25,7 +25,7 @@ const MeetingsPage: React.FC = () => {
       <section className="bg-background py-16">
         <FadeWrapper useCustomAnimation delay={0}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-card rounded-lg shadow-lg p-8">
+            <div className="bg-card rounded-2xl shadow-lg p-8">
               <h2 className="text-3xl font-bold mb-6 text-foreground text-center">
                 Meeting Dates - 2024
               </h2>

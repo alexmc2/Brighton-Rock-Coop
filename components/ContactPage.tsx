@@ -11,8 +11,8 @@ const Contact: React.FC = () => {
 
       <section className="bg-background pt-12 pb-10">
         <FadeWrapper useCustomAnimation delay={0}>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-card rounded-lg shadow-sm p-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-card rounded-2xl shadow-sm p-8">
               <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
                 Get in Touch
               </h2>
@@ -61,8 +61,8 @@ const Contact: React.FC = () => {
       </section>
       <section className="bg-background pb-10">
         <FadeWrapper useCustomAnimation delay={400}>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-card rounded-lg shadow-sm p-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-card rounded-2xl shadow-sm p-8">
               <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
                 Our Location
               </h2>
@@ -86,8 +86,8 @@ const Contact: React.FC = () => {
       </section>
       <section className="bg-background pb-10">
         <FadeWrapper useCustomAnimation delay={100}>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-card rounded-lg shadow-sm p-8 text-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-card rounded-2xl shadow-sm p-8 text-center">
               <h2 className="text-2xl font-bold mb-4 text-foreground">
                 Connect With Us
               </h2>

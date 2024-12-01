@@ -6,6 +6,7 @@ import GallerySection from '../components/GallerySection';
 import CooperativeSection from '../components/CooperativeSection';
 import ChibahSection from '../components/ChibahSection';
 
+
 const Home: React.FC = () => {
   return (
     <div>

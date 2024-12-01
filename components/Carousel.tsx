@@ -5,7 +5,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import FadeWrapper from './FadeWrapper';
-import { Fade } from 'react-awesome-reveal';
+
 
 interface CarouselImage {
   url: string;

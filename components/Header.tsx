@@ -26,9 +26,7 @@ const Header: React.FC = () => {
     <nav
       className={cn(
         'fixed top-0 w-full z-50 ',
-        isScrolled
-          ? 'bg-primary text-white'
-          : 'bg-transparent text-white'
+        isScrolled ? 'bg-primary text-white' : 'bg-transparent text-white'
       )}
     >
       <div className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-4">

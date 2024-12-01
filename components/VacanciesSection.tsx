@@ -15,28 +15,19 @@ const VacanciesSection: React.FC = () => {
       <Hero title="Current Vacancies" useSlideEffect={false} />
       <section className="bg-background pt-12 pb-10">
         <FadeWrapper useCustomAnimation delay={0}>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-card rounded-lg shadow-sm p-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-card rounded-2xl shadow-sm p-8">
               <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
-                We currently have one vacancy (August 2024)
+                We have no vacancies at the present time
               </h2>
               <p className="mb-4 text-md md:text-lg text-foreground">
-                We are looking for a community-minded person with time to
-                contribute to our co-op in return for an affordable rent.
-                Applicants must attend a house viewing before applying and be
-                available for a short in-person interview on Sunday 22nd
-                September, 2024. The viewings will be on the evenings of 2nd,
-                3rd and 11th September.
-              </p>
-              <p className="mb-4 text-md md:text-lg text-foreground font-bold">
-                Please text Ian on 07815 906 502 or email{' '}
+                If you want to be notified of future vacancies, please email{' '}
                 <a
                   href="mailto:vacanciesbtnrock@gmail.com"
                   className="text-primary dark:text-secondary hover:underline"
                 >
                   vacanciesbtnrock@gmail.com
-                </a>{' '}
-                to arrange a viewing.
+                </a>
               </p>
               <Button
                 className="bg-primary dark:bg-secondary hover:bg-primary/90 text-primary-foreground dark:text-foreground font-bold py-2 px-4 rounded text-md md:text-lg"
