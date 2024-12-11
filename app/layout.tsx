@@ -1,7 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
-import Header from '../components/Header';
 import '../styles/globals.css';
 import { Roboto } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
@@ -72,8 +71,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main>{children}</main>
+          {children}
           <Analytics />
         </ThemeProvider>
       </body>
