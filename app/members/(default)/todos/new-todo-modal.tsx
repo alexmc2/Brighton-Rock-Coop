@@ -15,6 +15,13 @@ import { Button } from '@/components/members/ui/button';
 import { Input } from '@/components/members/ui/input';
 import { Textarea } from '@/components/members/ui/textarea';
 import { Label } from '@/components/members/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/members/ui/select';
 import { Plus } from 'lucide-react';
 
 // Define the Profile type based on your profiles table
@@ -205,17 +212,21 @@ export default function NewTodoModal() {
               >
                 Todo Type
               </Label>
-              <select
-                id="todo_type"
-                name="todo_type"
-                required
+              <Select
                 value={todoType}
-                onChange={(e) => setTodoType(e.target.value)}
-                className="w-full h-10 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 px-3 py-2"
+                onValueChange={(value: string) => setTodoType(value)}
               >
-                <option value="general">General</option>
-                <option value="minuted">Minuted Action</option>
-              </select>
+                <SelectTrigger
+                  id="todo_type"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                >
+                  <SelectValue placeholder="Select todo type" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                  <SelectItem value="general">General</SelectItem>
+                  <SelectItem value="minuted">Minuted Action</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* **Priority Field** */}
@@ -226,19 +237,23 @@ export default function NewTodoModal() {
               >
                 Priority
               </Label>
-              <select
-                id="priority"
-                name="priority"
-                required
+              <Select
                 value={priority}
-                onChange={(e) => setPriority(e.target.value)}
-                className="w-full h-10 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 px-3 py-2"
+                onValueChange={(value: string) => setPriority(value)}
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
-              </select>
+                <SelectTrigger
+                  id="priority"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                >
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="urgent">Urgent</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* **Assign To Field** */}
@@ -249,29 +264,30 @@ export default function NewTodoModal() {
               >
                 Assign To
               </Label>
-              <select
-                id="assigned_to"
-                name="assigned_to"
-                value={assignedTo || ''}
-                onChange={(e) =>
-                  setAssignedTo(e.target.value === '' ? null : e.target.value)
-                }
-                className="w-full h-10 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 px-3 py-2"
+              <Select
+                value={assignedTo || 'unassigned'}
+                onValueChange={(value: string) => setAssignedTo(value === 'unassigned' ? null : value)}
                 disabled={isFetchingProfiles}
               >
-                <option value="">Unassigned</option>
-                {isFetchingProfiles ? (
-                  <option disabled>Loading...</option>
-                ) : (
-                  profiles.map((profile) => (
-                    <option key={profile.id} value={profile.id}>
-                      {profile.full_name
-                        ? `${profile.full_name} (${profile.email})`
-                        : profile.email}
-                    </option>
-                  ))
-                )}
-              </select>
+                <SelectTrigger
+                  id="assigned_to"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                >
+                  <SelectValue placeholder="Select assignee" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                  <SelectItem value="unassigned">Unassigned</SelectItem>
+                  {isFetchingProfiles ? (
+                    <SelectItem value="loading" disabled>Loading...</SelectItem>
+                  ) : (
+                    profiles.map((profile) => (
+                      <SelectItem key={profile.id} value={profile.id}>
+                        {profile.full_name || profile.email}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Submit Button */}
@@ -301,3 +317,4 @@ export default function NewTodoModal() {
     </>
   );
 }
+

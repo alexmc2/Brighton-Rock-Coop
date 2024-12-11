@@ -14,9 +14,9 @@ export default function Login() {
         <div className="absolute inset-0 bg-gradient-to-t from-coop-600 to-coop-400" />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="relative max-w-lg text-white">
-            <h1 className="mb-4 text-4xl font-bold">Co-op Management</h1>
+            <h1 className="mb-4 text-4xl font-bold">Brighton Rock Co-op</h1>
             <p className="text-lg opacity-90">
-              Sign in to access the co-op management system.
+              Sign in to access the co-op management hub.
             </p>
           </div>
         </div>
