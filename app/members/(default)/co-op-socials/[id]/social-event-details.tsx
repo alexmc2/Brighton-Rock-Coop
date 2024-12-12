@@ -342,16 +342,16 @@ export default function SocialEventDetails({
             <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Created By
             </div>
-            <p className="text-base text-slate-600 dark:text-slate-300">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               {event.created_by_user.full_name || event.created_by_user.email}
             </p>
           </div>
 
           <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Created
             </div>
-            <p className="text-base text-slate-600 dark:text-slate-300">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               {format(new Date(event.created_at), 'PPp')}
             </p>
           </div>

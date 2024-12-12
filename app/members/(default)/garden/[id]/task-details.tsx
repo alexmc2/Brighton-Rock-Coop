@@ -10,6 +10,26 @@ interface TaskDetailsProps {
 }
 
 export default function TaskDetails({ task }: TaskDetailsProps) {
+  const getStatusBadgeStyle = (status: string) => {
+    const styles = {
+      pending: 'bg-yellow-500/20 text-yellow-600 dark:bg-yellow-500/10 dark:text-yellow-400',
+      in_progress: 'bg-blue-500/20 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+      completed: 'bg-green-500/20 text-green-600 dark:bg-green-500/10 dark:text-green-400',
+      cancelled: 'bg-slate-400/20 text-slate-600 dark:bg-slate-400/10 dark:text-slate-400',
+    };
+    return styles[status as keyof typeof styles] || styles.pending;
+  };
+
+  const getPriorityBadgeStyle = (priority: string) => {
+    const styles = {
+      low: 'bg-slate-400/20 text-slate-600 dark:bg-slate-400/10 dark:text-slate-400',
+      medium: 'bg-blue-500/20 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+      high: 'bg-orange-500/20 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400',
+      urgent: 'bg-red-500/20 text-red-600 dark:bg-red-500/10 dark:text-red-400',
+    };
+    return styles[priority as keyof typeof styles] || styles.medium;
+  };
+
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
       <div className="px-5 py-4">
@@ -20,6 +40,16 @@ export default function TaskDetails({ task }: TaskDetailsProps) {
         </div>
 
         <div className="space-y-4">
+          {/* Status and Priority Badges */}
+          <div className="flex flex-wrap gap-2">
+            <div className={`text-xs inline-flex font-medium ${getStatusBadgeStyle(task.status)} rounded-full text-center px-2.5 py-1`}>
+              {task.status.charAt(0).toUpperCase() + task.status.slice(1).replace('_', ' ')}
+            </div>
+            <div className={`text-xs inline-flex font-medium ${getPriorityBadgeStyle(task.priority)} rounded-full text-center px-2.5 py-1`}>
+              {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+            </div>
+          </div>
+
           {/* Description */}
           <div>
             <h3 className="text-sm font-medium text-slate-800 dark:text-slate-100 mb-1">
