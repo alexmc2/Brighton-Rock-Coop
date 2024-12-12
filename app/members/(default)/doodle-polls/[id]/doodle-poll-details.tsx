@@ -130,60 +130,62 @@ export default function DoodlePollDetails({
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-slate-800 border-slate-200 dark:border-none">
+      <Card className="p-6 bg-white dark:bg-slate-700 border-slate-200 dark:border-none">
         {/* Event Details Header */}
-        <div className="mb-6 space-y-2">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
-              {poll.title}
-            </h2>
+        <div className="mb-6 space-y-3">
+          <div className="flex flex-col gap-3">
             {poll.closed ? (
               <Badge
                 variant="outline"
-                className="bg-red-50 text-red-700 border-red-200/30 dark:bg-red-500/30 dark:text-red-300 dark:border-red-800/30"
+                className="w-fit bg-red-50 text-red-700 border-red-200/30 dark:bg-red-500/30 dark:text-red-300 dark:border-red-800/30"
               >
                 Closed
               </Badge>
             ) : (
               <Badge
                 variant="outline"
-                className="bg-green-50 text-green-700 border-green-200/30 dark:bg-green-950 dark:text-green-300 dark:border-green-800/30"
+                className="w-fit bg-green-50 text-green-700 border-green-200/30 dark:bg-green-950 dark:text-green-300 dark:border-green-800/30"
               >
                 Open
               </Badge>
             )}
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+              {poll.title}
+            </h2>
           </div>
-          <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-            <p>
-              <span className="font-medium">Type:</span>{' '}
-              {eventTypeToCalendarCategory(poll.event_type)}
+          <div className="text-sm text-slate-600 dark:text-slate-400 space-y-3">
+            <p className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+              <span className="font-medium">Type:</span>
+              <span>{eventTypeToCalendarCategory(poll.event_type)}</span>
             </p>
-            <p>
-              <span className="font-medium">Created by:</span>{' '}
-              {poll.created_by_user.full_name || poll.created_by_user.email}
+            <p className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+              <span className="font-medium">Created by:</span>
+              <span>
+                {poll.created_by_user.full_name || poll.created_by_user.email}
+              </span>
             </p>
             {poll.description && (
-              <p>
-                <span className="font-medium">Description:</span>{' '}
-                {poll.description}
+              <p className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                <span className="font-medium">Description:</span>
+                <span>{poll.description}</span>
               </p>
             )}
             {poll.response_deadline && (
-              <p>
-                <span className="font-medium">Response Deadline:</span>{' '}
-                {format(new Date(poll.response_deadline), 'PPP p')}
+              <p className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                <span className="font-medium">Response Deadline:</span>
+                <span>{format(new Date(poll.response_deadline), 'PPP p')}</span>
               </p>
             )}
           </div>
         </div>
 
         {/* Response Legend */}
-        <div className="mb-6 flex items-center gap-6 text-sm">
+        <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
             <span className="text-slate-600 dark:text-slate-400">Yes</span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <svg
               width="16"
               height="16"
@@ -202,11 +204,11 @@ export default function DoodlePollDetails({
               If need be
             </span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <CircleSlash className="w-4 h-4 text-red-600 dark:text-red-400" />
             <span className="text-slate-600 dark:text-slate-400">No</span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <CircleSlash className="w-4 h-4 text-slate-300 dark:text-slate-600" />
             <span className="text-slate-600 dark:text-slate-400">Pending</span>
           </div>
@@ -223,19 +225,19 @@ export default function DoodlePollDetails({
                     key={slot.id}
                     className="p-4 text-center border-l border-r border-slate-200 dark:border-slate-600"
                   >
-                    <div className="text-slate-600 dark:text-slate-400">
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
                       {slot.month}
                     </div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                    <div className="text-xl font-bold text-slate-900 dark:text-white">
                       {slot.dayOfMonth}
                     </div>
-                    <div className="text-slate-600 dark:text-slate-400">
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
                       {slot.day}
                     </div>
                     {slot.times.map((time) => (
                       <div
                         key={time}
-                        className="text-sm text-slate-600 dark:text-slate-400 mt-1"
+                        className="text-xs text-slate-600 dark:text-slate-400 mt-1"
                       >
                         {time}
                       </div>

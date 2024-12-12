@@ -260,7 +260,7 @@ export default function SocialEventActions({
           Edit
         </Button>
 
-        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">
+        <DialogContent className="w-[95vw] max-w-lg bg-white dark:bg-slate-800 max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
             <DialogTitle className="text-slate-900 dark:text-slate-100">
               Edit Event
@@ -275,8 +275,8 @@ export default function SocialEventActions({
 
           <form onSubmit={handleEdit} className="space-y-4">
             {/* Title & Category */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2 sm:col-span-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="col-span-1">
                 <Label htmlFor="title">Title</Label>
                 <Input
                   id="title"
@@ -287,7 +287,7 @@ export default function SocialEventActions({
                   className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
-              <div className="col-span-2 sm:col-span-1">
+              <div className="col-span-1">
                 <Label htmlFor="category">Category</Label>
                 <Select
                   value={category}
@@ -307,9 +307,7 @@ export default function SocialEventActions({
                     <SelectItem value="board_games">Board Games</SelectItem>
                     <SelectItem value="tv">TV</SelectItem>
                     <SelectItem value="book_club">Book Club</SelectItem>
-                    <SelectItem value="christmas_dinner">
-                      Christmas Dinner
-                    </SelectItem>
+                    <SelectItem value="christmas_dinner">Christmas Dinner</SelectItem>
                     <SelectItem value="bike_ride">Bike Ride</SelectItem>
                     <SelectItem value="party">Party</SelectItem>
                     <SelectItem value="hang_out">Hang Out</SelectItem>
@@ -329,7 +327,7 @@ export default function SocialEventActions({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isSubmitting}
-                rows={4}
+                rows={3}
                 className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
               />
             </div>
@@ -355,7 +353,7 @@ export default function SocialEventActions({
             </div>
 
             {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="event_date">Date</Label>
                 <Input
@@ -383,7 +381,7 @@ export default function SocialEventActions({
             </div>
 
             {/* Duration & Location */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="duration">Duration (hours)</Label>
                 <Input
@@ -395,7 +393,6 @@ export default function SocialEventActions({
                   value={duration}
                   onChange={(e) => {
                     const value = e.target.value;
-                    // Ensure we're storing the numeric value
                     setDuration(value !== '' ? value : '');
                   }}
                   disabled={isSubmitting}
@@ -435,7 +432,7 @@ export default function SocialEventActions({
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-3 pt-4">
               <Button
                 type="button"
                 variant="ghost"

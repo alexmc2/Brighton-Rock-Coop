@@ -23,7 +23,7 @@ export default function Login() {
       </div>
 
       <div className="flex w-full items-center justify-center lg:w-1/2">
-        <div className="w-full max-w-md space-y-8 px-4 sm:px-6">
+        <div className="w-full max-w-md space-y-8 px-6 sm:px-6">
           <div className="flex justify-center">
             <Logo />
           </div>

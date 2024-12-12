@@ -166,84 +166,86 @@ export default function SocialEventsList({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap gap-4">
-        <Select
-          value={filters.category}
-          onValueChange={(value: 'all' | SocialEventCategory) => {
-            setFilters((prev) => ({
-              ...prev,
-              category: value,
-              currentPage: 1,
-            }));
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select category" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category} value={category}>
-                {formatFilterLabel(category)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="max-w-3xl">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <Select
+            value={filters.category}
+            onValueChange={(value: 'all' | SocialEventCategory) => {
+              setFilters((prev) => ({
+                ...prev,
+                category: value,
+                currentPage: 1,
+              }));
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {formatFilterLabel(category)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={filters.status}
-          onValueChange={(value: 'all' | SocialEventStatus) => {
-            setFilters((prev) => ({ ...prev, status: value, currentPage: 1 }));
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            {statuses.map((status) => (
-              <SelectItem key={status} value={status}>
-                {formatFilterLabel(status)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Select
+            value={filters.status}
+            onValueChange={(value: 'all' | SocialEventStatus) => {
+              setFilters((prev) => ({ ...prev, status: value, currentPage: 1 }));
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent>
+              {statuses.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {formatFilterLabel(status)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={filters.sortField}
-          onValueChange={(value: SortField) => {
-            setFilters((prev) => ({
-              ...prev,
-              sortField: value,
-              currentPage: 1,
-            }));
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="event_date">Event Date</SelectItem>
-            <SelectItem value="created_at">Created Date</SelectItem>
-          </SelectContent>
-        </Select>
+          <Select
+            value={filters.sortField}
+            onValueChange={(value: SortField) => {
+              setFilters((prev) => ({
+                ...prev,
+                sortField: value,
+                currentPage: 1,
+              }));
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="event_date">Event Date</SelectItem>
+              <SelectItem value="created_at">Created Date</SelectItem>
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={filters.sortOrder}
-          onValueChange={(value: SortOrder) => {
-            setFilters((prev) => ({
-              ...prev,
-              sortOrder: value,
-              currentPage: 1,
-            }));
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort order" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="asc">Ascending</SelectItem>
-            <SelectItem value="desc">Descending</SelectItem>
-          </SelectContent>
-        </Select>
+          <Select
+            value={filters.sortOrder}
+            onValueChange={(value: SortOrder) => {
+              setFilters((prev) => ({
+                ...prev,
+                sortOrder: value,
+                currentPage: 1,
+              }));
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Sort order" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">Ascending</SelectItem>
+              <SelectItem value="desc">Descending</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -179,10 +179,10 @@ export default function SocialEventDetails({
       <div className="space-y-6">
         {/* Description */}
         <div>
-          <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
             Description
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
+          <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
             {event.description}
           </p>
         </div>
@@ -191,10 +191,10 @@ export default function SocialEventDetails({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {event.event_date && (
             <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Event Date
               </h3>
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
                 <Calendar className="w-4 h-4 mr-2" />
                 {format(new Date(event.event_date), 'EEEE, MMMM do yyyy')}
               </div>
@@ -203,10 +203,10 @@ export default function SocialEventDetails({
 
           {event.start_time && (
             <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Start Time
               </h3>
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
                 <Clock className="w-4 h-4 mr-2" />
                 {formatTime(event.start_time)}
               </div>
@@ -215,10 +215,10 @@ export default function SocialEventDetails({
 
           {event.duration && (
             <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Duration
               </h3>
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
                 <Clock className="w-4 h-4 mr-2" />
                 {formatDuration(event.duration)}
               </div>
@@ -227,10 +227,10 @@ export default function SocialEventDetails({
 
           {event.location && (
             <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Location
               </h3>
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
                 <MapPin className="w-4 h-4 mr-2" />
                 {event.location}
               </div>
@@ -239,10 +239,10 @@ export default function SocialEventDetails({
 
           {event.open_to_everyone && (
             <div>
-              <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Participants
               </h3>
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
                 <Users className="w-4 h-4 mr-2" />
                 {activeParticipantCount} participants
               </div>
@@ -257,11 +257,10 @@ export default function SocialEventDetails({
               {/* Participation Buttons */}
               <div className="flex flex-wrap gap-3 mb-6">
                 <Button
-                  variant={
-                    currentUserStatus === 'going' ? 'default' : 'outline'
-                  }
+                  variant={currentUserStatus === 'going' ? 'default' : 'outline'}
                   onClick={() => handleParticipationUpdate('going')}
                   disabled={isUpdating}
+                  className="text-sm"
                 >
                   Going
                 </Button>
@@ -269,17 +268,15 @@ export default function SocialEventDetails({
                   variant={currentUserStatus === 'maybe' ? 'orange' : 'outline'}
                   onClick={() => handleParticipationUpdate('maybe')}
                   disabled={isUpdating}
+                  className="text-sm"
                 >
                   Maybe
                 </Button>
                 <Button
-                  variant={
-                    currentUserStatus === 'not_going'
-                      ? 'destructive'
-                      : 'outline'
-                  }
+                  variant={currentUserStatus === 'not_going' ? 'destructive' : 'outline'}
                   onClick={() => handleParticipationUpdate('not_going')}
                   disabled={isUpdating}
+                  className="text-sm"
                 >
                   Not Going
                 </Button>
@@ -288,6 +285,7 @@ export default function SocialEventDetails({
                     variant="ghost"
                     onClick={() => handleParticipationUpdate(null)}
                     disabled={isUpdating}
+                    className="text-sm"
                   >
                     Clear
                   </Button>
@@ -302,7 +300,7 @@ export default function SocialEventDetails({
 
                   return (
                     <div key={status}>
-                      <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-3 capitalize">
+                      <h4 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-3 capitalize">
                         {status.replace('_', ' ')} ({participants.length})
                       </h4>
                       <div className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
@@ -321,7 +319,7 @@ export default function SocialEventDetails({
                                   participant.user?.email[0]?.toUpperCase()}
                               </span>
                             </div>
-                            <span className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+                            <span className="ml-3 text-sm sm:text-md font-medium text-slate-700 dark:text-slate-200">
                               {participant.user?.full_name ||
                                 participant.user?.email}
                             </span>
@@ -339,28 +337,28 @@ export default function SocialEventDetails({
         {/* Created By and Dates */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-200 dark:border-slate-700">
           <div>
-            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Created By
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
+            <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300">
               {event.created_by_user.full_name || event.created_by_user.email}
             </p>
           </div>
 
           <div>
-            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Created
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
+            <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300">
               {format(new Date(event.created_at), 'PPp')}
             </p>
           </div>
 
           <div>
-            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Last Updated
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
+            <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300">
               {format(new Date(event.updated_at), 'PPp')}
             </p>
           </div>
