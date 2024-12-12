@@ -130,7 +130,7 @@ export default function DoodlePollDetails({
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-slate-700 border-slate-200 dark:border-none">
+      <Card className="p-6 bg-white dark:bg-slate-800 border-slate-200 dark:border-none">
         {/* Event Details Header */}
         <div className="mb-6 space-y-3">
           <div className="flex flex-col gap-3">
