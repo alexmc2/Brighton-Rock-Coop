@@ -439,7 +439,7 @@ export default function CreateEventButton({
 
           <div className="space-y-4">
             <div>
-              <Label className="text-base text-slate-900 dark:text-slate-300">
+              <Label className="text-sm text-slate-900 dark:text-slate-300">
                 Select Time Slot
               </Label>
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">

@@ -363,29 +363,47 @@ export default function EventModal() {
                   <Button
                     variant="ghost"
                     className="h-auto px-0 text-sm font-medium text-coop-600 dark:text-coop-400 hover:text-coop-800 dark:hover:text-coop-300 hover:bg-transparent"
-                    onClick={() => {
+                    onClick={async () => {
                       setSelectedEventId(null);
-                      switch (event.event_type) {
-                        case 'garden_task':
-                          router.push(`/members/garden/${event.reference_id}`);
-                          break;
-                        case 'maintenance_visit':
+                      if (event.event_type === 'maintenance_visit') {
+                        // First get the maintenance request ID from the visit
+                        const { data: visit } = await supabase
+                          .from('maintenance_visits')
+                          .select('request_id')
+                          .eq('id', event.reference_id)
+                          .single();
+
+                        if (visit) {
                           router.push(
-                            `/members/maintenance/${event.reference_id}`
+                            `/members/maintenance/${visit.request_id}`
                           );
-                          break;
-                        case 'development_event':
-                          router.push(
-                            `/members/development/${event.reference_id}`
-                          );
-                          break;
-                        case 'social_event':
-                          router.push(`/members/social/${event.reference_id}`);
-                          break;
+                        }
+                      } else {
+                        switch (event.event_type) {
+                          case 'garden_task':
+                            router.push(
+                              `/members/garden/${event.reference_id}`
+                            );
+                            break;
+                          case 'development_event':
+                            router.push(
+                              `/members/development/${event.reference_id}`
+                            );
+                            break;
+                          case 'social_event':
+                            router.push(
+                              `/members/co-op-socials/${event.reference_id}`
+                            );
+                            break;
+                        }
                       }
                     }}
                   >
-                    View event in {event.category.split('_')[0].toLowerCase()}
+                    {event.event_type === 'maintenance_visit'
+                      ? 'View visit in maintenance'
+                      : `View event in ${event.category
+                          .split('_')[0]
+                          .toLowerCase()}`}
                   </Button>
                 </div>
               </div>

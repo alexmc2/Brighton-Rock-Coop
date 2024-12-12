@@ -20,10 +20,19 @@ import {
   TodoCategory,
 } from '@/types/members/todos';
 import { Button } from '@/components/members/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/members/ui/select';
 
 interface TodoListProps {
   tasks: TodoWithDetails[];
 }
+
+type SortOrder = 'created_asc' | 'created_desc';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -35,17 +44,24 @@ export default function TodoList({ tasks }: TodoListProps) {
   const [priorityFilter, setPriorityFilter] = useState<'all' | TodoPriority>(
     'all'
   );
+  const [sortOrder, setSortOrder] = useState<SortOrder>('created_desc');
   const [currentPage, setCurrentPage] = useState(1);
 
   // Filter tasks based on selected filters
-  const filteredTasks = tasks.filter((task) => {
-    if (statusFilter !== 'all' && task.status !== statusFilter) return false;
-    if (todoTypeFilter !== 'all' && task.todo_type !== todoTypeFilter)
-      return false;
-    if (priorityFilter !== 'all' && task.priority !== priorityFilter)
-      return false;
-    return true;
-  });
+  const filteredTasks = tasks
+    .filter((task) => {
+      if (statusFilter !== 'all' && task.status !== statusFilter) return false;
+      if (todoTypeFilter !== 'all' && task.todo_type !== todoTypeFilter)
+        return false;
+      if (priorityFilter !== 'all' && task.priority !== priorityFilter)
+        return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return sortOrder === 'created_desc' ? dateB - dateA : dateA - dateB;
+    });
 
   // Calculate pagination
   const totalItems = filteredTasks.length;
@@ -69,7 +85,7 @@ export default function TodoList({ tasks }: TodoListProps) {
 
   // Reset pagination when filters change
   const handleFilterChange = (
-    filterType: 'status' | 'type' | 'priority',
+    filterType: 'status' | 'type' | 'priority' | 'sort',
     value: string
   ) => {
     setCurrentPage(1); // Reset to first page
@@ -82,6 +98,9 @@ export default function TodoList({ tasks }: TodoListProps) {
         break;
       case 'priority':
         setPriorityFilter(value as 'all' | TodoPriority);
+        break;
+      case 'sort':
+        setSortOrder(value as SortOrder);
         break;
     }
   };
@@ -112,126 +131,93 @@ export default function TodoList({ tasks }: TodoListProps) {
     return colors[priority] || colors.medium;
   };
 
+  const formatFilterLabel = (value: string): string => {
+    if (value === 'all') return 'All';
+    return value
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   return (
     <div>
       {/* Filters */}
-      <div className="mb-6 space-y-3">
-        {/* Status Filters */}
-        <div className="space-y-2">
-          <div className="text-sm font-medium text-slate-600 dark:text-slate-400"></div>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              onClick={() => handleFilterChange('status', 'all')}
-              variant={statusFilter === 'all' ? 'default' : 'outline'}
-              className={
-                statusFilter === 'all'
-                  ? ''
-                  : 'text-coop-600 hover:bg-coop-50 dark:hover:bg-coop-950 dark:text-coop-400'
-              }
-              size="sm"
-            >
-              All Status
-            </Button>
-            {['todo', 'in_progress', 'completed', 'cancelled', 'pending'].map(
-              (status) => (
-                <Button
-                  key={status}
-                  onClick={() => handleFilterChange('status', status)}
-                  variant={statusFilter === status ? 'default' : 'outline'}
-                  className={
-                    statusFilter === status
-                      ? ''
-                      : 'text-coop-600 hover:bg-coop-50 dark:hover:bg-coop-950 dark:text-coop-400'
-                  }
-                  size="sm"
-                >
-                  {status.charAt(0).toUpperCase() +
-                    status.slice(1).replace('_', ' ')}
-                </Button>
-              )
-            )}
-          </div>
-        </div>
+      <div className="mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-[800px]">
+          {/* Status Filter */}
+          <Select
+            value={statusFilter}
+            onValueChange={(value: 'all' | TodoStatus) => {
+              handleFilterChange('status', value);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              {['pending', 'in_progress', 'completed', 'cancelled'].map(
+                (status) => (
+                  <SelectItem key={status} value={status}>
+                    {formatFilterLabel(status)}
+                  </SelectItem>
+                )
+              )}
+            </SelectContent>
+          </Select>
 
-        <div className="h-px bg-slate-200 dark:bg-slate-700" />
+          {/* Type Filter */}
+          <Select
+            value={todoTypeFilter}
+            onValueChange={(value: 'all' | TodoCategory) => {
+              handleFilterChange('type', value);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="general">General</SelectItem>
+              <SelectItem value="minuted">Minuted Actions</SelectItem>
+            </SelectContent>
+          </Select>
 
-        {/* Type Filters */}
-        <div className="space-y-2">
-          <div className="text-sm font-medium text-slate-600 dark:text-slate-400"></div>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              onClick={() => handleFilterChange('type', 'all')}
-              variant={todoTypeFilter === 'all' ? 'default' : 'outline'}
-              className={`${
-                todoTypeFilter === 'all'
-                  ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
-                  : 'text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950'
-              } border-blue-200 dark:border-blue-800`}
-              size="sm"
-            >
-              All Types
-            </Button>
-            <Button
-              onClick={() => handleFilterChange('type', 'general')}
-              variant={todoTypeFilter === 'general' ? 'default' : 'outline'}
-              className={`${
-                todoTypeFilter === 'general'
-                  ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
-                  : 'text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950'
-              } border-blue-200 dark:border-blue-800`}
-              size="sm"
-            >
-              General
-            </Button>
-            <Button
-              onClick={() => handleFilterChange('type', 'minuted')}
-              variant={todoTypeFilter === 'minuted' ? 'default' : 'outline'}
-              className={`${
-                todoTypeFilter === 'minuted'
-                  ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
-                  : 'text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950'
-              } border-blue-200 dark:border-blue-800`}
-              size="sm"
-            >
-              Minuted Actions
-            </Button>
-          </div>
-        </div>
+          {/* Priority Filter */}
+          <Select
+            value={priorityFilter}
+            onValueChange={(value: 'all' | TodoPriority) => {
+              handleFilterChange('priority', value);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Priority" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Priorities</SelectItem>
+              {['low', 'medium', 'high', 'urgent'].map((priority) => (
+                <SelectItem key={priority} value={priority}>
+                  {formatFilterLabel(priority)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <div className="h-px bg-slate-200 dark:bg-slate-700" />
-
-        {/* Priority Filters */}
-        <div className="space-y-2">
-          <div className="text-sm font-medium text-slate-600 dark:text-slate-400"></div>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              onClick={() => handleFilterChange('priority', 'all')}
-              variant={priorityFilter === 'all' ? 'default' : 'outline'}
-              className={`${
-                priorityFilter === 'all'
-                  ? 'bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600'
-                  : 'text-purple-600 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-950'
-              } border-purple-100 dark:border-purple-900/50`}
-              size="sm"
-            >
-              All Priorities
-            </Button>
-            {['low', 'medium', 'high', 'urgent'].map((priority) => (
-              <Button
-                key={priority}
-                onClick={() => handleFilterChange('priority', priority)}
-                variant={priorityFilter === priority ? 'default' : 'outline'}
-                className={`${
-                  priorityFilter === priority
-                    ? 'bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600'
-                    : 'text-purple-600 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-950'
-                } border-purple-100 dark:border-purple-900/50`}
-                size="sm"
-              >
-                {priority.charAt(0).toUpperCase() + priority.slice(1)}
-              </Button>
-            ))}
-          </div>
+          {/* Sort Order */}
+          <Select
+            value={sortOrder}
+            onValueChange={(value: SortOrder) => {
+              handleFilterChange('sort', value);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="created_desc">Newest First</SelectItem>
+              <SelectItem value="created_asc">Oldest First</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

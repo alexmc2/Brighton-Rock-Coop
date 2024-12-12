@@ -86,7 +86,7 @@ export default function NewRequestModal({ houses }: NewRequestModalProps) {
         <DialogTrigger asChild>
           <Button onClick={() => setIsOpen(true)} variant="default">
             <Plus className="h-4 w-4 mr-2" />
-            <span className="hidden xs:block">New Maintenance Job</span>
+            <span>New Maintenance Job</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">

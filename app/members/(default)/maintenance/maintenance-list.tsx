@@ -18,10 +18,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/members/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/members/ui/select';
 
 interface MaintenanceListProps {
   requests: MaintenanceRequestWithDetails[];
 }
+
+type SortOrder = 'created_desc' | 'created_asc';
+type HouseFilter = 'all' | '399' | '397' | '395';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -32,15 +42,29 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
   const [priorityFilter, setPriorityFilter] = useState<
     'all' | MaintenancePriority
   >('all');
+  const [houseFilter, setHouseFilter] = useState<HouseFilter>('all');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('created_desc');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Filter requests based on selected filters
-  const filteredRequests = requests.filter((request) => {
-    if (statusFilter !== 'all' && request.status !== statusFilter) return false;
-    if (priorityFilter !== 'all' && request.priority !== priorityFilter)
-      return false;
-    return true;
-  });
+  // Filter and sort requests
+  const filteredRequests = requests
+    .filter((request) => {
+      if (statusFilter !== 'all' && request.status !== statusFilter)
+        return false;
+      if (priorityFilter !== 'all' && request.priority !== priorityFilter)
+        return false;
+      if (
+        houseFilter !== 'all' &&
+        request.house.name !== `${houseFilter} Kingsway`
+      )
+        return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return sortOrder === 'created_desc' ? dateB - dateA : dateA - dateB;
+    });
 
   // Calculate pagination
   const totalItems = filteredRequests.length;
@@ -60,14 +84,23 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
 
   // Reset pagination when filters change
   const handleFilterChange = (
-    filterType: 'status' | 'priority',
+    filterType: 'status' | 'priority' | 'house' | 'sort',
     value: string
   ) => {
     setCurrentPage(1); // Reset to first page
-    if (filterType === 'status') {
-      setStatusFilter(value as 'all' | MaintenanceStatus);
-    } else if (filterType === 'priority') {
-      setPriorityFilter(value as 'all' | MaintenancePriority);
+    switch (filterType) {
+      case 'status':
+        setStatusFilter(value as 'all' | MaintenanceStatus);
+        break;
+      case 'priority':
+        setPriorityFilter(value as 'all' | MaintenancePriority);
+        break;
+      case 'house':
+        setHouseFilter(value as HouseFilter);
+        break;
+      case 'sort':
+        setSortOrder(value as SortOrder);
+        break;
     }
   };
 
@@ -98,57 +131,98 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
     return colors[priority] || colors.medium;
   };
 
+  const formatFilterLabel = (value: string): string => {
+    if (value === 'all') return 'All';
+    return value
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   return (
     <div>
       {/* Filters */}
-      <div className="mb-6 space-y-4">
-        {/* Status Filters */}
-        <div className="flex flex-wrap gap-2">
-          <Button
-            onClick={() => handleFilterChange('status', 'all')}
-            variant={statusFilter === 'all' ? 'default' : 'outline'}
-            size="sm"
+      <div className="mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-[800px]">
+          {/* Status Filter */}
+          <Select
+            value={statusFilter}
+            onValueChange={(value: 'all' | MaintenanceStatus) => {
+              handleFilterChange('status', value);
+            }}
           >
-            All Status
-          </Button>
-          {[
-            'pending',
-            'scheduled',
-            'in_progress',
-            'completed',
-            'cancelled',
-          ].map((status) => (
-            <Button
-              key={status}
-              onClick={() => handleFilterChange('status', status)}
-              variant={statusFilter === status ? 'default' : 'outline'}
-              size="sm"
-            >
-              {status.charAt(0).toUpperCase() +
-                status.slice(1).replace('_', ' ')}
-            </Button>
-          ))}
-        </div>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              {[
+                'pending',
+                'scheduled',
+                'in_progress',
+                'completed',
+                'cancelled',
+              ].map((status) => (
+                <SelectItem key={status} value={status}>
+                  {formatFilterLabel(status)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        {/* Priority Filters */}
-        <div className="flex flex-wrap gap-2">
-          <Button
-            onClick={() => handleFilterChange('priority', 'all')}
-            variant={priorityFilter === 'all' ? 'default' : 'outline'}
-            size="sm"
+          {/* Priority Filter */}
+          <Select
+            value={priorityFilter}
+            onValueChange={(value: 'all' | MaintenancePriority) => {
+              handleFilterChange('priority', value);
+            }}
           >
-            All Priorities
-          </Button>
-          {['low', 'medium', 'high', 'urgent'].map((priority) => (
-            <Button
-              key={priority}
-              onClick={() => handleFilterChange('priority', priority)}
-              variant={priorityFilter === priority ? 'default' : 'outline'}
-              size="sm"
-            >
-              {priority.charAt(0).toUpperCase() + priority.slice(1)}
-            </Button>
-          ))}
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Priority" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Priorities</SelectItem>
+              {['low', 'medium', 'high', 'urgent'].map((priority) => (
+                <SelectItem key={priority} value={priority}>
+                  {formatFilterLabel(priority)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* House Filter */}
+          <Select
+            value={houseFilter}
+            onValueChange={(value: HouseFilter) => {
+              handleFilterChange('house', value);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="House" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Houses</SelectItem>
+              <SelectItem value="399">399 Kingsway</SelectItem>
+              <SelectItem value="397">397 Kingsway</SelectItem>
+              <SelectItem value="395">395 Kingsway</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Sort Order */}
+          <Select
+            value={sortOrder}
+            onValueChange={(value: SortOrder) => {
+              handleFilterChange('sort', value);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="created_desc">Newest First</SelectItem>
+              <SelectItem value="created_asc">Oldest First</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -161,31 +235,31 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
                 <Table className="min-w-[1000px] w-full divide-y divide-slate-200 dark:divide-slate-700 rounded-lg">
                   <TableHeader className="bg-slate-50 dark:bg-slate-900/20 rounded-lg">
                     <TableRow>
-                      <TableHead className="w-[20%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                      <TableHead className="min-w-[180px] w-[18%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Title
                       </TableHead>
-                      <TableHead className="w-[15%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                      <TableHead className="min-w-[140px] w-[15%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         House
                       </TableHead>
-                      <TableHead className="w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                      <TableHead className="min-w-[100px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Status
                       </TableHead>
-                      <TableHead className="w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                      <TableHead className="min-w-[90px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Priority
                       </TableHead>
-                      <TableHead className="w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100 hidden lg:table-cell">
+                      <TableHead className="min-w-[140px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Reported By
                       </TableHead>
-                      <TableHead className="w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100 hidden lg:table-cell">
+                      <TableHead className="min-w-[140px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Assigned To
                       </TableHead>
-                      <TableHead className="w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
+                      <TableHead className="min-w-[100px] w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Date
                       </TableHead>
-                      <TableHead className="w-[10%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100 hidden md:table-cell">
+                      <TableHead className="min-w-[180px] w-[12%] px-4 py-3 text-left text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Next P4P Visit
                       </TableHead>
-                      <TableHead className="w-[5%] px-4 py-3 text-center text-sm font-semibold text-slate-800 dark:text-slate-100">
+                      <TableHead className="min-w-[80px] w-[5%] px-4 py-3 text-center text-sm font-semibold text-slate-800 dark:text-slate-100">
                         Comments
                       </TableHead>
                     </TableRow>
@@ -209,7 +283,8 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
                           <TableCell className="px-4 py-3">
                             <Link
                               href={`/members/maintenance/${request.id}`}
-                              className="font-medium text-coop-600 dark:text-coop-400 hover:underline"
+                              className="font-medium text-coop-600 dark:text-coop-400 hover:underline truncate block max-w-[180px]"
+                              title={request.title}
                             >
                               {request.title}
                             </Link>
@@ -237,11 +312,11 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
                                 request.priority.slice(1)}
                             </div>
                           </TableCell>
-                          <TableCell className="px-4 py-3 hidden lg:table-cell">
+                          <TableCell className="px-4 py-3">
                             {request.reported_by_user.full_name ||
                               request.reported_by_user.email}
                           </TableCell>
-                          <TableCell className="px-4 py-3 hidden lg:table-cell">
+                          <TableCell className="px-4 py-3">
                             {request.assigned_to_user?.full_name ||
                               request.assigned_to_user?.email ||
                               '-'}
@@ -252,7 +327,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
                               'MMM d, yyyy'
                             )}
                           </TableCell>
-                          <TableCell className="px-4 py-3 hidden md:table-cell">
+                          <TableCell className="px-4 py-3">
                             {nextVisit
                               ? format(
                                   new Date(nextVisit.scheduled_date),

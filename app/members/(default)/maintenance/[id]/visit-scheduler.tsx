@@ -151,7 +151,7 @@ export default function VisitScheduler({ request }: VisitSchedulerProps) {
                 <Tooltip
                   content="Enter duration in steps of 0.5 hours (e.g., 1 = one hour, 1.5 = one and half hours)"
                   bg="dark"
-                  size="md"
+                  size="sm"
                   position="top"
                 >
                   <Info className="h-4 w-4 text-slate-500 ml-2" />

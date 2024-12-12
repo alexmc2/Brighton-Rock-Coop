@@ -291,7 +291,9 @@ export default function SocialEventActions({
                 <Label htmlFor="category">Category</Label>
                 <Select
                   value={category}
-                  onValueChange={(value: SocialEventCategory) => setCategory(value)}
+                  onValueChange={(value: SocialEventCategory) =>
+                    setCategory(value)
+                  }
                   disabled={isSubmitting}
                 >
                   <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
@@ -305,7 +307,9 @@ export default function SocialEventActions({
                     <SelectItem value="board_games">Board Games</SelectItem>
                     <SelectItem value="tv">TV</SelectItem>
                     <SelectItem value="book_club">Book Club</SelectItem>
-                    <SelectItem value="christmas_dinner">Christmas Dinner</SelectItem>
+                    <SelectItem value="christmas_dinner">
+                      Christmas Dinner
+                    </SelectItem>
                     <SelectItem value="bike_ride">Bike Ride</SelectItem>
                     <SelectItem value="party">Party</SelectItem>
                     <SelectItem value="hang_out">Hang Out</SelectItem>

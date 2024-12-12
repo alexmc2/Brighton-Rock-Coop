@@ -15,7 +15,10 @@ import { Input } from '@/components/members/ui/input';
 import { Textarea } from '@/components/members/ui/textarea';
 import { Label } from '@/components/members/ui/label';
 import { Plus, Check, Info } from 'lucide-react';
-import { DevelopmentCategory, DevelopmentPriority } from '@/types/members/development';
+import {
+  DevelopmentCategory,
+  DevelopmentPriority,
+} from '@/types/members/development';
 import { Checkbox } from '@/components/members/ui/checkbox';
 import { createDevelopmentEvent } from '@/lib/members/actions/calendar';
 import { Tooltip } from '@/components/members/ui/tooltip';
@@ -197,14 +200,18 @@ export default function NewEventModal() {
                 </Label>
                 <Select
                   value={category}
-                  onValueChange={(value) => setCategory(value as DevelopmentCategory)}
+                  onValueChange={(value) =>
+                    setCategory(value as DevelopmentCategory)
+                  }
                 >
                   <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="general">General</SelectItem>
-                    <SelectItem value="development_meeting">Development Meeting</SelectItem>
+                    <SelectItem value="development_meeting">
+                      Development Meeting
+                    </SelectItem>
                     <SelectItem value="social">Social Event</SelectItem>
                     <SelectItem value="outreach">Outreach</SelectItem>
                     <SelectItem value="policy">Policy</SelectItem>
@@ -234,8 +241,8 @@ export default function NewEventModal() {
               />
             </div>
 
-            {/* Date, Time & Duration */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Date & Time */}
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label
                   htmlFor="event_date"
@@ -244,14 +251,14 @@ export default function NewEventModal() {
                   Date
                 </Label>
                 <Input
-                  type="date"
                   id="event_date"
+                  type="date"
                   required
                   min={new Date().toISOString().split('T')[0]}
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
               <div>
@@ -262,22 +269,36 @@ export default function NewEventModal() {
                   Start Time
                 </Label>
                 <Input
-                  type="time"
                   id="start_time"
+                  type="time"
                   required
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
+            </div>
+
+            {/* Duration & Location */}
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label
-                  htmlFor="duration"
-                  className="text-slate-900 dark:text-slate-300"
-                >
-                  Duration (hours)
-                </Label>
+                <div className="flex items-center space-x-2 mb-2">
+                  <Label
+                    htmlFor="duration"
+                    className="text-slate-900 dark:text-slate-300"
+                  >
+                    Duration (hours)
+                  </Label>
+                  <Tooltip
+                    content="Enter duration in steps of 0.5 hours (e.g., 1 = one hour, 1.5 = one and half hours)"
+                    bg="dark"
+                    size="md"
+                    position="top"
+                  >
+                    <Info className="h-4 w-4 text-slate-500" />
+                  </Tooltip>
+                </div>
                 <Input
                   id="duration"
                   type="number"
@@ -287,17 +308,13 @@ export default function NewEventModal() {
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   disabled={isSubmitting}
-                  className="w-full h-10 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 px-3 py-2"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
-            </div>
-
-            {/* Location & Open to Everyone */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label
                   htmlFor="location"
-             
+                  className="text-slate-900 dark:text-slate-300"
                 >
                   Location
                 </Label>
@@ -309,6 +326,10 @@ export default function NewEventModal() {
                   className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
+            </div>
+
+            {/* Location & Open to Everyone */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
                   <Checkbox
@@ -341,7 +362,9 @@ export default function NewEventModal() {
               </Label>
               <Select
                 value={priority}
-                onValueChange={(value) => setPriority(value as DevelopmentPriority)}
+                onValueChange={(value) =>
+                  setPriority(value as DevelopmentPriority)
+                }
               >
                 <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
                   <SelectValue placeholder="Select priority" />
@@ -361,14 +384,10 @@ export default function NewEventModal() {
                 type="button"
                 variant="ghost"
                 onClick={() => setIsOpen(false)}
-   
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-              >
+              <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>Creating...</>
                 ) : (

@@ -321,10 +321,10 @@ export default function InitiativeDetails({
             </div>
           </div>
 
-          <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+          <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
             Description
           </div>
-          <p className="text-base text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
+          <p className="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
             {initiative.description}
           </p>
         </div>
@@ -333,10 +333,10 @@ export default function InitiativeDetails({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {initiative.event_date && (
             <div>
-              <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Event Date
               </div>
-              <div className="flex items-center text-base text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <Calendar className="w-4 h-4 mr-2" />
                 {format(new Date(initiative.event_date), 'EEEE, MMMM do yyyy')}
               </div>
@@ -345,10 +345,10 @@ export default function InitiativeDetails({
 
           {initiative.start_time && (
             <div>
-              <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Start Time
               </div>
-              <div className="flex items-center text-base text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <Clock className="w-4 h-4 mr-2" />
                 {formatTime(initiative.start_time)}
               </div>
@@ -357,10 +357,10 @@ export default function InitiativeDetails({
 
           {initiative.location && (
             <div>
-              <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Location
               </div>
-              <div className="flex items-center text-base text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <MapPin className="w-4 h-4 mr-2" />
                 {initiative.location}
               </div>
@@ -371,7 +371,7 @@ export default function InitiativeDetails({
         {/* Status and Priority */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Status
             </div>
             <span
@@ -385,7 +385,7 @@ export default function InitiativeDetails({
           </div>
 
           <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Priority
             </div>
             <span
@@ -405,7 +405,7 @@ export default function InitiativeDetails({
             <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
               <div className="bg-slate-50 dark:bg-slate-900/90 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-6">
-                  <div className="text-base font-semibold text-slate-800 dark:text-slate-100">
+                  <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
                     Participants (
                     {initiative.participants?.filter(
                       (p) => p.status !== 'not_going'
@@ -469,14 +469,14 @@ export default function InitiativeDetails({
 
                     return (
                       <div key={status}>
-                        <h4 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-3 capitalize">
+                        <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-3 capitalize">
                           {status.replace('_', ' ')} ({participants.length})
                         </h4>
                         <div className="bg-white dark:bg-slate-800 rounded-md shadow-sm divide-y divide-slate-200 dark:divide-slate-700">
                           {participants.map((participant: EventParticipant) => (
                             <div
                               key={participant.user_id}
-                              className="flex items-center px-4 py-3 "
+                              className="flex items-center px-4 py-3"
                             >
                               <div
                                 className={`h-8 w-8 rounded-full ${getUserColor(
@@ -488,7 +488,7 @@ export default function InitiativeDetails({
                                     participant.user?.email[0]?.toUpperCase()}
                                 </span>
                               </div>
-                              <span className="ml-3 text-base font-medium text-slate-700 dark:text-slate-200">
+                              <span className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-200">
                                 {participant.user?.full_name ||
                                   participant.user?.email}
                               </span>
@@ -506,29 +506,28 @@ export default function InitiativeDetails({
         {/* Created By and Dates */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-200 dark:border-slate-700">
           <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Created By
             </div>
-            <p className="text-base text-slate-600 dark:text-slate-300">
-              {initiative.created_by_user.full_name ||
-                initiative.created_by_user.email}
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              {initiative.created_by_user.full_name || initiative.created_by_user.email}
             </p>
           </div>
 
           <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Created
             </div>
-            <p className="text-base text-slate-600 dark:text-slate-300">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               {format(new Date(initiative.created_at), 'PPp')}
             </p>
           </div>
 
           <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Last Updated
             </div>
-            <p className="text-base text-slate-600 dark:text-slate-300">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               {format(new Date(initiative.updated_at), 'PPp')}
             </p>
           </div>

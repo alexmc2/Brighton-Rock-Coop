@@ -353,8 +353,8 @@ export default function EventActions({ initiative }: EventActionsProps) {
               </div>
             </div>
 
-            {/* Date, Time & Duration */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Date & Time */}
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label
                   htmlFor="event_date"
@@ -363,12 +363,12 @@ export default function EventActions({ initiative }: EventActionsProps) {
                   Date
                 </Label>
                 <Input
-                  type="date"
                   id="event_date"
+                  type="date"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
               <div>
@@ -379,21 +379,35 @@ export default function EventActions({ initiative }: EventActionsProps) {
                   Start Time
                 </Label>
                 <Input
-                  type="time"
                   id="start_time"
+                  type="time"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
+            </div>
+
+            {/* Duration & Location */}
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label
-                  htmlFor="duration"
-                  className="text-slate-900 dark:text-slate-300"
-                >
-                  Duration
-                </Label>
+                <div className="flex items-center space-x-2 mb-2">
+                  <Label
+                    htmlFor="duration"
+                    className="text-slate-900 dark:text-slate-300"
+                  >
+                    Duration (hours)
+                  </Label>
+                  <Tooltip
+                    content="Enter duration in steps of 0.5 hours (e.g., 1 = one hour, 1.5 = one and half hours)"
+                    bg="dark"
+                    size="md"
+                    position="top"
+                  >
+                    <Info className="h-4 w-4 text-slate-500" />
+                  </Tooltip>
+                </div>
                 <Input
                   id="duration"
                   type="number"
@@ -403,25 +417,24 @@ export default function EventActions({ initiative }: EventActionsProps) {
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   disabled={isSubmitting}
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
-            </div>
-
-            {/* Location */}
-            <div>
-              <Label
-                htmlFor="location"
-                className="text-slate-900 dark:text-slate-300"
-              >
-                Location
-              </Label>
-              <Input
-                id="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                disabled={isSubmitting}
-                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
-              />
+              <div>
+                <Label
+                  htmlFor="location"
+                  className="text-slate-900 dark:text-slate-300"
+                >
+                  Location
+                </Label>
+                <Input
+                  id="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  disabled={isSubmitting}
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                />
+              </div>
             </div>
 
             <div className="flex items-center">

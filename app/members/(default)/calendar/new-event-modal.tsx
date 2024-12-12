@@ -157,7 +157,7 @@ export default function NewEventModal() {
             </div>
 
             {/* Date and Time Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label
                   htmlFor="date"
@@ -173,7 +173,7 @@ export default function NewEventModal() {
                   min={new Date().toISOString().split('T')[0]}
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
 
@@ -191,31 +191,32 @@ export default function NewEventModal() {
                   required
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 [&::-webkit-calendar-picker-indicator]:dark:invert"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
                 />
               </div>
+            </div>
 
-              <div>
-                <Label
-                  htmlFor="duration"
-                  className="text-slate-900 dark:text-slate-300"
-                >
-                  Duration
-                </Label>
-                <Select value={duration} onValueChange={setDuration} required>
-                  <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
-                    <SelectValue placeholder="Select duration" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="0.5">Half an hour</SelectItem>
-                    <SelectItem value="1">1 hour</SelectItem>
-                    <SelectItem value="2">2 hours</SelectItem>
-                    <SelectItem value="3">3 hours</SelectItem>
-                    <SelectItem value="4">4 hours</SelectItem>
-                    <SelectItem value="All day">All day</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            {/* Duration Field */}
+            <div>
+              <Label
+                htmlFor="duration"
+                className="text-slate-900 dark:text-slate-300"
+              >
+                Duration
+              </Label>
+              <Select value={duration} onValueChange={setDuration} required>
+                <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
+                  <SelectValue placeholder="Select duration" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0.5">Half an hour</SelectItem>
+                  <SelectItem value="1">1 hour</SelectItem>
+                  <SelectItem value="2">2 hours</SelectItem>
+                  <SelectItem value="3">3 hours</SelectItem>
+                  <SelectItem value="4">4 hours</SelectItem>
+                  <SelectItem value="All day">All day</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Category Field */}

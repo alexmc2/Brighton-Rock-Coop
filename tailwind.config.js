@@ -1,4 +1,4 @@
-const plugin = require('tailwindcss/plugin')
+const plugin = require('tailwindcss/plugin');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -153,7 +153,8 @@ module.exports = {
         },
       },
       boxShadow: {
-        DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.02)',
+        DEFAULT:
+          '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.02)',
         md: '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.02)',
         lg: '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.01)',
         xl: '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.01)',
@@ -170,16 +171,16 @@ module.exports = {
         inter: ['var(--font-inter)', 'sans-serif'],
       },
       fontSize: {
-        xs: ['0.75rem', { lineHeight: '1.5' }],
-        sm: ['0.875rem', { lineHeight: '1.5715' }],
-        base: ['1rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
-        lg: ['1.125rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
-        xl: ['1.25rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
-        '2xl': ['1.5rem', { lineHeight: '1.33', letterSpacing: '-0.01em' }],
-        '3xl': ['1.88rem', { lineHeight: '1.33', letterSpacing: '-0.01em' }],
-        '4xl': ['2.25rem', { lineHeight: '1.25', letterSpacing: '-0.02em' }],
-        '5xl': ['3rem', { lineHeight: '1.25', letterSpacing: '-0.02em' }],
-        '6xl': ['3.75rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+        xs: ['0.875rem', { lineHeight: '1.25rem' }],
+        sm: ['1rem', { lineHeight: '1.5rem' }],
+        base: ['1.125rem', { lineHeight: '1.75rem' }],
+        lg: ['1.25rem', { lineHeight: '1.75rem' }],
+        xl: ['1.5rem', { lineHeight: '2rem' }],
+        '2xl': ['1.875rem', { lineHeight: '2.25rem' }],
+        '3xl': ['2.25rem', { lineHeight: '2.5rem' }],
+        '4xl': ['3rem', { lineHeight: '3rem' }],
+        '5xl': ['3.75rem', { lineHeight: '3.75rem' }],
+        '6xl': ['4.5rem', { lineHeight: '4.5rem' }],
       },
       screens: {
         xs: '480px',
@@ -228,8 +229,13 @@ module.exports = {
     require('@tailwindcss/forms'),
     plugin(({ addVariant, e }) => {
       addVariant('sidebar-expanded', ({ modifySelectors, separator }) => {
-        modifySelectors(({ className }) => `.sidebar-expanded .${e(`sidebar-expanded${separator}${className}`)}`);
+        modifySelectors(
+          ({ className }) =>
+            `.sidebar-expanded .${e(
+              `sidebar-expanded${separator}${className}`
+            )}`
+        );
       });
     }),
   ],
-}
+};

@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import type { DoodlePollResponse, DoodlePollWithDetails } from '@/types/members/doodle';
 import { eventTypeToCalendarCategory } from '@/types/members/doodle';
 import CreateEventButton from '../create-event-button';
+import { Badge } from '@/components/members/ui/badge';
 
 interface DoodlePollDetailsProps {
   poll: DoodlePollWithDetails;
@@ -132,9 +133,26 @@ export default function DoodlePollDetails({
       <Card className="p-6 bg-white dark:bg-slate-800 border-slate-200 dark:border-none">
         {/* Event Details Header */}
         <div className="mb-6 space-y-2">
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
-            {poll.title}
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+              {poll.title}
+            </h2>
+            {poll.closed ? (
+              <Badge
+                variant="outline"
+                className="bg-red-50 text-red-700 border-red-200/30 dark:bg-red-500/30 dark:text-red-300 dark:border-red-800/30"
+              >
+                Closed
+              </Badge>
+            ) : (
+              <Badge
+                variant="outline"
+                className="bg-green-50 text-green-700 border-green-200/30 dark:bg-green-950 dark:text-green-300 dark:border-green-800/30"
+              >
+                Open
+              </Badge>
+            )}
+          </div>
           <div className="text-sm text-slate-600 dark:text-slate-400 space-y-1">
             <p>
               <span className="font-medium">Type:</span>{' '}
@@ -228,7 +246,7 @@ export default function DoodlePollDetails({
 
               {/* Participants count */}
               <div className="grid grid-cols-[180px_repeat(50,150px)] border-b border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
-                <div className="p-4 text-slate-600 dark:text-slate-400">
+                <div className="p-4 text-slate-600 dark:text-slate-400 text-sm">
                   {participantsCount === 0
                     ? 'No responses yet'
                     : `${participantsCount} ${
@@ -240,7 +258,7 @@ export default function DoodlePollDetails({
                     key={slot.id}
                     className="p-4 text-center border-r border-l border-slate-200 dark:border-slate-600"
                   >
-                    <div className="text-green-600 dark:text-green-400 flex items-center justify-center gap-1">
+                    <div className="text-green-600 dark:text-green-400 flex items-center justify-center gap-1 text-sm">
                       <CheckCircle2 className="w-4 h-4" />
                       {getAvailableCount(slot.id)}
                     </div>
@@ -251,7 +269,7 @@ export default function DoodlePollDetails({
               {/* Current user response section */}
               {!poll.closed && currentUserId && (
                 <div className="grid grid-cols-[180px_repeat(50,150px)] border-b border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
-                  <div className="p-4 flex items-center text-slate-600 dark:text-slate-400">
+                  <div className="p-4 flex items-center text-slate-600 dark:text-slate-400 text-sm">
                     My Response:
                     {/* <span className="ml-2 font-medium text-slate-900 dark:text-white">
                       {currentUserParticipant?.user?.full_name ||
@@ -328,7 +346,7 @@ export default function DoodlePollDetails({
                             participant.user.email[0].toUpperCase()}
                         </div>
                       </Avatar>
-                      <span className="text-slate-900 dark:text-white">
+                      <span className="text-slate-900 dark:text-white text-sm">
                         {participant.user.full_name || participant.user.email}
                       </span>
                     </div>
