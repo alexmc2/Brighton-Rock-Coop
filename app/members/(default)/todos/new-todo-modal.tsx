@@ -97,6 +97,7 @@ export default function NewTodoModal() {
           status: 'pending',
           priority,
           created_by: user.id,
+          last_modified_by: user.id,
           assigned_to: assignedTo || null,
         })
         .select(
@@ -107,6 +108,10 @@ export default function NewTodoModal() {
           full_name
         ),
         assigned_to_user:profiles!todos_assigned_to_fkey(
+          email,
+          full_name
+        ),
+        last_modified_by_user:profiles!todos_last_modified_by_fkey(
           email,
           full_name
         )

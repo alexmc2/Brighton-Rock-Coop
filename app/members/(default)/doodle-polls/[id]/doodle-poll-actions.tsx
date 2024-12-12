@@ -338,21 +338,24 @@ export default function DoodlePollActions({
           Edit
         </Button>
 
-        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800 max-h-[90vh] flex flex-col">
-          <DialogHeader>
+        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800 max-h-[90vh] flex flex-col p-0">
+          <DialogHeader className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
             <DialogTitle className="text-slate-900 dark:text-slate-100">
               Edit Doodle Poll
             </DialogTitle>
           </DialogHeader>
 
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
-              <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
+            <div className="px-6 py-2">
+              <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
+                <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
+              </div>
             </div>
           )}
+
           <form
             onSubmit={handleEdit}
-            className="space-y-4 overflow-y-auto flex-1 pr-2"
+            className="space-y-6 overflow-y-auto flex-1 px-6 py-4"
           >
             {/* Event Type & Category */}
             <div className="grid grid-cols-2 gap-4">
@@ -572,7 +575,7 @@ export default function DoodlePollActions({
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-3 pt-4 sticky bottom-0 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 -mx-6 px-6 py-4 mt-8">
               <Button
                 type="button"
                 variant="ghost"

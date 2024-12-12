@@ -5,11 +5,11 @@ export interface CalendarEvent {
   start_time: string;
   end_time: string;
   event_type:
-    | "maintenance_visit"
-    | "garden_task"
-    | "development_event"
-    | "social_event"
-    | "manual";
+    | 'maintenance_visit'
+    | 'garden_task'
+    | 'development_event'
+    | 'social_event'
+    | 'manual';
   reference_id: string | null;
   created_at: string;
   updated_at: string;

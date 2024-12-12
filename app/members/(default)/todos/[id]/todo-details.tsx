@@ -105,6 +105,11 @@ export default function TodoDetails({ todo }: TodoDetailsProps) {
             </h3>
             <div className="text-sm text-slate-500 dark:text-slate-400">
               {format(new Date(todo.created_at), 'MMM d, yyyy h:mm a')}
+              {todo.created_by_user && (
+                <span className="ml-1">
+                  by {todo.created_by_user.full_name || todo.created_by_user.email}
+                </span>
+              )}
             </div>
           </div>
 
@@ -115,6 +120,11 @@ export default function TodoDetails({ todo }: TodoDetailsProps) {
             </h3>
             <div className="text-sm text-slate-500 dark:text-slate-400">
               {format(new Date(todo.updated_at), 'MMM d, yyyy h:mm a')}
+              {todo.last_modified_by_user && (
+                <span className="ml-1">
+                  by {todo.last_modified_by_user.full_name || todo.last_modified_by_user.email}
+                </span>
+              )}
             </div>
           </div>
         </div>

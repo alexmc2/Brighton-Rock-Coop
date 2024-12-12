@@ -166,93 +166,97 @@ export default function InitiativeList({
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="flex flex-wrap gap-4">
-        <Select
-          value={typeFilter}
-          onValueChange={(value: 'all' | InitiativeType) => {
-            setTypeFilter(value);
-            setCurrentPage(1);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="event">Events</SelectItem>
-            <SelectItem value="project">Projects</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+        <div className="w-full sm:w-auto">
+          <Select
+            value={typeFilter}
+            onValueChange={(value: 'all' | InitiativeType) => {
+              setTypeFilter(value);
+              setCurrentPage(1);
+            }}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="event">Events</SelectItem>
+              <SelectItem value="project">Projects</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Select
-          value={categoryFilter}
-          onValueChange={(value: 'all' | DevelopmentCategory) => {
-            setStatusFilter(value);
-            setCurrentPage(1);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select category" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category} value={category}>
-                {formatFilterLabel(category)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="grid grid-cols-2 sm:flex items-center gap-3 w-full sm:w-auto">
+          <Select
+            value={categoryFilter}
+            onValueChange={(value: 'all' | DevelopmentCategory) => {
+              setStatusFilter(value);
+              setCurrentPage(1);
+            }}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {formatFilterLabel(category)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={statusFilter}
-          onValueChange={(value: 'all' | DevelopmentStatus) => {
-            setCategoryFilter(value);
-            setCurrentPage(1);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            {statuses.map((status) => (
-              <SelectItem key={status} value={status}>
-                {formatFilterLabel(status)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Select
+            value={statusFilter}
+            onValueChange={(value: 'all' | DevelopmentStatus) => {
+              setCategoryFilter(value);
+              setCurrentPage(1);
+            }}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent>
+              {statuses.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {formatFilterLabel(status)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={sortField}
-          onValueChange={(value: SortField) => {
-            setSortField(value);
-            setCurrentPage(1);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="event_date">Event Date</SelectItem>
-            <SelectItem value="created_at">Created Date</SelectItem>
-          </SelectContent>
-        </Select>
+          <Select
+            value={sortField}
+            onValueChange={(value: SortField) => {
+              setSortField(value);
+              setCurrentPage(1);
+            }}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="event_date">Event Date</SelectItem>
+              <SelectItem value="created_at">Created Date</SelectItem>
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={sortOrder}
-          onValueChange={(value: SortOrder) => {
-            setSortOrder(value);
-            setCurrentPage(1);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort order" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="asc">Ascending</SelectItem>
-            <SelectItem value="desc">Descending</SelectItem>
-          </SelectContent>
-        </Select>
+          <Select
+            value={sortOrder}
+            onValueChange={(value: SortOrder) => {
+              setSortOrder(value);
+              setCurrentPage(1);
+            }}
+          >
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Sort order" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">Ascending</SelectItem>
+              <SelectItem value="desc">Descending</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Grid of Initiative Cards */}

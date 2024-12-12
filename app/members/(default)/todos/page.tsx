@@ -30,6 +30,10 @@ async function getTodos() {
           email,
           full_name
         ),
+        last_modified_by_user:profiles!todos_last_modified_by_fkey(
+          email,
+          full_name
+        ),
         comments:todo_comments(
           id,
           content,

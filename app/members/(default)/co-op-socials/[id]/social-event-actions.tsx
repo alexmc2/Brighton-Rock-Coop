@@ -32,6 +32,13 @@ import {
   SocialEventStatus,
 } from '@/types/members/social';
 import { Tooltip } from '@/components/members/ui/tooltip';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/members/ui/select';
 
 interface SocialEventActionsProps {
   event: SocialEventWithDetails;
@@ -162,7 +169,8 @@ export default function SocialEventActions({
       // Then fetch the updated data
       const { data: updatedEvent, error: fetchError } = await supabase
         .from('social_events')
-        .select(`
+        .select(
+          `
           *,
           created_by_user:profiles!social_events_created_by_fkey (
             email,
@@ -183,7 +191,8 @@ export default function SocialEventActions({
               full_name
             )
           )
-        `)
+        `
+        )
         .eq('id', event.id)
         .single();
 
@@ -280,30 +289,30 @@ export default function SocialEventActions({
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <Label htmlFor="category">Category</Label>
-                <select
-                  id="category"
-                  required
+                <Select
                   value={category}
-                  onChange={(e) =>
-                    setCategory(e.target.value as SocialEventCategory)
-                  }
+                  onValueChange={(value: SocialEventCategory) => setCategory(value)}
                   disabled={isSubmitting}
-                  className="w-full h-10 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-300 px-3 py-2"
                 >
-                  <option value="film_night">Film Night</option>
-                  <option value="album_night">Album Night</option>
-                  <option value="meal">Meal</option>
-                  <option value="fire">Fire</option>
-                  <option value="board_games">Board Games</option>
-                  <option value="tv">TV</option>
-                  <option value="book_club">Book Club</option>
-                  <option value="christmas_dinner">Christmas Dinner</option>
-                  <option value="bike_ride">Bike Ride</option>
-                  <option value="party">Party</option>
-                  <option value="hang_out">Hang Out</option>
-                  <option value="beach">Beach</option>
-                  <option value="writing_club">Writing Club</option>
-                </select>
+                  <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="film_night">Film Night</SelectItem>
+                    <SelectItem value="album_night">Album Night</SelectItem>
+                    <SelectItem value="meal">Meal</SelectItem>
+                    <SelectItem value="fire">Fire</SelectItem>
+                    <SelectItem value="board_games">Board Games</SelectItem>
+                    <SelectItem value="tv">TV</SelectItem>
+                    <SelectItem value="book_club">Book Club</SelectItem>
+                    <SelectItem value="christmas_dinner">Christmas Dinner</SelectItem>
+                    <SelectItem value="bike_ride">Bike Ride</SelectItem>
+                    <SelectItem value="party">Party</SelectItem>
+                    <SelectItem value="hang_out">Hang Out</SelectItem>
+                    <SelectItem value="beach">Beach</SelectItem>
+                    <SelectItem value="writing_club">Writing Club</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
@@ -324,19 +333,21 @@ export default function SocialEventActions({
             {/* Status */}
             <div>
               <Label htmlFor="status">Status</Label>
-              <select
-                id="status"
-                required
+              <Select
                 value={status}
-                onChange={(e) => setStatus(e.target.value as SocialEventStatus)}
+                onValueChange={(value: SocialEventStatus) => setStatus(value)}
                 disabled={isSubmitting}
-                className="w-full h-10 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-300 px-3 py-2"
               >
-                <option value="upcoming">Upcoming</option>
-                <option value="in_progress">In Progress</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
+                <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
+                  <SelectValue placeholder="Select a status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="upcoming">Upcoming</SelectItem>
+                  <SelectItem value="in_progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Date & Time */}

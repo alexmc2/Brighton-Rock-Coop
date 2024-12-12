@@ -177,7 +177,9 @@ export default function NewSocialEventModal() {
               <Label htmlFor="category">Category</Label>
               <Select
                 value={category}
-                onValueChange={(value: SocialEventCategory) => setCategory(value)}
+                onValueChange={(value: SocialEventCategory) =>
+                  setCategory(value)
+                }
                 disabled={isSubmitting}
               >
                 <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
@@ -191,7 +193,9 @@ export default function NewSocialEventModal() {
                   <SelectItem value="board_games">Board Games</SelectItem>
                   <SelectItem value="tv">TV</SelectItem>
                   <SelectItem value="book_club">Book Club</SelectItem>
-                  <SelectItem value="christmas_dinner">Christmas Dinner</SelectItem>
+                  <SelectItem value="christmas_dinner">
+                    Christmas Dinner
+                  </SelectItem>
                   <SelectItem value="bike_ride">Bike Ride</SelectItem>
                   <SelectItem value="party">Party</SelectItem>
                   <SelectItem value="hang_out">Hang Out</SelectItem>
@@ -248,7 +252,17 @@ export default function NewSocialEventModal() {
           {/* Duration & Location */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="duration">Duration (hours)</Label>
+              <div className="flex items-center space-x-2 mb-2">
+                <Label htmlFor="duration">Duration (hours)</Label>
+                <Tooltip
+                  content="Enter duration in steps of 0.5 hours (e.g., 1 = one hour, 1.5 = one and half hours)"
+                  bg="dark"
+                  size="md"
+                  position="top"
+                >
+                  <Info className="h-4 w-4 text-slate-500" />
+                </Tooltip>
+              </div>
               <Input
                 id="duration"
                 type="number"

@@ -117,6 +117,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
           status,
           priority,
           assigned_to: assignedTo || null,
+          last_modified_by: user.id,
         })
         .eq('id', todo.id)
         .select(
@@ -127,6 +128,10 @@ export default function TodoActions({ todo }: TodoActionsProps) {
           full_name
         ),
         assigned_to_user:profiles!todos_assigned_to_fkey(
+          email,
+          full_name
+        ),
+        last_modified_by_user:profiles!todos_last_modified_by_fkey(
           email,
           full_name
         )

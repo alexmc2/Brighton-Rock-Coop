@@ -1,23 +1,23 @@
 // types/social.ts
 
-export type ParticipationStatus = "going" | "maybe" | "not_going";
+export type ParticipationStatus = 'going' | 'maybe' | 'not_going';
 
-export type SocialEventStatus = "upcoming" | "completed" | "cancelled";
+export type SocialEventStatus = 'upcoming' | 'completed' | 'cancelled';
 
 export type SocialEventCategory =
-  | "film_night"
-  | "album_night"
-  | "meal"
-  | "fire"
-  | "board_games"
-  | "tv"
-  | "book_club"
-  | "christmas_dinner"
-  | "bike_ride"
-  | "party"
-  | "hang_out"
-  | "beach"
-  | "writing_club";
+  | 'film_night'
+  | 'album_night'
+  | 'meal'
+  | 'fire'
+  | 'board_games'
+  | 'tv'
+  | 'book_club'
+  | 'christmas_dinner'
+  | 'bike_ride'
+  | 'party'
+  | 'hang_out'
+  | 'beach'
+  | 'writing_club';
 
 export interface Profile {
   id: string;
@@ -42,7 +42,7 @@ export interface SocialEvent {
 }
 
 export interface SocialEventWithDetails extends SocialEvent {
-  created_by_user: Pick<Profile, "email" | "full_name">;
+  created_by_user: Pick<Profile, 'email' | 'full_name'>;
   comments: SocialEventComment[];
   participants?: SocialEventParticipant[];
 }
@@ -53,7 +53,7 @@ export interface SocialEventComment {
   user_id: string;
   content: string;
   created_at: string;
-  user: Pick<Profile, "email" | "full_name">;
+  user: Pick<Profile, 'email' | 'full_name'>;
 }
 
 export interface SocialEventParticipant {

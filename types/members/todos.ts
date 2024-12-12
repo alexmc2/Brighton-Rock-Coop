@@ -55,6 +55,7 @@ export interface TodoWithDetails
     Omit<Todo, "created_by_profile" | "assigned_to_profile" | "comments"> {
   created_by_user: UserProfile | null;
   assigned_to_user: UserProfile | null;
+  last_modified_by_user: UserProfile | null;
   comments: TodoComment[];
 }
 

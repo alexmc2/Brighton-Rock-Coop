@@ -6,6 +6,10 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { MaintenanceRequestWithDetails } from '@/types/members/maintenance';
 import { createMaintenanceVisitEvent } from '@/lib/members/actions/calendar';
 import { Button } from '@/components/members/ui/button';
+import { Label } from '@/components/members/ui/label';
+import { Input } from '@/components/members/ui/input';
+import { Tooltip } from '@/components/members/ui/tooltip';
+import { Info } from 'lucide-react';
 
 interface VisitSchedulerProps {
   request: MaintenanceRequestWithDetails;
@@ -141,20 +145,27 @@ export default function VisitScheduler({ request }: VisitSchedulerProps) {
           </div>
 
           <div>
-            <label
-              htmlFor="estimated_duration"
-              className="block text-sm font-medium text-slate-700 dark:text-slate-300"
-            >
-              Estimated Duration (hours)
-            </label>
-            <input
+            <Label htmlFor="estimated_duration">
+              <span className="inline-flex items-center">
+                Estimated Duration (hours)
+                <Tooltip
+                  content="Enter duration in steps of 0.5 hours (e.g., 1 = one hour, 1.5 = one and half hours)"
+                  bg="dark"
+                  size="md"
+                  position="top"
+                >
+                  <Info className="h-4 w-4 text-slate-500 ml-2" />
+                </Tooltip>
+              </span>
+            </Label>
+            <Input
               type="number"
               id="estimated_duration"
               name="estimated_duration"
               min="0.5"
               step="0.5"
               required
-              className="mt-1 block w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:border-coop-500 focus:outline-none focus:ring-1 focus:ring-coop-500"
+              className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
             />
           </div>
 
