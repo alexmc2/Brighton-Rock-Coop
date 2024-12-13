@@ -34,7 +34,7 @@ export default function CalendarFeedButton() {
         <Button
           variant="default"
           size="sm"
-          className="flex items-center gap-2 opacity-100"
+          className="flex items-center gap-2 dark:bg-coop-600 "
         >
           <Calendar className="h-4 w-4" />
           Subscribe to Calendar
