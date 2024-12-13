@@ -60,6 +60,18 @@ export async function GET(request: NextRequest) {
       }
     );
 
+    // Verify database connection
+    const { data: testConnection, error: connectionError } = await supabase
+      .from('calendar_events')
+      .select('count()', { count: 'exact' });
+
+    console.log('Database connection test:', {
+      testConnection,
+      connectionError,
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      token: session.access_token.slice(0, 10) + '...'
+    });
+
     const { data: events, error } = await supabase
       .from('calendar_events')
       .select(
@@ -83,14 +95,24 @@ export async function GET(request: NextRequest) {
       return new NextResponse('Error fetching events', { status: 500 });
     }
 
+    console.log('Query result:', { events, error });
     console.log('Found events:', events?.length || 0);
     if (events?.length > 0) {
       console.log('Sample events:', events.map(e => ({
         title: e.title,
         start: e.start_time,
         end: e.end_time,
-        category: e.category
+        category: e.category,
+        event_type: e.event_type
       })));
+    } else {
+      // Try a simpler query to verify database access
+      const { data: testEvents, error: testError } = await supabase
+        .from('calendar_events')
+        .select('id, title')
+        .limit(1);
+      
+      console.log('Test query result:', { testEvents, testError });
     }
 
     // Create calendar
@@ -98,24 +120,38 @@ export async function GET(request: NextRequest) {
       name: 'Co-op Calendar',
       timezone: 'Europe/London',
       prodId: { company: 'co-op', product: 'calendar' },
+      method: 'PUBLISH',
+      url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
     });
 
-    // Add events to calendar
+    // Add events to calendar with more detailed logging
     events?.forEach((event) => {
-      calendar.createEvent({
-        start: new Date(event.start_time),
-        end: new Date(event.end_time),
-        summary: event.title,
-        description: event.description || '',
-        location: '',
-        url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/members/calendar?event=${event.id}`,
-        uid: event.id,
-        organizer: {
-          name: event.created_by_user?.[0]?.full_name || 'Unknown',
-          email: event.created_by_user?.[0]?.email || 'no-reply@example.com',
-        },
-        categories: [event.category || event.event_type],
-      });
+      try {
+        console.log('Processing event:', {
+          id: event.id,
+          title: event.title,
+          start: event.start_time,
+          end: event.end_time
+        });
+
+        calendar.createEvent({
+          start: new Date(event.start_time),
+          end: new Date(event.end_time),
+          summary: event.title,
+          description: event.description || '',
+          location: '',
+          url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/members/calendar?event=${event.id}`,
+          uid: event.id,
+          organizer: {
+            name: event.created_by_user?.[0]?.full_name || 'Unknown',
+            email: event.created_by_user?.[0]?.email || 'no-reply@example.com',
+          },
+          categories: [event.category || event.event_type],
+          status: 'CONFIRMED'
+        });
+      } catch (eventError) {
+        console.error('Error adding event to calendar:', eventError, event);
+      }
     });
 
     // Set response headers
