@@ -9,8 +9,12 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // Get the pathname of the request (e.g. /, /members, /members/dashboard)
   const path = request.nextUrl.pathname;
+
+  // Protect calendar feed API endpoint
+  if (path === '/members/api/calendar' && !session) {
+    return NextResponse.redirect(new URL('/members/login', request.url));
+  }
 
   // Allow public access to main site routes
   if (!path.startsWith('/members')) {

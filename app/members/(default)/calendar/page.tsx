@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { getCalendarEvents } from '@/lib/members/actions/calendar';
 import Calendar from './calendar';
 import { addMonths, subMonths } from 'date-fns';
+import CalendarFeedButton from '@/components/members/ui/calendar-feed-button';
 
 export const metadata: Metadata = {
   title: 'Calendar - Brighton Rock',
@@ -24,6 +25,9 @@ export default async function CalendarPage() {
           <h1 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">
             Calendar
           </h1>
+          <div className="flex justify-between items-center my-4 ">
+            <CalendarFeedButton />
+          </div>
         </div>
       </div>
       <div className="bg-white dark:bg-slate-900 rounded-lg shadow overflow-hidden min-h-[calc(100vh-12rem)]">
