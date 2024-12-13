@@ -4,6 +4,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import ical from 'ical-generator';
 import { createClient } from '@supabase/supabase-js';
 
+// Mark this route as dynamic
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     let session;
