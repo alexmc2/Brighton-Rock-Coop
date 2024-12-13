@@ -125,7 +125,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
       low: 'bg-slate-100 text-slate-600 dark:bg-slate-500/20 dark:text-slate-400',
       medium:
         'bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400',
-      high: 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400',
+      high: 'bg-orange-100 text-orange-600 dark:text-orange-400 dark:bg-orange-500/20',
       urgent: 'bg-red-100 text-red-600 dark:text-red-400 dark:bg-red-600/20',
     };
     return colors[priority] || colors.medium;
@@ -143,86 +143,89 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
     <div>
       {/* Filters */}
       <div className="mb-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-[800px]">
-          {/* Status Filter */}
-          <Select
-            value={statusFilter}
-            onValueChange={(value: 'all' | MaintenanceStatus) => {
-              handleFilterChange('status', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              {[
-                'pending',
-                'scheduled',
-                'in_progress',
-                'completed',
-                'cancelled',
-              ].map((status) => (
-                <SelectItem key={status} value={status}>
-                  {formatFilterLabel(status)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        {/* Matching social events filter layout */}
+        <div className="max-w-3xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {/* Status Filter */}
+            <Select
+              value={statusFilter}
+              onValueChange={(value: 'all' | MaintenanceStatus) => {
+                handleFilterChange('status', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                {[
+                  'pending',
+                  'scheduled',
+                  'in_progress',
+                  'completed',
+                  'cancelled',
+                ].map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {formatFilterLabel(status)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-          {/* Priority Filter */}
-          <Select
-            value={priorityFilter}
-            onValueChange={(value: 'all' | MaintenancePriority) => {
-              handleFilterChange('priority', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Priorities</SelectItem>
-              {['low', 'medium', 'high', 'urgent'].map((priority) => (
-                <SelectItem key={priority} value={priority}>
-                  {formatFilterLabel(priority)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            {/* Priority Filter */}
+            <Select
+              value={priorityFilter}
+              onValueChange={(value: 'all' | MaintenancePriority) => {
+                handleFilterChange('priority', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Priorities</SelectItem>
+                {['low', 'medium', 'high', 'urgent'].map((priority) => (
+                  <SelectItem key={priority} value={priority}>
+                    {formatFilterLabel(priority)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-          {/* House Filter */}
-          <Select
-            value={houseFilter}
-            onValueChange={(value: HouseFilter) => {
-              handleFilterChange('house', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="House" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Houses</SelectItem>
-              <SelectItem value="399">399 Kingsway</SelectItem>
-              <SelectItem value="397">397 Kingsway</SelectItem>
-              <SelectItem value="395">395 Kingsway</SelectItem>
-            </SelectContent>
-          </Select>
+            {/* House Filter */}
+            <Select
+              value={houseFilter}
+              onValueChange={(value: HouseFilter) => {
+                handleFilterChange('house', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="House" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Houses</SelectItem>
+                <SelectItem value="399">399 Kingsway</SelectItem>
+                <SelectItem value="397">397 Kingsway</SelectItem>
+                <SelectItem value="395">395 Kingsway</SelectItem>
+              </SelectContent>
+            </Select>
 
-          {/* Sort Order */}
-          <Select
-            value={sortOrder}
-            onValueChange={(value: SortOrder) => {
-              handleFilterChange('sort', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="created_desc">Newest First</SelectItem>
-              <SelectItem value="created_asc">Oldest First</SelectItem>
-            </SelectContent>
-          </Select>
+            {/* Sort Order */}
+            <Select
+              value={sortOrder}
+              onValueChange={(value: SortOrder) => {
+                handleFilterChange('sort', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="created_desc">Newest First</SelectItem>
+                <SelectItem value="created_asc">Oldest First</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
