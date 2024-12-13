@@ -8,32 +8,32 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: true,
     flowType: 'pkce',
     storage: {
       getItem: (key) => {
-        try {
+        if (typeof window !== 'undefined') {
           return Promise.resolve(localStorage.getItem(key));
-        } catch {
-          return Promise.resolve(null);
         }
+        return Promise.resolve(null);
       },
       setItem: (key, value) => {
-        try {
+        if (typeof window !== 'undefined') {
           localStorage.setItem(key, value);
-          return Promise.resolve();
-        } catch {
-          return Promise.resolve();
         }
+        return Promise.resolve();
       },
       removeItem: (key) => {
-        try {
+        if (typeof window !== 'undefined') {
           localStorage.removeItem(key);
-          return Promise.resolve();
-        } catch {
-          return Promise.resolve();
         }
+        return Promise.resolve();
       },
+    },
+  },
+  global: {
+    headers: {
+      'X-Client-Info': 'brighton-rock-coop',
     },
   },
 });

@@ -13,14 +13,38 @@ import {
   AlertDialogTrigger,
 } from '@/components/members/ui/alert-dialog';
 import { useState, useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useAuth } from '@/contexts/members/auth-context';
 
 export default function CalendarFeedButton() {
   const [copied, setCopied] = useState(false);
   const [feedUrl, setFeedUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
-    setFeedUrl(`${window.location.origin}/members/api/calendar`);
-  }, []);
+    async function getAuthUrl() {
+      try {
+        setIsLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.refresh_token && user) {
+          const baseUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+          const url = `${baseUrl}/members/api/calendar?token=${session.refresh_token}`;
+          console.log('Setting feed URL:', url);
+          setFeedUrl(url);
+        }
+      } catch (error) {
+        console.error('Error getting auth URL:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    if (user) {
+      getAuthUrl();
+    }
+  }, [supabase.auth, user]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(feedUrl);
@@ -34,7 +58,7 @@ export default function CalendarFeedButton() {
         <Button
           variant="default"
           size="sm"
-          className="flex items-center gap-2 dark:bg-coop-600 "
+          className="flex items-center gap-2 dark:bg-coop-600"
         >
           <Calendar className="h-4 w-4" />
           Subscribe to Calendar
@@ -45,16 +69,24 @@ export default function CalendarFeedButton() {
           <AlertDialogTitle>Subscribe to Calendar</AlertDialogTitle>
           <AlertDialogDescription className="space-y-4">
             <div className="mt-2 flex items-center gap-2 rounded-md bg-muted p-3">
-              <code className="text-sm">{feedUrl}</code>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="ml-auto"
-                onClick={handleCopy}
-              >
-                <Copy className="h-4 w-4" />
-                <span className="sr-only">Copy URL</span>
-              </Button>
+              {isLoading ? (
+                <div className="text-sm text-muted-foreground">Loading URL...</div>
+              ) : feedUrl ? (
+                <>
+                  <code className="text-sm break-all">{feedUrl}</code>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ml-auto flex-shrink-0"
+                    onClick={handleCopy}
+                  >
+                    <Copy className="h-4 w-4" />
+                    <span className="sr-only">Copy URL</span>
+                  </Button>
+                </>
+              ) : (
+                <div className="text-sm text-muted-foreground">Failed to generate URL. Please try again.</div>
+              )}
             </div>
             <div className="space-y-2">
               <p className="font-medium">Google Calendar:</p>
