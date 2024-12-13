@@ -120,8 +120,7 @@ export async function GET(request: NextRequest) {
       name: 'Co-op Calendar',
       timezone: 'Europe/London',
       prodId: { company: 'co-op', product: 'calendar' },
-      method: 'PUBLISH',
-      url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+      url: 'https://www.brighton-rock.org'
     });
 
     // Add events to calendar with more detailed logging
@@ -140,7 +139,7 @@ export async function GET(request: NextRequest) {
           summary: event.title,
           description: event.description || '',
           location: '',
-          url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/members/calendar?event=${event.id}`,
+          url: `https://www.brighton-rock.org/members/calendar?event=${event.id}`,
           uid: event.id,
           organizer: {
             name: event.created_by_user?.[0]?.full_name || 'Unknown',
