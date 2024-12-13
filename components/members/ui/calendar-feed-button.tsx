@@ -12,13 +12,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/members/ui/alert-dialog';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function CalendarFeedButton() {
   const [copied, setCopied] = useState(false);
+  const [feedUrl, setFeedUrl] = useState('');
+
+  useEffect(() => {
+    setFeedUrl(`${window.location.origin}/members/api/calendar`);
+  }, []);
 
   const handleCopy = async () => {
-    const feedUrl = `${window.location.origin}/members/api/calendar`;
     await navigator.clipboard.writeText(feedUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -41,7 +45,7 @@ export default function CalendarFeedButton() {
           <AlertDialogTitle>Subscribe to Calendar</AlertDialogTitle>
           <AlertDialogDescription className="space-y-4">
             <div className="mt-2 flex items-center gap-2 rounded-md bg-muted p-3">
-              <code className="text-sm">{`${window.location.origin}/members/api/calendar`}</code>
+              <code className="text-sm">{feedUrl}</code>
               <Button
                 variant="ghost"
                 size="sm"
@@ -62,7 +66,7 @@ export default function CalendarFeedButton() {
             <div className="space-y-2">
               <p className="font-medium">Apple Calendar:</p>
               <ol className="list-decimal pl-4 text-sm">
-                <li>File {'>'}  New Calendar Subscription</li>
+                <li>File {'>'} New Calendar Subscription</li>
                 <li>Paste the URL and click Subscribe</li>
               </ol>
             </div>
