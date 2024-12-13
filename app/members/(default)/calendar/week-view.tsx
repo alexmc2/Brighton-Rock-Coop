@@ -26,7 +26,7 @@ export default function WeekView() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] overflow-auto dark:bg-slate-800">
+    <div className="flex flex-col h-[calc(100vh-12rem)] overflow-auto dark:bg-slate-900">
       <div className="overflow-x-auto">
         <div className="min-w-[800px]">
           <div className="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
@@ -50,7 +50,7 @@ export default function WeekView() {
               key={hour}
               className="grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr] md:grid-cols-[6rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr] divide-x divide-slate-200 dark:divide-slate-700 border-b  border-slate-200 dark:border-slate-700"
             >
-              <div className="text-xs font-medium text-slate-500 dark:text-slate-400 py-1 text-center sticky left-0 bg-white dark:bg-slate-800  ">
+              <div className="text-xs font-medium text-slate-500 dark:text-slate-400 py-1 text-center sticky left-0 bg-white dark:bg-slate-900  ">
                 {hour === 0
                   ? '12 AM'
                   : hour < 12

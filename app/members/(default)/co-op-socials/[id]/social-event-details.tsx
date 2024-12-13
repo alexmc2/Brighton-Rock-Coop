@@ -2,7 +2,7 @@
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Calendar, Clock, Users, MapPin, User } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin } from 'lucide-react';
 import { Card } from '@/components/members/ui/card';
 import { Button } from '@/components/members/ui/button';
 import {
@@ -11,6 +11,10 @@ import {
   ParticipationStatus,
 } from '@/types/members/social';
 import { getUserColor } from '@/lib/members/utils';
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from '@/components/members/ui/radio-group';
 
 interface SocialEventDetailsProps {
   event: SocialEventWithDetails;
@@ -171,125 +175,182 @@ export default function SocialEventDetails({
     }
   ) || { going: [], maybe: [], not_going: [] };
 
+  // Only count "going" participants, exclude "maybe" from this count
   const activeParticipantCount =
-    event.participants?.filter((p) => p.status !== 'not_going').length || 0;
+    event.participants?.filter((p) => p.status === 'going').length || 0;
 
   return (
-    <Card className="p-6">
+    <Card className="p-4 sm:p-6">
       <div className="space-y-6">
         {/* Description */}
         <div>
-          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+          <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
             Description
           </h3>
-          <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
+          <p className="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
             {event.description}
           </p>
         </div>
 
         {/* Event Details */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
           {event.event_date && (
             <div>
-              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 Event Date
               </h3>
-              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <Calendar className="w-4 h-4 mr-2" />
                 {format(new Date(event.event_date), 'EEEE, MMMM do yyyy')}
               </div>
             </div>
           )}
-
-          {event.start_time && (
-            <div>
-              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Start Time
-              </h3>
-              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
-                <Clock className="w-4 h-4 mr-2" />
-                {formatTime(event.start_time)}
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
+            {event.start_time && (
+              <div>
+                <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Start Time
+                </h3>
+                <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+                  <Clock className="w-4 h-4 mr-2" />
+                  {formatTime(event.start_time)}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {event.duration && (
-            <div>
-              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Duration
-              </h3>
-              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
-                <Clock className="w-4 h-4 mr-2" />
-                {formatDuration(event.duration)}
+            {event.duration && (
+              <div>
+                <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Duration
+                </h3>
+                <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+                  <Clock className="w-4 h-4 mr-2" />
+                  {formatDuration(event.duration)}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {event.location && (
-            <div>
-              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Location
-              </h3>
-              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
-                <MapPin className="w-4 h-4 mr-2" />
-                {event.location}
+            {event.location && (
+              <div>
+                <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                  Location
+                </h3>
+                <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+                  <MapPin className="w-4 h-4 mr-2" />
+                  {event.location}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {event.open_to_everyone && (
             <div>
-              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                Participants
-              </h3>
-              <div className="flex items-center text-sm sm:text-md text-slate-600 dark:text-slate-300">
-                <Users className="w-4 h-4 mr-2" />
-                {activeParticipantCount} participants
+              <div className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                Created By
               </div>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                {event.created_by_user.full_name || event.created_by_user.email}
+              </p>
             </div>
-          )}
+          </div>
+        </div>
+
+        {event.open_to_everyone && (
+          <div>
+            <h3 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              Going
+            </h3>
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
+              <Users className="w-4 h-4 mr-2" />
+              {activeParticipantCount}{' '}
+              {activeParticipantCount === 1 ? 'person going' : 'people going'}
+            </div>
+          </div>
+        )}
+
+        {/* Created By and Dates */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <div className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              Event Created
+            </div>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              {format(new Date(event.created_at), 'PPp')}
+            </p>
+          </div>
+
+          <div>
+            <div className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
+              Last Updated
+            </div>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              {format(new Date(event.updated_at), 'PPp')}
+            </p>
+          </div>
         </div>
 
         {/* Participants Section */}
         {event.open_to_everyone && (
           <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
             <div className="bg-slate-50 dark:bg-slate-900/90 rounded-lg p-4">
-              {/* Participation Buttons */}
-              <div className="flex flex-wrap gap-3 mb-6">
-                <Button
-                  variant={currentUserStatus === 'going' ? 'default' : 'outline'}
-                  onClick={() => handleParticipationUpdate('going')}
-                  disabled={isUpdating}
-                  className="text-sm"
-                >
-                  Going
-                </Button>
-                <Button
-                  variant={currentUserStatus === 'maybe' ? 'orange' : 'outline'}
-                  onClick={() => handleParticipationUpdate('maybe')}
-                  disabled={isUpdating}
-                  className="text-sm"
-                >
-                  Maybe
-                </Button>
-                <Button
-                  variant={currentUserStatus === 'not_going' ? 'destructive' : 'outline'}
-                  onClick={() => handleParticipationUpdate('not_going')}
-                  disabled={isUpdating}
-                  className="text-sm"
-                >
-                  Not Going
-                </Button>
-                {currentUserStatus && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleParticipationUpdate(null)}
-                    disabled={isUpdating}
-                    className="text-sm"
+              {/* Participation Options */}
+              <div className="mb-6">
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                  <RadioGroup
+                    value={currentUserStatus || ''}
+                    onValueChange={(value) => {
+                      // If value is "", consider it as null (no selection)
+                      const newStatus =
+                        value === '' ? null : (value as ParticipationStatus);
+                      handleParticipationUpdate(newStatus);
+                    }}
+                    className="flex flex-row items-center gap-3"
                   >
-                    Clear
-                  </Button>
-                )}
+                    {/* Going - Green */}
+                    <div className="flex items-center gap-1">
+                      <RadioGroupItem
+                        value="going"
+                        className="border-green-500 border-3 text-green-500 focus-visible:ring-green-500"
+                      />
+                      <span className="text-sm text-slate-700 pt-1 dark:text-slate-200 pl-1">
+                        Going
+                      </span>
+                    </div>
+
+                    {/* Maybe - Yellow */}
+                    <div className="flex items-center gap-1">
+                      <RadioGroupItem
+                        value="maybe"
+                        className="border-yellow-500 border-3 text-yellow-500 focus-visible:ring-yellow-500"
+                      />
+                      <span className="text-sm text-slate-700 pt-1 dark:text-slate-200 pl-1">
+                        Maybe
+                      </span>
+                    </div>
+
+                    {/* Not Going - Red */}
+                    <div className="flex items-center gap-1">
+                      <RadioGroupItem
+                        value="not_going"
+                        className="border-red-500 border-3 text-red-500 focus-visible:ring-red-500"
+                      />
+                      <span className="text-sm text-slate-700 pt-1 dark:text-slate-200 pl-1">
+                        Not Going
+                      </span>
+                    </div>
+                  </RadioGroup>
+
+                  {/* Clear button */}
+                  {currentUserStatus && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleParticipationUpdate(null)}
+                      disabled={isUpdating}
+                      size="sm"
+                      className="text-xs sm:text-sm pt-2"
+                    >
+                      Clear
+                    </Button>
+                  )}
+                </div>
               </div>
 
               {/* Participant Lists */}
@@ -300,7 +361,7 @@ export default function SocialEventDetails({
 
                   return (
                     <div key={status}>
-                      <h4 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-3 capitalize">
+                      <h4 className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 mb-3 capitalize">
                         {status.replace('_', ' ')} ({participants.length})
                       </h4>
                       <div className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
@@ -319,7 +380,7 @@ export default function SocialEventDetails({
                                   participant.user?.email[0]?.toUpperCase()}
                               </span>
                             </div>
-                            <span className="ml-3 text-sm sm:text-md font-medium text-slate-700 dark:text-slate-200">
+                            <span className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-200">
                               {participant.user?.full_name ||
                                 participant.user?.email}
                             </span>
@@ -333,36 +394,6 @@ export default function SocialEventDetails({
             </div>
           </div>
         )}
-
-        {/* Created By and Dates */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-200 dark:border-slate-700">
-          <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
-              Created By
-            </div>
-            <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300">
-              {event.created_by_user.full_name || event.created_by_user.email}
-            </p>
-          </div>
-
-          <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
-              Created
-            </div>
-            <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300">
-              {format(new Date(event.created_at), 'PPp')}
-            </p>
-          </div>
-
-          <div>
-            <div className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
-              Last Updated
-            </div>
-            <p className="text-sm sm:text-md text-slate-600 dark:text-slate-300">
-              {format(new Date(event.updated_at), 'PPp')}
-            </p>
-          </div>
-        </div>
       </div>
     </Card>
   );

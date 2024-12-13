@@ -9,7 +9,10 @@ import { Card } from '@/components/members/ui/card';
 import { CheckCircle2, CircleSlash, Minus } from 'lucide-react';
 import { cn, getUserColor } from '@/lib/members/utils';
 import { format } from 'date-fns';
-import type { DoodlePollResponse, DoodlePollWithDetails } from '@/types/members/doodle';
+import type {
+  DoodlePollResponse,
+  DoodlePollWithDetails,
+} from '@/types/members/doodle';
 import { eventTypeToCalendarCategory } from '@/types/members/doodle';
 import CreateEventButton from '../create-event-button';
 import { Badge } from '@/components/members/ui/badge';
@@ -258,7 +261,7 @@ export default function DoodlePollDetails({
                 {timeSlots.map((slot) => (
                   <div
                     key={slot.id}
-                    className="p-4 text-center border-r border-l border-slate-200 dark:border-slate-600"
+                    className="p-4 text-center border-r border-l border-slate-200  dark:border-slate-600 bg-slate-50 dark:bg-slate-800"
                   >
                     <div className="text-green-600 dark:text-green-400 flex items-center justify-center gap-1 text-sm">
                       <CheckCircle2 className="w-4 h-4" />
@@ -284,7 +287,7 @@ export default function DoodlePollDetails({
                       key={slot.id}
                       variant="ghost"
                       className={cn(
-                        'h-full rounded-none border border-slate-200 dark:border-slate-600'
+                        'h-full rounded-none border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800'
                         // userResponses[slot.id] === 'yes' &&
                         //   'bg-green-200/70 dark:bg-green-600/30',
                         // userResponses[slot.id] === 'maybe' &&
@@ -334,7 +337,7 @@ export default function DoodlePollDetails({
                 .map((participant) => (
                   <div
                     key={participant.id}
-                    className="grid grid-cols-[180px_repeat(50,150px)] bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-600 last:border-b-0"
+                    className="grid grid-cols-[180px_repeat(50,150px)] bg-white dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-600 last:border-b-0"
                   >
                     <div className="p-4 flex items-center gap-2">
                       <Avatar

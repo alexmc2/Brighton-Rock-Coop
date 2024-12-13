@@ -143,81 +143,83 @@ export default function TodoList({ tasks }: TodoListProps) {
     <div>
       {/* Filters */}
       <div className="mb-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-[800px]">
-          {/* Status Filter */}
-          <Select
-            value={statusFilter}
-            onValueChange={(value: 'all' | TodoStatus) => {
-              handleFilterChange('status', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              {['pending', 'in_progress', 'completed', 'cancelled'].map(
-                (status) => (
-                  <SelectItem key={status} value={status}>
-                    {formatFilterLabel(status)}
+        <div className="max-w-3xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {/* Status Filter */}
+            <Select
+              value={statusFilter}
+              onValueChange={(value: 'all' | TodoStatus) => {
+                handleFilterChange('status', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                {['pending', 'in_progress', 'completed', 'cancelled'].map(
+                  (status) => (
+                    <SelectItem key={status} value={status}>
+                      {formatFilterLabel(status)}
+                    </SelectItem>
+                  )
+                )}
+              </SelectContent>
+            </Select>
+
+            {/* Type Filter */}
+            <Select
+              value={todoTypeFilter}
+              onValueChange={(value: 'all' | TodoCategory) => {
+                handleFilterChange('type', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="general">General</SelectItem>
+                <SelectItem value="minuted">Minuted Actions</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Priority Filter */}
+            <Select
+              value={priorityFilter}
+              onValueChange={(value: 'all' | TodoPriority) => {
+                handleFilterChange('priority', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Priorities</SelectItem>
+                {['low', 'medium', 'high', 'urgent'].map((priority) => (
+                  <SelectItem key={priority} value={priority}>
+                    {formatFilterLabel(priority)}
                   </SelectItem>
-                )
-              )}
-            </SelectContent>
-          </Select>
+                ))}
+              </SelectContent>
+            </Select>
 
-          {/* Type Filter */}
-          <Select
-            value={todoTypeFilter}
-            onValueChange={(value: 'all' | TodoCategory) => {
-              handleFilterChange('type', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="general">General</SelectItem>
-              <SelectItem value="minuted">Minuted Actions</SelectItem>
-            </SelectContent>
-          </Select>
-
-          {/* Priority Filter */}
-          <Select
-            value={priorityFilter}
-            onValueChange={(value: 'all' | TodoPriority) => {
-              handleFilterChange('priority', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Priorities</SelectItem>
-              {['low', 'medium', 'high', 'urgent'].map((priority) => (
-                <SelectItem key={priority} value={priority}>
-                  {formatFilterLabel(priority)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* Sort Order */}
-          <Select
-            value={sortOrder}
-            onValueChange={(value: SortOrder) => {
-              handleFilterChange('sort', value);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="created_desc">Newest First</SelectItem>
-              <SelectItem value="created_asc">Oldest First</SelectItem>
-            </SelectContent>
-          </Select>
+            {/* Sort Order */}
+            <Select
+              value={sortOrder}
+              onValueChange={(value: SortOrder) => {
+                handleFilterChange('sort', value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="created_desc">Newest First</SelectItem>
+                <SelectItem value="created_asc">Oldest First</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 

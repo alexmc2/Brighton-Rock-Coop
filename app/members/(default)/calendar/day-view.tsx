@@ -34,7 +34,7 @@ export default function DayView() {
           );
 
           return (
-            <div key={hour} className="group relative min-h-[60px] dark:bg-slate-800">
+            <div key={hour} className="group relative min-h-[60px] dark:bg-slate-900">
               <div className="text-xs font-medium text-slate-500 dark:text-slate-400 w-16 py-2 text-right pr-4 sticky left-0">
                 {hour === 0
                   ? '12 AM'

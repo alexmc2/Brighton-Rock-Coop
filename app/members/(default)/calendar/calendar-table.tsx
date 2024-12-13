@@ -69,8 +69,8 @@ export default function CalendarTable() {
               min-h-[120px] p-2 border border-slate-200 dark:border-slate-900
               ${
                 !isCurrentMonth
-                  ? 'bg-slate-100 dark:bg-slate-900/50 text-slate-400'
-                  : 'bg-white dark:bg-slate-800'
+                  ? 'bg-slate-100 dark:bg-slate-950 text-slate-400'
+                  : 'bg-white dark:bg-slate-900'
               }
               ${isCurrentDay ? 'bg-slate-100 dark:bg-blue-900/20' : ''}
             `}

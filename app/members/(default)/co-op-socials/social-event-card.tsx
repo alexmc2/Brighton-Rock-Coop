@@ -96,7 +96,8 @@ const formatTime = (time: string) => {
 const SocialEventCard: React.FC<SocialEventCardProps> = ({ event }) => {
   const getParticipantCount = () => {
     if (!event.participants) return 0;
-    return event.participants.filter((p) => p.status !== 'not_going').length;
+    // Only count participants who are "going"
+    return event.participants.filter((p) => p.status === 'going').length;
   };
 
   return (

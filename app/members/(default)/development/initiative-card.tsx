@@ -100,7 +100,7 @@ const InitiativeCard: React.FC<InitiativeCardProps> = ({
     <Card className="flex flex-col h-full bg-white dark:bg-slate-800 shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200">
       <div className="p-5 flex flex-col h-full">
         {/* Header with Type Badge and Category - Updated sizing and alignment */}
-        <div className="flex justify-between items-center mb-4 pl-0">
+        <div className="flex justify-start mb-4 pl-0 gap-2">
           <Badge
             className={`mb-0 px-3 py-1.5 text-sm ${
               isEvent
@@ -125,6 +125,8 @@ const InitiativeCard: React.FC<InitiativeCardProps> = ({
               {initiative.category.replace('_', ' ')}
             </span>
           </div>
+
+          
         </div>
 
         {/* Title */}
@@ -200,7 +202,7 @@ const InitiativeCard: React.FC<InitiativeCardProps> = ({
               href={`/members/development/${initiative.id}`}
               className="text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
             >
-              View Details →
+              View Details<span className="hidden sm:inline">→</span>
             </Link>
           </div>
         </div>

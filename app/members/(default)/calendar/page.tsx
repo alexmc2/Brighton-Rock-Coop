@@ -26,7 +26,7 @@ export default async function CalendarPage() {
           </h1>
         </div>
       </div>
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow overflow-hidden min-h-[calc(100vh-12rem)]">
+      <div className="bg-white dark:bg-slate-900 rounded-lg shadow overflow-hidden min-h-[calc(100vh-12rem)]">
         <Calendar initialEvents={events} />
       </div>
     </div>
