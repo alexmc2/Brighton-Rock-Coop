@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Logo() {
   return (
     <Link className="block" href="/members">
-      <div className="bg-coop-500 rounded-2xl p-2 flex items-center justify-center">
+      <div className="bg-coop-500 dark:bg-coop-600 rounded-2xl p-2 flex items-center justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-6 h-6 text-white"

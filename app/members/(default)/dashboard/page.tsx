@@ -237,7 +237,7 @@ export default async function Dashboard() {
       {/* Welcome Banner */}
       <div className="relative bg-gradient-to-tr  from-violet-500 to-violet-400 dark:from-violet-600/70 dark:to-violet-500/70 p-4 sm:p-6 rounded-lg overflow-hidden mb-8">
         {/* Background illustration */}
-        {/* <div
+        <div
           className="absolute right-0 top-0 -mt-4 mr-16 pointer-events-none hidden xl:block"
           aria-hidden="true"
         >
@@ -307,14 +307,14 @@ export default async function Dashboard() {
               </g>
             </g>
           </svg>
-        </div> */}
+        </div>
 
         {/* Content */}
         <div className="relative ">
-          <h1 className="text-2xl md:text-3xl text-white font-bold mb-1 py-2">
-            Welcome to the Brighton Rock Co-op Management Hub, {name} 👋
+          <h1 className="text-xl md:text-3xl text-slate-50 font-semibold mb-1 md:py-2 py-3 md:px-2 px-2">
+            Welcome to the Brighton Rock Co-op Management App, {name} 👋
           </h1>
-          <p className="text-white opacity-90 text-md md:text-xl">
+            <p className="text-slate-100 text-md md:text-xl md:px-2 px-2">
             Here&apos;s what&apos;s happening in the co-op today:
           </p>
         </div>

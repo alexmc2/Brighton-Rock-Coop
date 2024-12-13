@@ -61,8 +61,7 @@
 //     throw new Error('useAuth must be used within an AuthProvider')
 //   }
 //   return context
-// } 
-
+// }
 
 'use client';
 
@@ -116,11 +115,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-      if (session?.user) {
-        router.refresh();
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state change:', event);
+
+      switch (event) {
+        case 'TOKEN_REFRESHED':
+          console.log('Token refreshed successfully');
+          router.refresh();
+          break;
+        case 'SIGNED_OUT':
+          setUser(null);
+          router.push('/members/login');
+          break;
+        case 'USER_UPDATED':
+          setUser(session?.user ?? null);
+          router.refresh();
+          break;
+        default:
+          setUser(session?.user ?? null);
+          setLoading(false);
+          if (session?.user) {
+            router.refresh();
+          }
       }
     });
 
@@ -183,4 +199,4 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}; 
+};
