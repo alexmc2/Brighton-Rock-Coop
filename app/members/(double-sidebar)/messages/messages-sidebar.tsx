@@ -1,6 +1,6 @@
 'use client';
 
-import { useFlyoutContext } from '@/app/members/flyout-context';
+import { useFlyoutContext } from '@/contexts/flyout-context';
 import ChannelMenu from '@/components/members/channel-menu';
 import DirectMessages from './direct-messages';
 import Channels from './channels';

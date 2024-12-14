@@ -1,3 +1,59 @@
+// import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+// import { NextResponse } from 'next/server';
+// import type { NextRequest } from 'next/server';
+
+// export async function middleware(request: NextRequest) {
+//   const res = NextResponse.next();
+//   const supabase = createMiddlewareClient({ req: request, res });
+//   const {
+//     data: { session },
+//   } = await supabase.auth.getSession();
+
+//   const path = request.nextUrl.pathname;
+
+//   // Protect calendar feed API endpoint
+//   if (path === '/members/api/calendar' && !session) {
+//     return NextResponse.redirect(new URL('/members/login', request.url));
+//   }
+
+//   // Allow public access to main site routes
+//   if (!path.startsWith('/members')) {
+//     return res;
+//   }
+
+//   // Allow access to login-related routes even when not logged in
+//   if (
+//     path === '/members/login' ||
+//     path === '/members/signup' ||
+//     path === '/members/reset-password'
+//   ) {
+//     // If user is logged in, redirect away from auth pages
+//     if (session) {
+//       return NextResponse.redirect(new URL('/members/dashboard', request.url));
+//     }
+//     return res;
+//   }
+
+//   // For all other /members routes, require authentication
+//   if (!session) {
+//     const redirectUrl = new URL('/members/login', request.url);
+//     redirectUrl.searchParams.set('redirectedFrom', path);
+//     return NextResponse.redirect(redirectUrl);
+//   }
+
+//   return res;
+// }
+
+// // Specify which routes this middleware should run on
+// export const config = {
+//   matcher: [
+//     // Match all routes
+//     '/(.*)',
+//   ],
+// };
+
+// middleware.ts
+
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -10,13 +66,20 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getSession();
 
   const path = request.nextUrl.pathname;
+  const providedKey = request.nextUrl.searchParams.get('key');
 
-  // Protect calendar feed API endpoint
-  if (path === '/members/api/calendar' && !session) {
-    return NextResponse.redirect(new URL('/members/login', request.url));
+  // Allow public access to the calendar ICS feed if the secret key is provided
+  if (path === '/members/api/calendar') {
+    if (providedKey === process.env.SECRET_CALENDAR_KEY) {
+      // If the secret key matches, skip session check and allow access
+      return res;
+    } else if (!session) {
+      // If no valid key and no session, redirect to login
+      return NextResponse.redirect(new URL('/members/login', request.url));
+    }
   }
 
-  // Allow public access to main site routes
+  // Allow public access to main site routes (outside /members)
   if (!path.startsWith('/members')) {
     return res;
   }
@@ -27,7 +90,6 @@ export async function middleware(request: NextRequest) {
     path === '/members/signup' ||
     path === '/members/reset-password'
   ) {
-    // If user is logged in, redirect away from auth pages
     if (session) {
       return NextResponse.redirect(new URL('/members/dashboard', request.url));
     }
@@ -46,8 +108,5 @@ export async function middleware(request: NextRequest) {
 
 // Specify which routes this middleware should run on
 export const config = {
-  matcher: [
-    // Match all routes
-    '/(.*)',
-  ],
+  matcher: ['/(.*)'],
 };

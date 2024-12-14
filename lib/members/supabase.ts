@@ -1,3 +1,5 @@
+// lib/members/supabase.ts
+
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/members/database';
 

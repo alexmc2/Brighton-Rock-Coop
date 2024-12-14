@@ -1,4 +1,4 @@
-// lib/stores/calendar-store.ts
+// lib/members/stores/calendar-store.ts
 
 import { create } from 'zustand';
 

@@ -1,28 +1,30 @@
-'use client'
+// // contexts/members/app-provider.tsx
 
-import { createContext, useContext, useState } from 'react'
-import { AuthProvider } from '@/contexts/members/auth-context'
+// 'use client'
 
-interface SidebarContextProps {
-  sidebarOpen: boolean
-  setSidebarOpen: (open: boolean) => void
-}
+// import { createContext, useContext, useState } from 'react'
+// import { AuthProvider } from '@/contexts/members/auth-context'
 
-const SidebarContext = createContext<SidebarContextProps>({
-  sidebarOpen: false,
-  setSidebarOpen: () => {},
-})
+// interface SidebarContextProps {
+//   sidebarOpen: boolean
+//   setSidebarOpen: (open: boolean) => void
+// }
 
-export default function AppProvider({ children }: { children: React.ReactNode }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+// const SidebarContext = createContext<SidebarContextProps>({
+//   sidebarOpen: false,
+//   setSidebarOpen: () => {},
+// })
 
-  return (
-    <AuthProvider>
-      <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen }}>
-        {children}
-      </SidebarContext.Provider>
-    </AuthProvider>
-  )
-}
+// export default function AppProvider({ children }: { children: React.ReactNode }) {
+//   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-export const useAppProvider = () => useContext(SidebarContext)
+//   return (
+//     <AuthProvider>
+//       <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen }}>
+//         {children}
+//       </SidebarContext.Provider>
+//     </AuthProvider>
+//   )
+// }
+
+// export const useAppProvider = () => useContext(SidebarContext)

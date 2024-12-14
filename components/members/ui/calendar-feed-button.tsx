@@ -1,3 +1,5 @@
+// components/members/ui/calendar-feed-button.tsx
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -27,10 +29,13 @@ export default function CalendarFeedButton() {
     async function getAuthUrl() {
       try {
         setIsLoading(true);
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
         if (session?.refresh_token && user) {
-          const baseUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
-          const url = `${baseUrl}/members/api/calendar?token=${session.refresh_token}`;
+          const baseUrl =
+            'https://www.brighton-rock.org' || window.location.origin;
+          const url = `${baseUrl}/members/api/calendar?key=${process.env.NEXT_PUBLIC_SECRET_CALENDAR_KEY}`;
           console.log('Setting feed URL:', url);
           setFeedUrl(url);
         }
@@ -40,7 +45,7 @@ export default function CalendarFeedButton() {
         setIsLoading(false);
       }
     }
-    
+
     if (user) {
       getAuthUrl();
     }
@@ -70,7 +75,9 @@ export default function CalendarFeedButton() {
           <AlertDialogDescription className="space-y-4">
             <div className="mt-2 flex items-center gap-2 rounded-md bg-muted p-3">
               {isLoading ? (
-                <div className="text-sm text-muted-foreground">Loading URL...</div>
+                <div className="text-sm text-muted-foreground">
+                  Loading URL...
+                </div>
               ) : feedUrl ? (
                 <>
                   <code className="text-sm break-all">{feedUrl}</code>
@@ -85,7 +92,9 @@ export default function CalendarFeedButton() {
                   </Button>
                 </>
               ) : (
-                <div className="text-sm text-muted-foreground">Failed to generate URL. Please try again.</div>
+                <div className="text-sm text-muted-foreground">
+                  Failed to generate URL. Please try again.
+                </div>
               )}
             </div>
             <div className="space-y-2">

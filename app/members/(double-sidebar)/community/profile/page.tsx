@@ -1,6 +1,5 @@
-
-import { useFlyoutContext } from '@/app/members/flyout-context';
-import { FlyoutProvider } from '@/app/members/flyout-context';
+import { useFlyoutContext } from '@/contexts/flyout-context';
+import { FlyoutProvider } from '@/contexts/flyout-context';
 import ProfileSidebar from './profile-sidebar';
 import ProfileBody from './profile-body';
 
@@ -8,7 +7,6 @@ export const metadata = {
   title: 'Profile - Mosaic',
   description: 'Page description',
 };
-
 
 function ProfileContent() {
   return (

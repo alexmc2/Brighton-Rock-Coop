@@ -1,3 +1,5 @@
+// app/members/(default)/calendar/page.tsx
+
 import { Metadata } from 'next';
 import { getCalendarEvents } from '@/lib/members/actions/calendar';
 import Calendar from './calendar';

@@ -1,0 +1,1468 @@
+
+
+I'm trying to get my calendar to import into google calendar but I can't get it to work. I'm using next js 14 and supabase. Can you tell me how to fix it?
+
+
+alex@alex-lenovo:~/projects/brighton-rock-coop$ curl "http://localhost:3000/members/api/calendar?key=6e55868f-66b0-48e5-9416-0b5c3c6c791b"
+Internal Server Erroralex@alex-lenovo:~/projects/brighton-rock-coop$ curl "http://localhost:3000/members/api/calendar?key=6e55868f-66b0-48e5-9416-0b5c3c6c791b"
+Internal Server Erroralex@alex-lenovo:~/projects/brighton-rock-coop$ 
+
+alex@alex-lenovo:~/projects/brighton-rock-coop$ npm run dev
+
+> brighton-rock-coop@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.7
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1057ms
+ ✓ Compiled /middleware in 137ms (210 modules)
+ ✓ Compiled in 45ms (64 modules)
+ ✓ Compiled in 75ms (210 modules)
+ ✓ Compiled in 34ms (210 modules)
+ ✓ Compiled /members/api/calendar in 319ms (147 modules)
+Unexpected error: Error: No value for `name` in ICalCategory given!
+    at new c (webpack-internal:///(rsc)/./node_modules/ical-generator/dist/index.js:49:76)
+    at y.createCategory (webpack-internal:///(rsc)/./node_modules/ical-generator/dist/index.js:49:6780)
+    at eval (webpack-internal:///(rsc)/./node_modules/ical-generator/dist/index.js:49:6869)
+
+ GET /members/api/calendar?key=6e55868f-66b0-48e5-9416-0b5c3c6c791b 500 in 539ms
+Unexpected error: Error: No value for `name` in ICalCategory given!
+    at new c (webpack-internal:///(rsc)/./node_modules/ical-generator/dist/index.js:49:76)
+    at y.createCategory (webpack-internal:///(rsc)/./node_modules/ical-generator/dist/index.js:49:6780)
+    at eval (webpack-internal:///(rsc)/./node_modules/ical-generator/dist/index.js:49:6869)
+    at Array.forEach (<anonymous>)
+
+
+
+    // app/members/(default)/calendar/page.tsx
+
+import { Metadata } from 'next';
+import { getCalendarEvents } from '@/lib/members/actions/calendar';
+import Calendar from './calendar';
+import { addMonths, subMonths } from 'date-fns';
+import CalendarFeedButton from '@/components/members/ui/calendar-feed-button';
+
+export const metadata: Metadata = {
+  title: 'Calendar - Brighton Rock',
+  description: 'Calendar page for Brighton Rock Co-op',
+};
+
+export const revalidate = 0;
+
+export default async function CalendarPage() {
+  const today = new Date();
+  const startDate = subMonths(today, 1);
+  const endDate = addMonths(today, 36);
+
+  const events = await getCalendarEvents(startDate, endDate);
+
+  return (
+    <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[96rem] mx-auto">
+      <div className="sm:flex sm:justify-between sm:items-center mb-4">
+        <div className="mb-4 sm:mb-0">
+          <h1 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">
+            Calendar
+          </h1>
+          <div className="flex justify-between items-center my-4 ">
+            <CalendarFeedButton />
+          </div>
+        </div>
+      </div>
+      <div className="bg-white dark:bg-slate-900 rounded-lg shadow overflow-hidden min-h-[calc(100vh-12rem)]">
+        <Calendar initialEvents={events} />
+      </div>
+    </div>
+  );
+}
+
+
+
+// app/members/api/calendar/route.ts
+
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import ical from 'ical-generator';
+import { createClient } from '@supabase/supabase-js';
+
+// Mark this route as dynamic
+export const dynamic = 'force-dynamic';
+
+// /app/members/api/calendar/route.ts
+export async function GET(request: NextRequest) {
+  try {
+    // Check for the secret key in query parameters
+    const providedKey = request.nextUrl.searchParams.get('key');
+    if (!providedKey || providedKey !== process.env.SECRET_CALENDAR_KEY) {
+      console.error('Invalid or missing secret key');
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    // If the key matches, proceed. We can now use a Supabase service key or anon key
+    // to fetch events from the database without user session checks.
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    // Fetch events (this should be publicly readable data)
+    const { data: events, error } = await supabase
+      .from('calendar_events')
+      .select(
+        'id, title, description, start_time, end_time, event_type, category'
+      )
+      .order('start_time', { ascending: true });
+
+    if (error) {
+      console.error('Database error:', error);
+      return new NextResponse('Error fetching events', { status: 500 });
+    }
+
+    // Create the ICS calendar
+    const calendar = ical({
+      name: 'Co-op Calendar',
+      timezone: 'Europe/London',
+      prodId: { company: 'co-op', product: 'calendar' },
+      url:
+        'https://www.brighton-rock.org/members/calendar' ||
+        'localhost:3000/members/calendar', // Adjust to your site
+    });
+
+    // Add events
+    events?.forEach((event) => {
+      calendar.createEvent({
+        start: new Date(event.start_time),
+        end: new Date(event.end_time),
+        summary: event.title,
+        description: event.description || '',
+        uid: event.id,
+        categories: [event.category || event.event_type],
+      });
+    });
+
+    // Prepare headers
+    const headers = new Headers();
+    headers.set('Content-Type', 'text/calendar; charset=utf-8');
+    headers.set(
+      'Content-Disposition',
+      'attachment; filename="co-op-calendar.ics"'
+    );
+    headers.set('Access-Control-Allow-Origin', '*');
+    headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    return new NextResponse(calendar.toString(), { headers });
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return new NextResponse('Internal Server Error', { status: 500 });
+  }
+}
+
+
+// components/members/ui/calendar-feed-button.tsx
+
+'use client';
+
+import { Button } from '@/components/ui/button';
+import { Calendar, Copy } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/members/ui/alert-dialog';
+import { useState, useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useAuth } from '@/contexts/members/auth-context';
+
+export default function CalendarFeedButton() {
+  const [copied, setCopied] = useState(false);
+  const [feedUrl, setFeedUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+  const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    async function getAuthUrl() {
+      try {
+        setIsLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.refresh_token && user) {
+          const baseUrl = 'https://www.brighton-rock.org' || window.location.origin;
+          const url = `${baseUrl}/members/api/calendar?token=${session.refresh_token}`;
+          console.log('Setting feed URL:', url);
+          setFeedUrl(url);
+        }
+      } catch (error) {
+        console.error('Error getting auth URL:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    if (user) {
+      getAuthUrl();
+    }
+  }, [supabase.auth, user]);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(feedUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          variant="default"
+          size="sm"
+          className="flex items-center gap-2 dark:bg-coop-600"
+        >
+          <Calendar className="h-4 w-4" />
+          Subscribe to Calendar
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Subscribe to Calendar</AlertDialogTitle>
+          <AlertDialogDescription className="space-y-4">
+            <div className="mt-2 flex items-center gap-2 rounded-md bg-muted p-3">
+              {isLoading ? (
+                <div className="text-sm text-muted-foreground">Loading URL...</div>
+              ) : feedUrl ? (
+                <>
+                  <code className="text-sm break-all">{feedUrl}</code>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ml-auto flex-shrink-0"
+                    onClick={handleCopy}
+                  >
+                    <Copy className="h-4 w-4" />
+                    <span className="sr-only">Copy URL</span>
+                  </Button>
+                </>
+              ) : (
+                <div className="text-sm text-muted-foreground">Failed to generate URL. Please try again.</div>
+              )}
+            </div>
+            <div className="space-y-2">
+              <p className="font-medium">Google Calendar:</p>
+              <ol className="list-decimal pl-4 text-sm">
+                <li>Click + next to "Other calendars"</li>
+                <li>Select "From URL" and paste the URL</li>
+              </ol>
+            </div>
+            <div className="space-y-2">
+              <p className="font-medium">Apple Calendar:</p>
+              <ol className="list-decimal pl-4 text-sm">
+                <li>File {'>'} New Calendar Subscription</li>
+                <li>Paste the URL and click Subscribe</li>
+              </ol>
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction>Done</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+
+// contexts/members/auth-context.tsx
+
+'use client';
+
+import { createContext, useContext, useEffect, useState } from 'react';
+import { User } from '@supabase/supabase-js';
+import { supabase } from '@/lib/members/supabase';
+import { useRouter } from 'next/navigation';
+
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  signIn: (
+    email: string,
+    password: string,
+    redirectTo?: string
+  ) => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+  signIn: async () => {},
+  signOut: async () => {},
+});
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check active sessions
+    const checkSession = async () => {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+        if (error) throw error;
+        setUser(session?.user ?? null);
+      } catch (error) {
+        console.error('Session check error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state change:', event);
+
+      switch (event) {
+        case 'TOKEN_REFRESHED':
+          console.log('Token refreshed successfully');
+          router.refresh();
+          break;
+        case 'SIGNED_OUT':
+          setUser(null);
+          router.push('/members/login');
+          break;
+        case 'USER_UPDATED':
+          setUser(session?.user ?? null);
+          router.refresh();
+          break;
+        default:
+          setUser(session?.user ?? null);
+          setLoading(false);
+          if (session?.user) {
+            router.refresh();
+          }
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [router]);
+
+  const value = {
+    user,
+    loading,
+    signIn: async (
+      email: string,
+      password: string,
+      redirectTo: string = '/'
+    ) => {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+        if (!data.session) throw new Error('No session returned');
+
+        setUser(data.session.user);
+        console.log('Setting user and redirecting to:', redirectTo);
+
+        // Force a router refresh before navigation
+        router.refresh();
+
+        // Use setTimeout to ensure state updates have propagated
+        setTimeout(() => {
+          router.push(redirectTo);
+        }, 100);
+      } catch (error) {
+        console.error('Sign in error:', error);
+        throw error;
+      }
+    },
+    signOut: async () => {
+      try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        setUser(null);
+        router.refresh();
+        router.push('/members/login');
+      } catch (error) {
+        console.error('Sign out error:', error);
+        throw error;
+      }
+    },
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+
+// app/lib/members/actions/calendar.ts
+
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { CalendarEventWithDetails } from '@/types/members/calendar';
+
+export async function getCalendarEvents(
+  startDate: Date,
+  endDate: Date
+): Promise<CalendarEventWithDetails[]> {
+  const supabase = createClientComponentClient();
+
+  const { data: events, error } = await supabase
+    .from('calendar_events')
+    .select(
+      `
+      *,
+      created_by_user:created_by(email, full_name),
+      last_modified_by_user:last_modified_by(email, full_name),
+      category
+    `
+    )
+    .gte('start_time', startDate.toISOString())
+    .lte('end_time', endDate.toISOString())
+    .order('start_time', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching calendar events:', error);
+    return [];
+  }
+
+  // Assign 'Miscellaneous' to events without a category
+  return (events || []).map((event) => ({
+    ...event,
+    category: event.category || 'Miscellaneous',
+  }));
+}
+
+export async function createCalendarEvent(
+  title: string,
+  description: string | null,
+  startTime: Date,
+  endTime: Date,
+  eventType:
+    | 'manual'
+    | 'garden_task'
+    | 'development_event'
+    | 'social_event'
+    | 'maintenance_visit' = 'manual',
+  userId: string,
+  fullName?: string | null,
+  referenceId?: string,
+  subcategory?: string
+) {
+  const supabase = createClientComponentClient();
+
+  // Delete any existing events for this reference if it's a garden task or development event
+  if (referenceId) {
+    await supabase
+      .from('calendar_events')
+      .delete()
+      .eq('reference_id', referenceId)
+      .eq('event_type', eventType);
+  }
+  const { data, error } = await supabase
+    .from('calendar_events')
+    .insert({
+      title,
+      description,
+      start_time: startTime.toISOString(),
+      end_time: endTime.toISOString(),
+      event_type: eventType,
+      created_by: userId,
+      full_name: fullName,
+      reference_id: referenceId,
+      category:
+        eventType === 'garden_task'
+          ? 'Garden'
+          : eventType === 'development_event'
+          ? 'Development Event'
+          : eventType === 'maintenance_visit'
+          ? 'P4P Visit'
+          : eventType === 'social_event'
+          ? 'Co-op Social'
+          : 'Miscellaneous',
+      subcategory: subcategory,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Calendar event creation error:', error);
+    throw new Error(`Failed to create calendar event: ${error.message}`);
+  }
+
+  return data;
+}
+
+export async function createGardenTaskEvent(
+  title: string,
+  description: string,
+  dueDate: string,
+  scheduledTime: string | null,
+  duration: string | null,
+  userId: string,
+  fullName: string | null,
+  taskId: string
+) {
+  // Create a Date object for the due date
+  const date = new Date(dueDate);
+
+  // If there's a scheduled time, parse and set it
+  if (scheduledTime) {
+    const [hours, minutes] = scheduledTime.split(':');
+    date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+  } else {
+    // Default to 9 AM if no time specified
+    date.setHours(9, 0);
+  }
+
+  // Calculate end time based on duration
+  const durationMs = parseDuration(duration);
+
+  // End time is start time plus duration
+  const endTime = new Date(date.getTime() + durationMs);
+
+  // Create single calendar event
+  return createCalendarEvent(
+    title,
+    description,
+    date,
+    endTime,
+    'garden_task',
+    userId,
+    fullName,
+    taskId
+  );
+}
+
+function parseDuration(durationStr: string | null): number {
+  if (!durationStr) {
+    return 60 * 60 * 1000; // Default to 1 hour in milliseconds
+  }
+  const duration = parseFloat(durationStr);
+  if (isNaN(duration)) {
+    return 60 * 60 * 1000; // Default to 1 hour
+  }
+  if (duration === 24) {
+    return 24 * 60 * 60 * 1000; // All day
+  }
+  return duration * 60 * 60 * 1000; // Convert hours to milliseconds
+}
+
+export async function updateCalendarEvent(
+  eventId: string,
+  updates: Partial<CalendarEventWithDetails>,
+  userId: string
+) {
+  const supabase = createClientComponentClient();
+
+  const { data, error } = await supabase
+    .from('calendar_events')
+    .update({ ...updates, last_modified_by: userId })
+    .eq('id', eventId)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`Failed to update calendar event: ${error.message}`);
+  }
+
+  return data;
+}
+
+export async function deleteCalendarEvent(eventId: string) {
+  const supabase = createClientComponentClient();
+
+  const { error } = await supabase
+    .from('calendar_events')
+    .delete()
+    .eq('id', eventId);
+
+  if (error) {
+    throw new Error(`Failed to delete calendar event: ${error.message}`);
+  }
+}
+
+export async function createMaintenanceVisitEvent(
+  visitId: string,
+  title: string,
+  description: string,
+  scheduledDate: string,
+  estimatedDuration: string,
+  userId: string,
+  fullName: string | null
+) {
+  const supabase = createClientComponentClient();
+
+  // Delete any existing events for this visit
+  await supabase
+    .from('calendar_events')
+    .delete()
+    .eq('reference_id', visitId)
+    .eq('event_type', 'maintenance_visit');
+
+  // Calculate end time based on duration
+  const startTime = new Date(scheduledDate);
+  const durationHours = parseInt(estimatedDuration.split(' ')[0]);
+  const endTime = new Date(
+    startTime.getTime() + durationHours * 60 * 60 * 1000
+  );
+
+  // Create the calendar event
+  const { data, error } = await supabase
+    .from('calendar_events')
+    .insert({
+      title,
+      description: description,
+      start_time: startTime.toISOString(),
+      end_time: endTime.toISOString(),
+      event_type: 'maintenance_visit',
+      reference_id: visitId,
+      category: 'P4P Visit',
+      created_by: userId,
+      full_name: fullName,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Calendar event creation error:', error);
+    throw new Error(`Failed to create calendar event: ${error.message}`);
+  }
+
+  return data;
+}
+
+export async function createDevelopmentEvent(
+  title: string,
+  description: string,
+  eventDate: string,
+  startTime: string | null,
+  duration: string | null,
+  userId: string,
+  fullName: string | null,
+  initiativeId: string
+) {
+  // Create a Date object for the event date
+  const date = new Date(eventDate);
+
+  // If there's a scheduled time, parse and set it
+  if (startTime) {
+    const [hours, minutes] = startTime.split(':');
+    date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+  } else {
+    // Default to 9 AM if no time specified
+    date.setHours(9, 0);
+  }
+
+  // Calculate end time based on duration
+  const durationMs = parseDuration(duration);
+
+  // End time is start time plus duration
+  const endTime = new Date(date.getTime() + durationMs);
+
+  // Create single calendar event
+  return createCalendarEvent(
+    title,
+    description,
+    date,
+    endTime,
+    'development_event',
+    userId,
+    fullName,
+    initiativeId
+  );
+}
+
+// lib/actions/calendar.ts
+
+export async function createSocialEventCalendarEvent(
+  title: string,
+  description: string,
+  eventDate: string,
+  startTime: string | null,
+  duration: string | null,
+  userId: string,
+  fullName: string | null,
+  eventId: string,
+  category: string
+) {
+  // Create a Date object for the event date
+  const date = new Date(eventDate);
+
+  // If there's a scheduled time, parse and set it
+  if (startTime) {
+    const [hours, minutes] = startTime.split(':');
+    date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+  } else {
+    // Default to 7 PM if no time specified
+    date.setHours(19, 0);
+  }
+
+  // Calculate end time based on duration
+  const durationMs = parseDuration(duration);
+
+  // End time is start time plus duration
+  const endTime = new Date(date.getTime() + durationMs);
+
+  const supabase = createClientComponentClient();
+
+  // Delete any existing events for this social event
+  if (eventId) {
+    await supabase
+      .from('calendar_events')
+      .delete()
+      .eq('reference_id', eventId)
+      .eq('event_type', 'social_event');
+  }
+
+  // Create calendar event directly to ensure correct category and subcategory
+  const { data, error } = await supabase
+    .from('calendar_events')
+    .insert({
+      title,
+      description,
+      start_time: date.toISOString(),
+      end_time: endTime.toISOString(),
+      event_type: 'social_event',
+      created_by: userId,
+      full_name: fullName,
+      reference_id: eventId,
+      category: 'Co-op Social',
+      subcategory: category,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Calendar event creation error:', error);
+    throw new Error(`Failed to create calendar event: ${error.message}`);
+  }
+
+  return data;
+}
+
+
+
+// lib/members/stores/calendar-store.ts
+
+import { create } from 'zustand';
+
+interface CalendarStore {
+  selectedEventId: string | null;
+  setSelectedEventId: (id: string | null) => void;
+}
+
+export const useCalendarStore = create<CalendarStore>((set) => ({
+  selectedEventId: null,
+  setSelectedEventId: (id) => set({ selectedEventId: id }),
+})); 
+
+// lib/members/actions.ts
+
+"use server";
+
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { supabase } from "@/lib/members/supabase";
+
+export async function authenticate(
+  _prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (!email || !password) {
+      return "Email and password are required";
+    }
+
+    console.log("Attempting to sign in with email:", email);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error("Supabase auth error:", error);
+      return error.message;
+    }
+
+    if (!data?.session) {
+      console.error("No session returned from Supabase");
+      return "Authentication failed";
+    }
+
+    console.log("Sign in successful, setting session cookie");
+
+    // Store the session in an HTTP-only cookie
+    cookies().set("session", JSON.stringify(data.session), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+    });
+
+    // Return success instead of redirecting
+    return { success: true };
+  } catch (error) {
+    console.error("Unexpected error during authentication:", error);
+    if (error instanceof Error) {
+      return error.message;
+    }
+    return "An unexpected error occurred during sign in";
+  }
+}
+
+
+// lib/members/supabase.ts
+
+import { createClient } from '@supabase/supabase-js';
+import { Database } from '@/types/members/database';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: false,
+    flowType: 'pkce',
+    storage: {
+      getItem: (key) => {
+        try {
+          return Promise.resolve(localStorage.getItem(key));
+        } catch {
+          return Promise.resolve(null);
+        }
+      },
+      setItem: (key, value) => {
+        try {
+          localStorage.setItem(key, value);
+          return Promise.resolve();
+        } catch {
+          return Promise.resolve();
+        }
+      },
+      removeItem: (key) => {
+        try {
+          localStorage.removeItem(key);
+          return Promise.resolve();
+        } catch {
+          return Promise.resolve();
+        }
+      },
+    },
+  },
+});
+
+
+
+// lib/supabaseAdmin.ts
+
+import { createClient } from '@supabase/supabase-js';
+
+// Make sure to set these environment variables in your .env file
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+export default supabaseAdmin;
+
+// types/members/calendar.ts
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  description: string | null;
+  start_time: string;
+  end_time: string;
+  event_type:
+    | 'maintenance_visit'
+    | 'garden_task'
+    | 'development_event'
+    | 'social_event'
+    | 'manual';
+  reference_id: string | null;
+  created_at: string;
+  updated_at: string;
+  created_by: string;
+  last_modified_by: string | null;
+  category: string;
+  subcategory?: string;
+}
+
+export interface CalendarEventWithDetails extends CalendarEvent {
+  created_by_user: {
+    email: string;
+    full_name: string | null;
+  };
+  last_modified_by_user?: {
+    email: string;
+    full_name: string | null;
+  };
+}
+
+export interface CalendarDay {
+  date: Date;
+  events: CalendarEventWithDetails[];
+  isCurrentMonth: boolean;
+  isToday: boolean;
+}
+
+
+
+// middleware.ts
+
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export async function middleware(request: NextRequest) {
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req: request, res });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const path = request.nextUrl.pathname;
+  const providedKey = request.nextUrl.searchParams.get('key');
+
+  // Allow public access to the calendar ICS feed if the secret key is provided
+  if (path === '/members/api/calendar') {
+    if (providedKey === process.env.SECRET_CALENDAR_KEY) {
+      // If the secret key matches, skip session check and allow access
+      return res;
+    } else if (!session) {
+      // If no valid key and no session, redirect to login
+      return NextResponse.redirect(new URL('/members/login', request.url));
+    }
+  }
+
+  // Allow public access to main site routes (outside /members)
+  if (!path.startsWith('/members')) {
+    return res;
+  }
+
+  // Allow access to login-related routes even when not logged in
+  if (
+    path === '/members/login' ||
+    path === '/members/signup' ||
+    path === '/members/reset-password'
+  ) {
+    if (session) {
+      return NextResponse.redirect(new URL('/members/dashboard', request.url));
+    }
+    return res;
+  }
+
+  // For all other /members routes, require authentication
+  if (!session) {
+    const redirectUrl = new URL('/members/login', request.url);
+    redirectUrl.searchParams.set('redirectedFrom', path);
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  return res;
+}
+
+// Specify which routes this middleware should run on
+export const config = {
+  matcher: ['/(.*)'],
+};
+
+
+Close
+Update policy: Enable read access for all users
+
+View policy details
+
+
+Policy Name
+Enable read access for all users
+Table
+
+on clause
+
+
+public.calendar_events
+Policy Behavior
+
+as clause
+
+permissive
+Policy Command
+
+for clause
+
+
+SELECT
+
+INSERT
+
+UPDATE
+
+DELETE
+
+ALL
+Target Roles
+
+to clause
+
+Defaults to all (public) roles if none selected
+Use options above to edit
+
+
+alter policy "Enable read access for all users"
+
+
+on "public"."calendar_events"
+
+
+to public
+
+
+using (
+
+7
+  true
+
+);
+
+[
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": "uuid_generate_v4()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "title",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "description",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "start_time",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "end_time",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "event_type",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "reference_id",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "created_by",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "last_modified_by",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "category",
+    "data_type": "character varying",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "full_name",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calendar_events",
+    "column_name": "subcategory",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  }
+]
+
+[
+  {
+    "constraint_name": "calendar_events_created_by_fkey",
+    "source_table": "calendar_events",
+    "source_column": "created_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "calendar_events_last_modified_by_fkey",
+    "source_table": "calendar_events",
+    "source_column": "last_modified_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "development_comments_initiative_id_fkey",
+    "source_table": "development_comments",
+    "source_column": "initiative_id",
+    "target_table": "development_initiatives",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "development_comments_user_id_fkey",
+    "source_table": "development_comments",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "development_initiatives_created_by_fkey",
+    "source_table": "development_initiatives",
+    "source_column": "created_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "doodle_poll_options_poll_id_fkey",
+    "source_table": "doodle_poll_options",
+    "source_column": "poll_id",
+    "target_table": "doodle_polls",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "doodle_poll_participants_poll_id_fkey",
+    "source_table": "doodle_poll_participants",
+    "source_column": "poll_id",
+    "target_table": "doodle_polls",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "doodle_poll_participants_user_id_fkey",
+    "source_table": "doodle_poll_participants",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "doodle_polls_created_by_fkey",
+    "source_table": "doodle_polls",
+    "source_column": "created_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "doodle_polls_event_id_fkey",
+    "source_table": "doodle_polls",
+    "source_column": "event_id",
+    "target_table": "social_events",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "event_participants_event_id_fkey",
+    "source_table": "event_participants",
+    "source_column": "event_id",
+    "target_table": "development_initiatives",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "event_participants_user_id_fkey",
+    "source_table": "event_participants",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "garden_comments_task_id_fkey",
+    "source_table": "garden_comments",
+    "source_column": "task_id",
+    "target_table": "garden_tasks",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "garden_comments_user_id_fkey",
+    "source_table": "garden_comments",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "garden_plants_area_id_fkey",
+    "source_table": "garden_plants",
+    "source_column": "area_id",
+    "target_table": "garden_areas",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "garden_tasks_area_id_fkey",
+    "source_table": "garden_tasks",
+    "source_column": "area_id",
+    "target_table": "garden_areas",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "maintenance_comments_request_id_fkey",
+    "source_table": "maintenance_comments",
+    "source_column": "request_id",
+    "target_table": "maintenance_requests",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "maintenance_comments_user_id_fkey",
+    "source_table": "maintenance_comments",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "maintenance_requests_assigned_to_fkey",
+    "source_table": "maintenance_requests",
+    "source_column": "assigned_to",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "maintenance_requests_house_id_fkey",
+    "source_table": "maintenance_requests",
+    "source_column": "house_id",
+    "target_table": "houses",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "maintenance_requests_reported_by_fkey",
+    "source_table": "maintenance_requests",
+    "source_column": "reported_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "maintenance_visits_access_person_id_fkey",
+    "source_table": "maintenance_visits",
+    "source_column": "access_person_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "maintenance_visits_request_id_fkey",
+    "source_table": "maintenance_visits",
+    "source_column": "request_id",
+    "target_table": "maintenance_requests",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "social_event_comments_event_id_fkey",
+    "source_table": "social_event_comments",
+    "source_column": "event_id",
+    "target_table": "social_events",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "social_event_comments_user_id_fkey",
+    "source_table": "social_event_comments",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "social_event_participants_event_id_fkey",
+    "source_table": "social_event_participants",
+    "source_column": "event_id",
+    "target_table": "social_events",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "social_event_participants_user_id_fkey",
+    "source_table": "social_event_participants",
+    "source_column": "user_id",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "social_events_created_by_fkey",
+    "source_table": "social_events",
+    "source_column": "created_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "todo_comments_created_by_fkey",
+    "source_table": "todo_comments",
+    "source_column": "created_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "todo_comments_todo_id_fkey",
+    "source_table": "todo_comments",
+    "source_column": "todo_id",
+    "target_table": "todos",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "todos_assigned_to_fkey",
+    "source_table": "todos",
+    "source_column": "assigned_to",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "todos_created_by_fkey",
+    "source_table": "todos",
+    "source_column": "created_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  },
+  {
+    "constraint_name": "todos_last_modified_by_fkey",
+    "source_table": "todos",
+    "source_column": "last_modified_by",
+    "target_table": "profiles",
+    "target_column": "id"
+  }
+]
+
+
+Free
+
+Brighton Rock
+
+
+Connect
+
+Enable branching
+Feedback
+
+
+
+
+schema:
+
+public
+
+33500
+Docs
+calendar_events
+
+Disable RLS
+
+Create policy
+
+DELETE
+
+Allow delete on calendar_events for social_events
+
+Applied to:public role
+
+SELECT
+
+allow_public_select_on_calendar_events
+
+Applied to:public role
+
+DELETE
+
+Enable delete for authenticated users
+
+Applied to:public role
+
+INSERT
+
+Enable insert for authenticated users
+
+Applied to:public role
+
+SELECT
+
+Enable read access for all users
+
+Applied to:public role
+
+UPDATE
+
+Enable update for authenticated users
+
+Applied to:public role

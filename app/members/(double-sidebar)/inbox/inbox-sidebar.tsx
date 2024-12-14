@@ -1,6 +1,6 @@
 'use client';
 
-import { useFlyoutContext } from '@/app/members/flyout-context';
+import { useFlyoutContext } from '@/contexts/flyout-context';
 import Image from 'next/image';
 import ChannelMenu from '@/components/members/channel-menu';
 import UserImage01 from '@/public/members/images/user-32-01.jpg';

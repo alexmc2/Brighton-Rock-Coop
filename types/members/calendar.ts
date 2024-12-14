@@ -1,3 +1,5 @@
+// types/members/calendar.ts
+
 export interface CalendarEvent {
   id: string;
   title: string;

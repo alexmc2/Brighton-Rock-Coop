@@ -1,6 +1,6 @@
 'use client';
 
-import { useFlyoutContext } from '@/app/members/flyout-context';
+import { useFlyoutContext } from '@/contexts/flyout-context';
 import Image from 'next/image';
 import ProfileBg from '@/public/members/images/profile-bg.jpg';
 import UserAvatar from '@/public/members/images/user-128-01.jpg';
