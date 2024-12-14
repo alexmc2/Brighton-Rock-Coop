@@ -15,7 +15,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/members/ui/alert-dialog';
 import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useAuth } from '@/contexts/members/auth-context';
 
 export default function CalendarFeedButton() {
@@ -23,33 +22,25 @@ export default function CalendarFeedButton() {
   const [feedUrl, setFeedUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
-  const supabase = createClientComponentClient();
 
   useEffect(() => {
-    async function getAuthUrl() {
+    async function getFeedUrl() {
       try {
         setIsLoading(true);
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (session?.refresh_token && user) {
-          const baseUrl =
-            'https://www.brighton-rock.org' || window.location.origin;
-          const url = `${baseUrl}/members/api/calendar?key=${process.env.NEXT_PUBLIC_SECRET_CALENDAR_KEY}`;
-          console.log('Setting feed URL:', url);
-          setFeedUrl(url);
+        if (user) {
+          const response = await fetch('/api/get-calendar-url');
+          const data = await response.json();
+          setFeedUrl(data.url);
         }
       } catch (error) {
-        console.error('Error getting auth URL:', error);
+        console.error('Error getting feed URL:', error);
       } finally {
         setIsLoading(false);
       }
     }
 
-    if (user) {
-      getAuthUrl();
-    }
-  }, [supabase.auth, user]);
+    getFeedUrl();
+  }, [user]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(feedUrl);
