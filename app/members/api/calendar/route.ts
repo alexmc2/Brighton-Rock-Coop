@@ -248,42 +248,53 @@ export async function GET(request: NextRequest) {
       name: 'Brighton Rock Co-op Calendar',
       timezone: 'Europe/London',
       prodId: { company: 'brighton-rock', product: 'calendar' },
-      url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.brighton-rock.org',
+      url: `${
+        process.env.NEXT_PUBLIC_SITE_URL || 'https://www.brighton-rock.org'
+      }?v=1`,
     });
 
-    events?.forEach((event) => {
-      try {
-        const startTime = new Date(event.start_time);
-        const endTime = calculateEndTime(
-          event.start_time,
-          event.duration,
-          event.event_type
-        );
+events?.forEach((event) => {
+  try {
+    const startTime = new Date(event.start_time);
+    const endTime = calculateEndTime(
+      event.start_time,
+      event.duration,
+      event.event_type
+    );
+    const formattedTitle = formatEventTitle(event);
 
-        let description = event.description || '';
-        if (event.location) {
-          description = `Location: ${event.location}\n\n${description}`;
-        }
-
-        calendar.createEvent({
-          start: startTime,
-          end: endTime,
-          summary: formatEventTitle(event),
-          description: description,
-          location: event.location,
-          uid: event.id,
-          categories: createCategories(event),
-        });
-      } catch (eventError) {
-        console.error('Error creating event:', event.title, eventError);
-      }
+    // Add debug logging
+    console.log('Processing event:', {
+      original: event,
+      formatted: {
+        title: formattedTitle,
+        start: startTime,
+        end: endTime,
+        categories: createCategories(event),
+      },
     });
+
+    calendar.createEvent({
+      start: startTime,
+      end: endTime,
+      summary: formattedTitle,
+      description: event.description || '',
+      location: event.location,
+      uid: event.id,
+      categories: createCategories(event),
+    });
+  } catch (eventError) {
+    console.error('Error creating event:', event.title, eventError);
+  }
+});
 
     return new NextResponse(calendar.toString(), {
       headers: {
         'Content-Type': 'text/calendar; charset=utf-8',
         'Content-Disposition':
           'attachment; filename="brighton-rock-calendar.ics"',
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        Pragma: 'no-cache',
       },
     });
   } catch (error) {
