@@ -328,72 +328,83 @@ export default function DoodlePollDetails({
               )}
 
               {/* Existing participants */}
-              {poll.participants
-                .filter((participant) =>
-                  Object.values(participant.responses).some(
-                    (r) => r === 'yes' || r === 'maybe' || r === 'no'
-                  )
-                )
-                .map((participant) => (
-                  <div
-                    key={participant.id}
-                    className="grid grid-cols-[180px_repeat(50,150px)] bg-white dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-600 last:border-b-0"
-                  >
-                    <div className="p-4 flex items-center gap-2">
-                      <Avatar
-                        className={cn(
-                          'w-6 h-6 flex items-center justify-center',
-                          getUserColor(participant.user_id)
-                        )}
-                      >
-                        <div className="text-white text-xs">
-                          {participant.user.full_name?.[0]?.toUpperCase() ||
-                            participant.user.email[0].toUpperCase()}
-                        </div>
-                      </Avatar>
-                      <span className="text-slate-900 dark:text-white text-sm">
-                        {participant.user.full_name || participant.user.email}
-                      </span>
-                    </div>
-                    {timeSlots.map((slot) => (
-                      <div
-                        key={slot.id}
-                        className={cn(
-                          'border-l border-r border-slate-200 dark:border-slate-600 p-4 flex items-center justify-center',
-                          participant.responses[slot.id] === 'yes' &&
-                            'bg-green-200/70 dark:bg-green-600/30',
-                          participant.responses[slot.id] === 'maybe' &&
-                            'bg-yellow-200/70 dark:bg-yellow-600/30',
-                          participant.responses[slot.id] === 'no' &&
-                            'bg-red-200/70 dark:bg-red-900/30'
-                        )}
-                      >
-                        {participant.responses[slot.id] === 'yes' && (
-                          <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
-                        )}
-                        {participant.responses[slot.id] === 'maybe' && (
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="text-yellow-600 dark:text-yellow-400"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <line x1="8" y1="12" x2="16" y2="12" />
-                          </svg>
-                        )}
-                        {participant.responses[slot.id] === 'no' && (
-                          <CircleSlash className="w-5 h-5 text-red-600 dark:text-red-400" />
-                        )}
+              {Array.from(
+                poll.participants
+                  // First, create a Map with user_id as key to get latest response for each user
+                  .reduce((map, participant) => {
+                    const hasResponses = Object.values(participant.responses).some(
+                      (r) => r === 'yes' || r === 'maybe' || r === 'no'
+                    );
+                    if (hasResponses) {
+                      // Only update map if this is a newer response
+                      const existing = map.get(participant.user_id);
+                      if (!existing || new Date(participant.updated_at) > new Date(existing.updated_at)) {
+                        map.set(participant.user_id, participant);
+                      }
+                    }
+                    return map;
+                  }, new Map<string, typeof poll.participants[0]>())
+                  .values()
+              ).map((participant) => (
+                <div
+                  key={participant.id}
+                  className="grid grid-cols-[180px_repeat(50,150px)] bg-white dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-600 last:border-b-0"
+                >
+                  <div className="p-4 flex items-center gap-2">
+                    <Avatar
+                      className={cn(
+                        'w-6 h-6 flex items-center justify-center',
+                        getUserColor(participant.user_id)
+                      )}
+                    >
+                      <div className="text-white text-xs">
+                        {participant.user.full_name?.[0]?.toUpperCase() ||
+                          participant.user.email[0].toUpperCase()}
                       </div>
-                    ))}
+                    </Avatar>
+                    <span className="text-slate-900 dark:text-white text-sm">
+                      {participant.user.full_name || participant.user.email}
+                    </span>
                   </div>
-                ))}
+                  {timeSlots.map((slot) => (
+                    <div
+                      key={slot.id}
+                      className={cn(
+                        'border-l border-r border-slate-200 dark:border-slate-600 p-4 flex items-center justify-center',
+                        participant.responses[slot.id] === 'yes' &&
+                          'bg-green-200/70 dark:bg-green-600/30',
+                        participant.responses[slot.id] === 'maybe' &&
+                          'bg-yellow-200/70 dark:bg-yellow-600/30',
+                        participant.responses[slot.id] === 'no' &&
+                          'bg-red-200/70 dark:bg-red-900/30'
+                      )}
+                    >
+                      {participant.responses[slot.id] === 'yes' && (
+                        <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      )}
+                      {participant.responses[slot.id] === 'maybe' && (
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="text-yellow-600 dark:text-yellow-400"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <line x1="8" y1="12" x2="16" y2="12" />
+                        </svg>
+                      )}
+                      {participant.responses[slot.id] === 'no' && (
+                        <CircleSlash className="w-5 h-5 text-red-600 dark:text-red-400" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>
