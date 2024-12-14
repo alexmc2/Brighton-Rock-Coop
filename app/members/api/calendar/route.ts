@@ -145,8 +145,7 @@ export async function GET(request: NextRequest) {
             name: event.created_by_user?.[0]?.full_name || 'Unknown',
             email: event.created_by_user?.[0]?.email || 'no-reply@example.com',
           },
-          categories: [event.category || event.event_type],
-          status: 'CONFIRMED'
+          categories: [event.category || event.event_type]
         });
       } catch (eventError) {
         console.error('Error adding event to calendar:', eventError, event);
