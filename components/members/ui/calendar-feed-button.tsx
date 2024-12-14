@@ -28,7 +28,7 @@ export default function CalendarFeedButton() {
       try {
         setIsLoading(true);
         if (user) {
-          const response = await fetch('/api/get-calendar-url');
+         const response = await fetch('/members/api/get-calendar-url');
           const data = await response.json();
           setFeedUrl(data.url);
         }
@@ -54,7 +54,7 @@ export default function CalendarFeedButton() {
         <Button
           variant="default"
           size="sm"
-          className="flex items-center gap-2 dark:bg-coop-600"
+          className="flex items-center gap-2 bg-coop-500 dark:bg-coop-600"
         >
           <Calendar className="h-4 w-4" />
           Subscribe to Calendar
