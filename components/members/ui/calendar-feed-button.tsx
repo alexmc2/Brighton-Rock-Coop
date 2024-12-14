@@ -84,7 +84,7 @@ export default function CalendarFeedButton() {
                 </>
               ) : (
                 <div className="text-sm text-muted-foreground">
-                  Failed to generate URL. Please try again.
+                  Loading URL...
                 </div>
               )}
             </div>
