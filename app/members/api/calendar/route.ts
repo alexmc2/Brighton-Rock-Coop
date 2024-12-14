@@ -27,8 +27,6 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    //
-
     const { data: events, error } = await supabase
       .from('calendar_events')
       .select(
