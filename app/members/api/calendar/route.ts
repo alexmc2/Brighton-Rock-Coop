@@ -31,12 +31,12 @@
 //     .from('calendar_events')
 //     .select(
 //       `
-//     id,
-//     title,
-//     description,
-//     start_time,
-//     end_time,
-//     event_type,
+//     id, 
+//     title, 
+//     description, 
+//     start_time, 
+//     end_time, 
+//     event_type, 
 //     category,
 //     subcategory,
 //     duration,
@@ -98,41 +98,6 @@ import { createClient } from '@supabase/supabase-js';
 // Mark this route as dynamic
 export const dynamic = 'force-dynamic';
 
-// Map your Tailwind colors to hex values
-const categoryColors: Record<string, string> = {
-  'General Meeting': '#3B82F6', // blue-500
-  'Sub Meeting': '#6366F1', // indigo-500
-  Allocations: '#14B8A6', // teal-500
-  Social: '#22C55E', // green-500
-  'P4P Visit': '#EF4444', // red-500
-  Garden: '#A855F7', // purple-500
-  AGM: '#F97316', // orange-500
-  EGM: '#EC4899', // pink-500
-  'General Maintenance': '#EAB308', // yellow-500
-  Training: '#84CC16', // lime-500
-  Treasury: '#F59E0B', // amber-500
-  Development: '#10B981', // emerald-500
-  Miscellaneous: '#6B7280', // gray-500
-};
-
-// Helper function to get the correct category name
-function getEventCategory(event: any) {
-  switch (event.event_type) {
-    case 'social_event':
-      return 'Social';
-    case 'garden_task':
-      return 'Garden';
-    case 'development_event':
-      return 'Development';
-    case 'maintenance_visit':
-      return 'P4P Visit';
-    case 'manual':
-      return event.category;
-    default:
-      return event.category || 'Miscellaneous';
-  }
-}
-
 // Simple function to format the title
 function formatEventTitle(event: any) {
   const prefix = 'Co-op';
@@ -190,16 +155,13 @@ export async function GET(request: NextRequest) {
 
     events?.forEach((event) => {
       try {
-        const category = getEventCategory(event);
-        const color = categoryColors[category] || '#6B7280'; // default to gray if no match
-
         calendar.createEvent({
           start: new Date(event.start_time),
           end: new Date(event.end_time),
           summary: formatEventTitle(event),
           description: event.description || '',
           uid: event.id,
-          categories: [{ name: category }],
+          categories: [{ name: event.category }],
         });
       } catch (eventError) {
         console.error('Error creating event:', event.title, eventError);
@@ -211,8 +173,6 @@ export async function GET(request: NextRequest) {
         'Content-Type': 'text/calendar; charset=utf-8',
         'Content-Disposition':
           'attachment; filename="brighton-rock-calendar.ics"',
-        'Cache-Control': 'no-store, no-cache, must-revalidate',
-        Pragma: 'no-cache',
       },
     });
   } catch (error) {
