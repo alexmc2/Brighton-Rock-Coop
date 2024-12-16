@@ -2,11 +2,22 @@
 
 import React from 'react';
 import Carousel from './Carousel';
-import { getCloudinaryImages } from '../utils/cloudinary';
 import FadeWrapper from './FadeWrapper';
 
+async function getImages() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/images`, {
+    next: { revalidate: 0 }, // This ensures fresh data on each request
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch images');
+  }
+  
+  return response.json();
+}
+
 export default async function GallerySection() {
-  const images = await getCloudinaryImages();
+  const images = await getImages();
 
   return (
     <section className="pb-10 bg-background">

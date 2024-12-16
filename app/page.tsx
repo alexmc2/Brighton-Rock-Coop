@@ -9,7 +9,7 @@ import Header from '@/components/Header';
 
 const Home: React.FC = () => {
   return (
-      <div>
+    <div>
       <Header />
       <Hero
         title="Welcome to Brighton Rock"

@@ -1,5 +1,6 @@
 // lib/cloudinary.ts
 import { v2 as cloudinary } from 'cloudinary';
+import { NextResponse } from 'next/server';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -10,7 +11,6 @@ cloudinary.config({
 export async function getCloudinaryImages() {
   try {
     const result = await cloudinary.search
-
       .expression('folder:coop-images/*')
       .sort_by('public_id', 'desc')
       .max_results(500)
@@ -25,5 +25,16 @@ export async function getCloudinaryImages() {
   } catch (error) {
     console.error('Error fetching images:', error);
     return [];
+  }
+}
+
+// API Route Handler
+export async function handleImageRequest() {
+  try {
+    const images = await getCloudinaryImages();
+    return NextResponse.json(images);
+  } catch (error) {
+    console.error('Error in API route:', error);
+    return NextResponse.json({ error: 'Failed to fetch images' }, { status: 500 });
   }
 }

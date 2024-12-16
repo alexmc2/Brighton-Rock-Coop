@@ -25,7 +25,7 @@ export default function ImageUploader({
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/members/api/upload', {
+      const response = await fetch('/members/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -43,15 +43,24 @@ export default function ImageUploader({
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <Input
-        type="file"
-        accept="image/*"
-        onChange={handleUpload}
+    <div className="flex flex-col gap-4 w-full max-w-xs">
+      <Button
+        variant="default"
+        className="w-full relative"
         disabled={isUploading}
-        className="max-w-xs"
-      />
-      {isUploading && <UploadIcon className="animate-spin" />}
+      >
+        <Input
+          type="file"
+          accept="image/*"
+          onChange={handleUpload}
+          disabled={isUploading}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        />
+        <div className="flex items-center justify-center gap-2">
+          <UploadIcon className={isUploading ? 'animate-spin' : ''} />
+          {isUploading ? 'Uploading...' : 'Choose Image'}
+        </div>
+      </Button>
     </div>
   );
 }
