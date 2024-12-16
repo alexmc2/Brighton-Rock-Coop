@@ -1,3 +1,5 @@
+// app/api/images/route.ts
+
 import { getCloudinaryImages } from '@/utils/cloudinary';
 import { NextResponse } from 'next/server';
 

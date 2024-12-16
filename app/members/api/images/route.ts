@@ -1,3 +1,5 @@
+// app/members/api/images/route.ts
+
 import { NextResponse } from 'next/server';
 import { getCloudinaryImages, deleteCloudinaryImage } from '@/utils/cloudinary';
 
