@@ -1,21 +1,10 @@
 import { NextResponse } from 'next/server';
-import { v2 as cloudinary } from 'cloudinary';
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import { getCloudinaryImages, deleteCloudinaryImage } from '@/utils/cloudinary';
 
 export async function GET() {
   try {
-    const result = await cloudinary.search
-      .expression('folder:coop-images/*')
-      .sort_by('public_id', 'desc')
-      .max_results(500)
-      .execute();
-
-    return NextResponse.json(result.resources);
+    const images = await getCloudinaryImages();
+    return NextResponse.json(images);
   } catch (error) {
     console.error('Error fetching images:', error);
     return NextResponse.json(
@@ -36,9 +25,9 @@ export async function DELETE(request: Request) {
       );
     }
 
-    const result = await cloudinary.uploader.destroy(publicId);
+    const success = await deleteCloudinaryImage(publicId);
 
-    if (result.result === 'ok') {
+    if (success) {
       return NextResponse.json({ success: true });
     } else {
       throw new Error('Failed to delete image');

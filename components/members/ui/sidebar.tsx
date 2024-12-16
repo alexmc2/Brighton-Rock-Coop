@@ -179,7 +179,7 @@ export default function Sidebar({
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.3"
+                      strokeWidth="2.6"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
@@ -299,7 +299,7 @@ export default function Sidebar({
                 <SidebarLink href="/members/gallery">
                   <div className="flex items-center">
                     <svg
-                      className={`shrink-0 lucide lucide-calendar-check -translate-x-[1px] ${
+                      className={`shrink-0 -translate-x-[1px] ${
                         segments.includes('/members/gallery')
                           ? 'text-violet-500'
                           : 'text-gray-400 dark:text-gray-500'
@@ -310,13 +310,12 @@ export default function Sidebar({
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.3"
+                      strokeWidth="2.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      <path d="M8 2v4" />
-                      <path d="M16 2v4" />
-                      <rect width="18" height="18" x="3" y="4" rx="2" />
-                      <path d="M3 10h18" />
-                      <path d="m9 16 2 2 4-4" />
+                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                      <circle cx="12" cy="13" r="3" />
                     </svg>
 
                     <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
@@ -325,8 +324,8 @@ export default function Sidebar({
                   </div>
                 </SidebarLink>
               </li>
-              {/* Community */}
-              <SidebarLinkGroup open={segments.includes('/members/community')}>
+
+              {/* <SidebarLinkGroup open={segments.includes('/members/community')}>
                 {(handleClick, open) => {
                   return (
                     <>
@@ -361,7 +360,7 @@ export default function Sidebar({
                               Community (Demo)
                             </span>
                           </div>
-                          {/* Icon */}
+                    
                           <div className="flex shrink-0 ml-2">
                             <svg
                               className={`w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 ${
@@ -439,7 +438,7 @@ export default function Sidebar({
                 }}
               </SidebarLinkGroup>
               {/* Settings */}
-              <SidebarLinkGroup open={segments.includes('settings')}>
+              {/* <SidebarLinkGroup open={segments.includes('settings')}>
                 {(handleClick, open) => {
                   return (
                     <>
@@ -477,7 +476,7 @@ export default function Sidebar({
                               Settings (Demo)
                             </span>
                           </div>
-                          {/* Icon */}
+                        
                           <div className="flex shrink-0 ml-2">
                             <svg
                               className={`w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 ${
@@ -539,7 +538,7 @@ export default function Sidebar({
                     </>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
             </ul>
           </div>
           {/* More group */}
@@ -727,7 +726,7 @@ export default function Sidebar({
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.3"
+                      strokeWidth="2.9"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >

@@ -1,3 +1,4 @@
+// components/members/gallery/gallery-manager.tsx
 'use client';
 
 import { useState } from 'react';

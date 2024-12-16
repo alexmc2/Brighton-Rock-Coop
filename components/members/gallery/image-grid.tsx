@@ -1,3 +1,4 @@
+// components/members/gallery/image-grid.tsx
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';

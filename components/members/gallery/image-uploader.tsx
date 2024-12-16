@@ -1,3 +1,4 @@
+// components/members/gallery/image-uploader.tsx
 'use client';
 
 import { useState } from 'react';

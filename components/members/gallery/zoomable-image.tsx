@@ -1,3 +1,4 @@
+// components/members/gallery/zoomable-image.tsx
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/members/ui/dialog';
 import { DetailedHTMLProps, ImgHTMLAttributes } from 'react';

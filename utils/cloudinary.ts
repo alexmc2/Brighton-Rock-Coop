@@ -17,8 +17,8 @@ export async function getCloudinaryImages() {
       .execute();
 
     return result.resources.map((resource: any) => ({
-      url: resource.secure_url,
-      alt: resource.public_id.split('/').pop(),
+      public_id: resource.public_id,
+      secure_url: resource.secure_url,
       width: resource.width,
       height: resource.height,
     }));
@@ -28,7 +28,16 @@ export async function getCloudinaryImages() {
   }
 }
 
-// API Route Handler
+export async function deleteCloudinaryImage(publicId: string) {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+    return result.result === 'ok';
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    return false;
+  }
+}
+
 export async function handleImageRequest() {
   try {
     const images = await getCloudinaryImages();
