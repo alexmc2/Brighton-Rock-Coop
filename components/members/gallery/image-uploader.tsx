@@ -26,7 +26,8 @@ export default function ImageUploader({
     formData.append('file', file);
 
     try {
-      const response = await fetch('/members/api/upload', {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+      const response = await fetch(`${baseUrl}/members/api/upload`, {
         method: 'POST',
         body: formData,
       });

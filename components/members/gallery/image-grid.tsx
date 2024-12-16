@@ -34,7 +34,8 @@ export default function ImageGrid({
   const fetchImages = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/members/api/images');
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+      const response = await fetch(`${baseUrl}/members/api/images`);
       const data = await response.json();
       setImages(data);
     } catch (error) {
