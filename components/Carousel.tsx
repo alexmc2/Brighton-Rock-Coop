@@ -1,11 +1,15 @@
 'use client';
-import React, { useState } from 'react';
-import { Carousel as ReactCarousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import React from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import FadeWrapper from './FadeWrapper';
-
+import {
+  Carousel as ShadcnCarousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import { cn } from '@/lib/utils';
+import Autoplay from 'embla-carousel-autoplay';
 
 interface CarouselImage {
   url: string;
@@ -19,75 +23,87 @@ interface CarouselProps {
 }
 
 const Carousel: React.FC<CarouselProps> = ({ images }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [api, setApi] = React.useState<any>(null);
+  const autoplay = React.useRef(
+    Autoplay({
+      delay: 7000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+      rootNode: (emblaRoot) => emblaRoot.parentElement,
+    })
+  );
 
-  const handleChange = (index: number) => {
-    setCurrentSlide(index);
-  };
+  const handleNavigation = React.useCallback(
+    (direction: 'prev' | 'next') => {
+      // Stop autoplay smoothly
+      autoplay.current.stop();
+
+      // Wait for any current transition to complete
+      setTimeout(() => {
+        if (direction === 'prev') {
+          api?.scrollPrev();
+        } else {
+          api?.scrollNext();
+        }
+      }, 50);
+    },
+    [api]
+  );
 
   return (
-    <div className="relative max-w-4xl mx-auto">
-      <ReactCarousel
-        showThumbs={false}
-        showStatus={false}
-        showIndicators={false}
-        autoPlay={true}
-        interval={4000}
-        infiniteLoop={true}
-        onChange={handleChange}
-        className="max-w-full"
-        renderArrowPrev={(clickHandler, hasPrev) => (
-          <button
-            onClick={clickHandler}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full z-10 transition"
-            style={{ left: '10px' }}
-          >
-            <ChevronLeft size={24} />
-          </button>
-        )}
-        renderArrowNext={(clickHandler, hasNext) => (
-          <button
-            onClick={clickHandler}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-black bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full z-10 transition"
-            style={{ right: '10px' }}
-          >
-            <ChevronRight size={24} />
-          </button>
-        )}
+    <div className="relative max-w-4xl mx-auto px-12">
+      <ShadcnCarousel
+        opts={{
+          align: 'center',
+          loop: true,
+          skipSnaps: false,
+          duration: 40,
+          dragFree: false,
+          inViewThreshold: 1,
+          watchDrag: false,
+        }}
+        plugins={[autoplay.current]}
+        setApi={setApi}
+        className="w-full"
       >
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="relative w-full flex items-center justify-center carousel-slide"
-            style={{
-              height: '0',
-              paddingBottom: '56.25%', // 16:9 aspect ratio
-            }}
-          >
-            <FadeWrapper duration={700} triggerOnce={false}>
-              <Image
-                src={image.url}
-                alt={image.alt || ''}
-                fill
+        <CarouselContent>
+          {images.map((image, index) => (
+            <CarouselItem key={index}>
+              <div
+                className="relative w-full flex items-center justify-center carousel-slide "
                 style={{
-                  objectFit: 'contain',
+                  height: '0',
+                  paddingBottom: '56.25%', // 16:9 aspect ratio
                 }}
-                sizes="(max-width: 640px) 100vw, 75vw"
-                quality={100}
-              />
-            </FadeWrapper>
-          </div>
-        ))}
-      </ReactCarousel>
+              >
+                <Image
+                  src={image.url}
+                  alt={image.alt || ''}
+                  fill
+                  style={{
+                    objectFit: 'contain',
+                  }}
+                  sizes="(max-width: 640px) 100vw, 75vw"
+                  quality={100}
+                  priority={index === 0}
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious
+          className="left-0"
+          onClick={() => handleNavigation('prev')}
+        />
+        <CarouselNext
+          className="right-0"
+          onClick={() => handleNavigation('next')}
+        />
+      </ShadcnCarousel>
       <style jsx global>{`
         @media (max-width: 640px) {
           .carousel-slide {
             padding-bottom: 75% !important; // 4:3 aspect ratio for mobile
-          }
-          .carousel .slide img {
-            object-fit: contain !important;
-            max-height: 100% !important;
-            max-width: 100% !important;
           }
         }
       `}</style>

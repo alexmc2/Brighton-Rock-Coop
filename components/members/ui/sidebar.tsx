@@ -183,8 +183,8 @@ export default function Sidebar({
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
-                      <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/>
-                      <path d="m9 11 3 3L22 4"/>
+                      <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5" />
+                      <path d="m9 11 3 3L22 4" />
                     </svg>
                     <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                       Todos
@@ -252,6 +252,7 @@ export default function Sidebar({
                   </div>
                 </SidebarLink>
               </li>
+
               {/* Doodle Polls */}
               <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 ${
@@ -285,6 +286,41 @@ export default function Sidebar({
 
                     <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                       Doodle Polls
+                    </span>
+                  </div>
+                </SidebarLink>
+              </li>
+
+              <li
+                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 ${
+                  segments.includes('gallery') ? 'bg-violet-500/[0.12]' : ''
+                }`}
+              >
+                <SidebarLink href="/members/gallery">
+                  <div className="flex items-center">
+                    <svg
+                      className={`shrink-0 lucide lucide-calendar-check -translate-x-[1px] ${
+                        segments.includes('/members/gallery')
+                          ? 'text-violet-500'
+                          : 'text-gray-400 dark:text-gray-500'
+                      }`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.3"
+                    >
+                      <path d="M8 2v4" />
+                      <path d="M16 2v4" />
+                      <rect width="18" height="18" x="3" y="4" rx="2" />
+                      <path d="M3 10h18" />
+                      <path d="m9 16 2 2 4-4" />
+                    </svg>
+
+                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                      Co-op Image Gallery
                     </span>
                   </div>
                 </SidebarLink>
