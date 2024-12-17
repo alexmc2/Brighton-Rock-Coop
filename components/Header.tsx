@@ -30,14 +30,14 @@ const Header: React.FC = () => {
       )}
     >
       <div className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-4">
-        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
+        <div className="flex items-center justify-between h-12 sm:h-14 md:h-16">
           <div className="flex items-center w-full justify-between lg:justify-start px-2 sm:px-3">
             {' '}
             {/* Updated: Allow full width and space between */}
             <ThemeToggle />
             <Link
               href="/"
-              className="font-bold text-lg sm:text-xl md:text-2xl mx-auto lg:mx-0" // Center text within its container on mobile
+              className="font-bold text-base sm:text-lg md:text-xl mx-auto lg:mx-0" // Center text within its container on mobile
             >
               <span className="block sm:hidden text-center">
                 BRIGHTON ROCK CO-OP
