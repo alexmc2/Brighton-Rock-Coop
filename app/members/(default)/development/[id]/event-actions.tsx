@@ -226,20 +226,20 @@ export default function EventActions({ initiative }: EventActionsProps) {
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">
+        <DialogContent className="w-[95vw] max-w-lg p-4 sm:p-6 bg-white dark:bg-slate-800 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Event</DialogTitle>
           </DialogHeader>
 
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
+            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-3">
               <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleEdit} className="space-y-4">
+          <form onSubmit={handleEdit} className="space-y-3">
             {/* Title & Category */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="col-span-2 sm:col-span-1">
                 <Label
                   htmlFor="title"
@@ -288,14 +288,14 @@ export default function EventActions({ initiative }: EventActionsProps) {
             <div>
               <Label
                 htmlFor="description"
-                className="text-slate-900 dark:text-slate-300"
+                className="text-slate-900 dark:text-slate-300 text-sm"
               >
                 Description
               </Label>
               <Textarea
                 id="description"
                 required
-                className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-20"
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -304,7 +304,7 @@ export default function EventActions({ initiative }: EventActionsProps) {
             </div>
 
             {/* Status & Priority */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label
                   htmlFor="status"
@@ -354,7 +354,7 @@ export default function EventActions({ initiative }: EventActionsProps) {
             </div>
 
             {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label
                   htmlFor="event_date"
@@ -390,7 +390,7 @@ export default function EventActions({ initiative }: EventActionsProps) {
             </div>
 
             {/* Duration & Location */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <div className="flex items-center space-x-2 mb-2">
                   <Label
@@ -457,7 +457,7 @@ export default function EventActions({ initiative }: EventActionsProps) {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-2 pt-2">
               <Button
                 type="button"
                 variant="ghost"
@@ -484,7 +484,7 @@ export default function EventActions({ initiative }: EventActionsProps) {
           <Trash2 className="h-4 w-4 mr-1" />
           Delete
         </Button>
-        <AlertDialogContent>
+        <AlertDialogContent className="w-[95vw] max-w-lg">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>

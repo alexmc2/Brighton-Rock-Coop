@@ -161,24 +161,24 @@ export default function NewEventModal() {
             Add Event
           </Button>
         </DialogTrigger>
-        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">
+        <DialogContent className="w-[95vw] max-w-lg p-4 sm:p-6 bg-white dark:bg-slate-800 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>New Event</DialogTitle>
           </DialogHeader>
 
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
+            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-3">
               <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {/* Title & Category */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2 sm:col-span-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="col-span-1">
                 <Label
                   htmlFor="title"
-                  className="text-slate-900 dark:text-slate-300"
+                  className="text-slate-900 dark:text-slate-300 text-sm"
                 >
                   Title
                 </Label>
@@ -188,13 +188,13 @@ export default function NewEventModal() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
                 />
               </div>
-              <div className="col-span-2 sm:col-span-1">
+              <div className="col-span-1">
                 <Label
                   htmlFor="category"
-                  className="text-slate-900 dark:text-slate-300"
+                  className="text-slate-900 dark:text-slate-300 text-sm"
                 >
                   Category
                 </Label>
@@ -204,7 +204,7 @@ export default function NewEventModal() {
                     setCategory(value as DevelopmentCategory)
                   }
                 >
-                  <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
+                  <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -226,14 +226,14 @@ export default function NewEventModal() {
             <div>
               <Label
                 htmlFor="description"
-                className="text-slate-900 dark:text-slate-300"
+                className="text-slate-900 dark:text-slate-300 text-sm"
               >
                 Description
               </Label>
               <Textarea
                 id="description"
                 required
-                className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-20"
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -242,11 +242,11 @@ export default function NewEventModal() {
             </div>
 
             {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label
                   htmlFor="event_date"
-                  className="text-slate-900 dark:text-slate-300"
+                  className="text-slate-900 dark:text-slate-300 text-sm"
                 >
                   Date
                 </Label>
@@ -258,13 +258,13 @@ export default function NewEventModal() {
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
                 />
               </div>
               <div>
                 <Label
                   htmlFor="start_time"
-                  className="text-slate-900 dark:text-slate-300"
+                  className="text-slate-900 dark:text-slate-300 text-sm"
                 >
                   Start Time
                 </Label>
@@ -275,18 +275,18 @@ export default function NewEventModal() {
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
                 />
               </div>
             </div>
 
             {/* Duration & Location */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <div className="flex items-center space-x-2 mb-2">
+                <div className="flex items-center space-x-2 mb-1">
                   <Label
                     htmlFor="duration"
-                    className="text-slate-900 dark:text-slate-300"
+                    className="text-slate-900 dark:text-slate-300 text-sm"
                   >
                     Duration (hours)
                   </Label>
@@ -308,13 +308,13 @@ export default function NewEventModal() {
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
                 />
               </div>
               <div>
                 <Label
                   htmlFor="location"
-                  className="text-slate-900 dark:text-slate-300"
+                  className="text-slate-900 dark:text-slate-300 text-sm"
                 >
                   Location
                 </Label>
@@ -323,32 +323,30 @@ export default function NewEventModal() {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   disabled={isSubmitting}
-                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                  className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
                 />
               </div>
             </div>
 
             {/* Location & Open to Everyone */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-center">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="openToEveryone"
-                    label="Open to everyone"
-                    checked={openToEveryone}
-                    onChange={setOpenToEveryone}
-                    disabled={isSubmitting}
-                  />
-                  <Tooltip
-                    content="Check this box to invite all co-op members and create an event participant list"
-                    bg="dark"
-                    size="md"
-                    position="top"
-                    className="ml-2"
-                  >
-                    <Info className="h-4 w-4 text-slate-500" />
-                  </Tooltip>
-                </div>
+            <div className="flex items-center">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="openToEveryone"
+                  label="Open to everyone"
+                  checked={openToEveryone}
+                  onChange={setOpenToEveryone}
+                  disabled={isSubmitting}
+                />
+                <Tooltip
+                  content="Check this box to invite all co-op members and create an event participant list"
+                  bg="dark"
+                  size="md"
+                  position="top"
+                  className="ml-1"
+                >
+                  <Info className="h-4 w-4 text-slate-500" />
+                </Tooltip>
               </div>
             </div>
 
@@ -356,7 +354,7 @@ export default function NewEventModal() {
             <div>
               <Label
                 htmlFor="priority"
-                className="text-slate-900 dark:text-slate-300"
+                className="text-slate-900 dark:text-slate-300 text-sm"
               >
                 Priority
               </Label>
@@ -366,7 +364,7 @@ export default function NewEventModal() {
                   setPriority(value as DevelopmentPriority)
                 }
               >
-                <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
+                <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9">
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>
                 <SelectContent>
@@ -379,20 +377,19 @@ export default function NewEventModal() {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-2 pt-2">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => setIsOpen(false)}
+                className="hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>Creating...</>
-                ) : (
+              <Button type="submit" disabled={isSubmitting} variant="default">
+                {isSubmitting ? 'Creating...' : (
                   <>
-                    <Check className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4 mr-1" />
                     Create Event
                   </>
                 )}

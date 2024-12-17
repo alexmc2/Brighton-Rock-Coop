@@ -146,7 +146,7 @@ export default function NewSocialEventModal() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">
+      <DialogContent className="w-[95vw] max-w-lg p-4 sm:p-6 bg-white dark:bg-slate-800 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-slate-900 dark:text-slate-100">
             New Social Event
@@ -154,27 +154,27 @@ export default function NewSocialEventModal() {
         </DialogHeader>
 
         {error && (
-          <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
+          <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-3">
             <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           {/* Title & Category */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="title">Title</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="col-span-1">
+              <Label htmlFor="title" className="text-sm">Title</Label>
               <Input
                 id="title"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 disabled={isSubmitting}
-                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
               />
             </div>
-            <div className="col-span-2 sm:col-span-1">
-              <Label htmlFor="category">Category</Label>
+            <div className="col-span-1">
+              <Label htmlFor="category" className="text-sm">Category</Label>
               <Select
                 value={category}
                 onValueChange={(value: SocialEventCategory) =>
@@ -182,7 +182,7 @@ export default function NewSocialEventModal() {
                 }
                 disabled={isSubmitting}
               >
-                <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700">
+                <SelectTrigger className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -193,9 +193,7 @@ export default function NewSocialEventModal() {
                   <SelectItem value="board_games">Board Games</SelectItem>
                   <SelectItem value="tv">TV</SelectItem>
                   <SelectItem value="book_club">Book Club</SelectItem>
-                  <SelectItem value="christmas_dinner">
-                    Christmas Dinner
-                  </SelectItem>
+                  <SelectItem value="christmas_dinner">Christmas Dinner</SelectItem>
                   <SelectItem value="bike_ride">Bike Ride</SelectItem>
                   <SelectItem value="party">Party</SelectItem>
                   <SelectItem value="hang_out">Hang Out</SelectItem>
@@ -208,22 +206,22 @@ export default function NewSocialEventModal() {
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description" className="text-sm">Description</Label>
             <Textarea
               id="description"
               required
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={isSubmitting}
-              rows={4}
-              className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+              rows={3}
+              className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-20"
             />
           </div>
 
           {/* Date & Time */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <Label htmlFor="event_date">Date</Label>
+              <Label htmlFor="event_date" className="text-sm">Date</Label>
               <Input
                 id="event_date"
                 type="date"
@@ -232,11 +230,11 @@ export default function NewSocialEventModal() {
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
                 disabled={isSubmitting}
-                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
               />
             </div>
             <div>
-              <Label htmlFor="start_time">Start Time</Label>
+              <Label htmlFor="start_time" className="text-sm">Start Time</Label>
               <Input
                 id="start_time"
                 type="time"
@@ -244,16 +242,16 @@ export default function NewSocialEventModal() {
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 disabled={isSubmitting}
-                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
               />
             </div>
           </div>
 
           {/* Duration & Location */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <div className="flex items-center space-x-2 mb-2">
-                <Label htmlFor="duration">Duration (hours)</Label>
+              <div className="flex items-center space-x-2 mb-1">
+                <Label htmlFor="duration" className="text-sm">Duration (hours)</Label>
                 <Tooltip
                   content="Enter duration in steps of 0.5 hours (e.g., 1 = one hour, 1.5 = one and half hours)"
                   bg="dark"
@@ -272,17 +270,17 @@ export default function NewSocialEventModal() {
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
                 disabled={isSubmitting}
-                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
               />
             </div>
             <div>
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location" className="text-sm">Location</Label>
               <Input
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 disabled={isSubmitting}
-                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
               />
             </div>
           </div>
@@ -301,14 +299,14 @@ export default function NewSocialEventModal() {
                 bg="dark"
                 size="md"
                 position="top"
-                className="ml-2"
+                className="ml-1"
               >
                 <Info className="h-4 w-4 text-slate-500" />
               </Tooltip>
             </div>
           </div>
 
-          <div className="flex justify-end space-x-3">
+          <div className="flex justify-end space-x-2 pt-2">
             <Button
               type="button"
               variant="ghost"
@@ -319,7 +317,12 @@ export default function NewSocialEventModal() {
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting} variant="default">
-              {isSubmitting ? 'Creating...' : 'Create Event'}
+              {isSubmitting ? 'Creating...' : (
+                <>
+                  <Plus className="h-4 w-4 mr-1" />
+                  Create Event
+                </>
+              )}
             </Button>
           </div>
         </form>

@@ -97,7 +97,7 @@ const InitiativeCard: React.FC<InitiativeCardProps> = ({
   };
 
   return (
-    <Card className="flex flex-col h-full bg-white dark:bg-slate-800 shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200">
+    <Card className="border border-gray-300/50 dark:border-gray-700 flex flex-col h-full bg-white dark:bg-slate-800 shadow-xs rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
       <div className="p-5 flex flex-col h-full">
         {/* Header with Type Badge and Category - Updated sizing and alignment */}
         <div className="flex justify-start mb-4 pl-0 gap-2">
@@ -125,8 +125,6 @@ const InitiativeCard: React.FC<InitiativeCardProps> = ({
               {initiative.category.replace('_', ' ')}
             </span>
           </div>
-
-          
         </div>
 
         {/* Title */}

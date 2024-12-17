@@ -143,22 +143,22 @@ export default function NewGardenTaskModal() {
             Add Job
           </Button>
         </DialogTrigger>
-        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">
+        <DialogContent className="w-[95vw] max-w-lg p-4 sm:p-6 bg-white dark:bg-slate-800 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>New Garden Job</DialogTitle>
           </DialogHeader>
 
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
+            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-3">
               <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <div>
               <Label
                 htmlFor="title"
-                className="text-slate-900 dark:text-slate-300"
+                className="text-slate-900 dark:text-slate-300 text-sm"
               >
                 Title
               </Label>
@@ -167,14 +167,14 @@ export default function NewGardenTaskModal() {
                 name="title"
                 required
                 placeholder="Enter job title"
-                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-9"
               />
             </div>
 
             <div>
               <Label
                 htmlFor="description"
-                className="text-slate-900 dark:text-slate-300"
+                className="text-slate-900 dark:text-slate-300 text-sm"
               >
                 Description
               </Label>
@@ -183,11 +183,11 @@ export default function NewGardenTaskModal() {
                 name="description"
                 required
                 placeholder="Enter job description"
-                className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700"
+                className="resize-none bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-700 h-20"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label
                   htmlFor="area_id"
@@ -298,7 +298,7 @@ export default function NewGardenTaskModal() {
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-2 pt-2">
               <Button
                 type="button"
                 variant="ghost"
@@ -308,11 +308,9 @@ export default function NewGardenTaskModal() {
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting} variant="default">
-                {isSubmitting ? (
-                  'Creating...'
-                ) : (
+                {isSubmitting ? 'Creating...' : (
                   <>
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4 mr-1" />
                     Create Job
                   </>
                 )}

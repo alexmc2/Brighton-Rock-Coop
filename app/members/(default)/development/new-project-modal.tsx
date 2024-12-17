@@ -98,20 +98,20 @@ export default function NewProjectModal() {
 
       {/* Modal Dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">
+        <DialogContent className="w-[95vw] max-w-lg p-4 sm:p-6 bg-white dark:bg-slate-800 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>New Project</DialogTitle>
           </DialogHeader>
 
           {/* Error Message */}
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
+            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-3">
               <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
             </div>
           )}
 
           {/* Project Creation Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <BaseInitiativeForm
               title={title}
               setTitle={setTitle}
@@ -126,7 +126,7 @@ export default function NewProjectModal() {
             />
 
             {/* Form Actions */}
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-2 pt-2">
               <Button
                 type="button"
                 variant="ghost"
@@ -136,11 +136,9 @@ export default function NewProjectModal() {
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting} variant="default">
-                {isSubmitting ? (
-                  'Creating...'
-                ) : (
+                {isSubmitting ? 'Creating...' : (
                   <>
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4 mr-1" />
                     Create Project
                   </>
                 )}
