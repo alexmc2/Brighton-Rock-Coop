@@ -96,6 +96,7 @@
 
 // export default Carousel;
 
+
 // components/Carousel.tsx
 'use client';
 
@@ -200,3 +201,4 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
 };
 
 export default Carousel;
+              

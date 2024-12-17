@@ -72,11 +72,6 @@
   * {
     @apply border-border;
   }
-
-  body {
-    @apply bg-background text-foreground;
-    overflow-y: scroll; /* Forces scrollbar to be visible always */
-  }
 }
 
 /* Base styles */

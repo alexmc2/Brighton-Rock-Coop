@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Trash2Icon, DownloadIcon } from 'lucide-react';
 import { Button } from '@/components/members/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import ZoomableImage from '@/app/members/(default)/gallery/zoomable-image';
+import Image from 'next/image';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/members/ui/alert-dialog';
+import { ImageGridSkeleton } from './image-grid-skeleton';
 
 interface ImageGridProps {
   refreshTrigger: number;
@@ -26,6 +27,8 @@ interface CloudinaryImage {
   public_id: string;
   secure_url: string;
   created_at: string;
+  width?: number;
+  height?: number;
 }
 
 export default function ImageGrid({
@@ -40,13 +43,19 @@ export default function ImageGrid({
     url: string;
     name: string;
   } | null>(null);
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
   const { toast } = useToast();
 
   const fetchImages = useCallback(async () => {
-    setIsLoading(true);
     try {
+      setIsLoadingImages(true);
+      setIsLoading(true);
+      
       const response = await fetch('/members/api/images');
       const data = await response.json();
+      
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       const sortedImages = data.sort(
         (a: CloudinaryImage, b: CloudinaryImage) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -59,11 +68,13 @@ export default function ImageGrid({
         variant: 'destructive',
       });
     } finally {
+      setIsLoadingImages(false);
       setIsLoading(false);
     }
   }, [setIsLoading, toast]);
 
   useEffect(() => {
+    setIsLoadingImages(true);
     fetchImages();
   }, [refreshTrigger, fetchImages]);
 
@@ -136,6 +147,10 @@ export default function ImageGrid({
     }
   };
 
+  if (isLoadingImages) {
+    return <ImageGridSkeleton />;
+  }
+
   return (
     <>
       <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
@@ -144,11 +159,15 @@ export default function ImageGrid({
             key={image.public_id}
             className="relative group mb-4 break-inside-avoid"
           >
-            <ZoomableImage
+            <Image
               src={image.secure_url}
               alt={image.public_id}
+              width={800}
+              height={600}
               className="rounded-lg cursor-pointer w-full h-auto"
               priority={index < 6}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              quality={85}
             />
             <div className="absolute top-2 right-2 flex gap-2">
               <Button

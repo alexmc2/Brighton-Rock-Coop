@@ -15,17 +15,27 @@ export async function getCloudinaryImages() {
       prefix: 'coop-images/',
       max_results: 500,
       direction: 'desc',
-      sort_by: ['created_at', 'uploaded_at'],
+      sort_by: 'created_at',
     });
 
-    return result.resources.map((resource: any) => ({
-      public_id: resource.public_id,
-      secure_url: resource.secure_url,
-      created_at: resource.created_at,
-      uploaded_at: resource.uploaded_at,
-      width: resource.width,
-      height: resource.height,
-    }));
+    return result.resources.map((resource: any) => {
+      // Create an optimized URL with Cloudinary transformations
+      const optimizedUrl = cloudinary.url(resource.public_id, {
+        transformation: [
+          { width: 'auto', dpr: 'auto', quality: 'auto', fetch_format: 'auto' },
+          { responsive: true, width: 800, crop: 'scale' }
+        ],
+        secure: true
+      });
+
+      return {
+        public_id: resource.public_id,
+        secure_url: optimizedUrl,
+        created_at: resource.created_at,
+        width: resource.width,
+        height: resource.height,
+      };
+    });
   } catch (error) {
     console.error('Error fetching images:', error);
     return [];
@@ -40,4 +50,15 @@ export async function deleteCloudinaryImage(publicId: string) {
     console.error('Error deleting image:', error);
     return false;
   }
+}
+
+// Helper function to generate optimized Cloudinary URLs
+export function getOptimizedImageUrl(publicId: string, width: number = 800) {
+  return cloudinary.url(publicId, {
+    transformation: [
+      { width: 'auto', dpr: 'auto', quality: 'auto', fetch_format: 'auto' },
+      { responsive: true, width: width, crop: 'scale' }
+    ],
+    secure: true
+  });
 }

@@ -73,97 +73,65 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                   <li>
                     <Link
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
+                      href="/members/calendar?category=P4P+Visit"
                     >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
+                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                        <path d="M15 2h-2V0h-2v2H9V0H7v2H5V0H3v2H1a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V3a1 1 0 00-1-1zm-1 12H2V6h12v8z" />
                       </svg>
-                      <span>Form Builder - 23 hours on-demand video</span>
+                      <span>
+                        <span className="font-medium">P4P Visits</span> -{' '}
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Calendar Events
+                        </span>
+                      </span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
+                      href="/members/garden?area=Front+Garden"
                     >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
+                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 118 1a7 7 0 010 14zm0-1.5a5.5 5.5 0 100-11 5.5 5.5 0 000 11zm-1-4.25L4.5 6.5l1-1L8 8l4.5-4.5 1 1L8 9.75l-1-1z" />
                       </svg>
-                      <span>Access Mosaic on mobile and TV</span>
+                      <span>
+                        <span className="font-medium">Front Garden</span> -{' '}
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Garden Tasks
+                        </span>
+                      </span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
+                      href="/members/maintenance?status=urgent"
                     >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
+                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 110 16A8 8 0 018 0zm0 14A6 6 0 108 2a6 6 0 000 12z" />
                       </svg>
-                      <span>Product Update - Q4 2024</span>
+                      <span>
+                        <span className="font-medium">Urgent Maintenance</span> -{' '}
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Open Requests
+                        </span>
+                      </span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
+                      href="/members/doodle-polls?type=social_event"
                     >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
+                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
+                        <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
                       </svg>
-                      <span>Master Digital Marketing Strategy course</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
-                    >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                      </svg>
-                      <span>Dedicated forms for products</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
-                    >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z" />
-                      </svg>
-                      <span>Product Update - Q4 2024</span>
+                      <span>
+                        <span className="font-medium">Social Event Polls</span> -{' '}
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Active Polls
+                        </span>
+                      </span>
                     </Link>
                   </li>
                 </ul>
@@ -177,20 +145,15 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                   <li>
                     <Link
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
+                      href="/members/bug-report"
                     >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
+                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
                         <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
                       </svg>
                       <span>
-                        <span className="font-medium">Messages</span> -{' '}
+                        <span className="font-medium">Feature Requests</span> -{' '}
                         <span className="text-gray-600 dark:text-gray-400">
-                          Conversation / … / Mike Mills
+                          Submit Bug Report
                         </span>
                       </span>
                     </Link>
@@ -198,20 +161,15 @@ export default function SearchModal({ isOpen, setIsOpen }: SearchModalProps) {
                   <li>
                     <Link
                       className="flex items-center p-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700/20 rounded-lg"
-                      href="#0"
+                      href="/members/development?type=project"
                     >
-                      <svg
-                        className="fill-current text-gray-400 group-hover:text-white group-hover:text-opacity-50 group-focus-within:text-white group-focus-within:text-opacity-50 shrink-0 mr-3"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
+                      <svg className="fill-current text-gray-400 shrink-0 mr-3" width="16" height="16" viewBox="0 0 16 16">
                         <path d="M14 0H2c-.6 0-1 .4-1 1v14c0 .6.4 1 1 1h8l5-5V1c0-.6-.4-1-1-1zM3 2h10v8H9v4H3V2z" />
                       </svg>
                       <span>
-                        <span className="font-medium">Messages</span> -{' '}
+                        <span className="font-medium">Development</span> -{' '}
                         <span className="text-gray-600 dark:text-gray-400">
-                          Conversation / … / Eva Patrick
+                          Active Projects
                         </span>
                       </span>
                     </Link>
