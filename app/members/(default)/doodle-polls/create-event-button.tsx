@@ -28,7 +28,10 @@ import {
   AlertDialogTitle,
 } from '@/components/members/ui/alert-dialog';
 import { Button } from '@/components/members/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/members/ui/radio-group';
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from '@/components/members/ui/radio-group';
 import { Label } from '@/components/members/ui/label';
 import { CalendarClock, CheckCircle2, CircleSlash, Minus } from 'lucide-react';
 import { format } from 'date-fns';
@@ -116,7 +119,7 @@ export default function CreateEventButton({
               {score.yesCount}
             </div>
             <div className="flex items-center">
-              <CheckCircle2 className="w-4 h-4 text-yellow-500 mr-1" />
+              <Minus className="w-4 h-4 text-yellow-500 mr-1" />
               {score.maybeCount}
             </div>
           </div>
@@ -407,7 +410,9 @@ export default function CreateEventButton({
 
   // Get best option and scores for all options
   const bestOption = getBestOption();
-  const optionScores = options.map((option) => getOptionScore(option.id));
+  const optionScores = options
+    .map((option) => getOptionScore(option.id))
+    .sort((a, b) => b.score - a.score); // Sort by score in descending order
 
   // Auto-select the best option initially
   if (bestOption && !selectedOption) {
@@ -424,7 +429,7 @@ export default function CreateEventButton({
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="w-full max-w-lg bg-white dark:bg-slate-800">
+        <DialogContent className="sm:max-w-lg bg-white dark:bg-slate-900">
           <DialogHeader>
             <DialogTitle className="text-slate-900 dark:text-slate-100">
               Create Event from Poll
@@ -439,9 +444,9 @@ export default function CreateEventButton({
 
           <div className="space-y-4">
             <div>
-              <Label className="text-sm text-slate-900 dark:text-slate-300">
+              {/* <Label className="text-sm text-slate-900 dark:text-slate-300">
                 Select Time Slot
-              </Label>
+              </Label> */}
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
                 Choose when to schedule the event
               </p>
@@ -455,15 +460,18 @@ export default function CreateEventButton({
                   <div
                     key={score.option.id}
                     className={cn(
-                      'flex items-center space-x-3 p-4 rounded-lg border',
-                      score.option.id === bestOption.option.id
-                        ? 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20'
-                        : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700'
+                      'flex items-center space-x-3 p-4 rounded-lg border transition-colors duration-200',
+                      score.option.id === selectedOption
+                        ? 'border-green-200 dark:border-green-800 bg-green-100 dark:bg-green-900/80'
+                        : score.option.id === bestOption.option.id && score.option.id !== selectedOption
+                        ? 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40'
+                        : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/40'
                     )}
                   >
                     <RadioGroupItem
                       value={score.option.id}
                       id={score.option.id}
+                      className="border-slate-300 dark:border-slate-600 text-green-600"
                     />
                     <Label
                       htmlFor={score.option.id}
@@ -482,18 +490,19 @@ export default function CreateEventButton({
             <div className="flex justify-end space-x-3 mt-6">
               <Button
                 type="button"
-                variant="ghost"
+                variant="outline"
                 onClick={() => setIsOpen(false)}
                 disabled={isSubmitting}
-                className="hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
               >
                 Cancel
               </Button>
               <Button
                 type="button"
+                variant="default"
                 disabled={!selectedOption || isSubmitting}
                 onClick={() => setIsAlertOpen(true)}
-                className="bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 dark:hover:bg-slate-600"
+                className="bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
               >
                 {isSubmitting ? 'Creating...' : 'Create Event'}
               </Button>
@@ -503,19 +512,21 @@ export default function CreateEventButton({
       </Dialog>
 
       <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-white dark:bg-slate-900">
           <AlertDialogHeader>
-            <AlertDialogTitle>Create Event</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will close the poll and add the event to the calendar. Do you
-              wish to proceed?
+            <AlertDialogTitle className="text-slate-900 dark:text-slate-100">Create Event</AlertDialogTitle>
+            <AlertDialogDescription className="text-slate-500 dark:text-slate-400">
+              This will close the poll and add the event to the calendar. Do you wish to proceed?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleCreateEvent}
               disabled={isSubmitting}
+              className="bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
             >
               {isSubmitting ? 'Creating...' : 'Yes, create event'}
             </AlertDialogAction>
