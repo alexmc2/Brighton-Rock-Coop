@@ -37,10 +37,7 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
 
   const handleNavigation = React.useCallback(
     (direction: 'prev' | 'next') => {
-      // Stop autoplay smoothly
       autoplay.current.stop();
-
-      // Wait for any current transition to complete
       setTimeout(() => {
         if (direction === 'prev') {
           api?.scrollPrev();
@@ -53,7 +50,7 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   );
 
   return (
-    <div className="relative max-w-4xl mx-auto px-12">
+    <div className="relative w-full">
       <ShadcnCarousel
         opts={{
           align: 'center',
@@ -71,22 +68,13 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <div
-                className="relative w-full flex items-center justify-center carousel-slide "
-                style={{
-                  height: '0',
-                  paddingBottom: '56.25%', // 16:9 aspect ratio
-                }}
-              >
+              <div className="relative w-full h-[50vh] min-h-[300px] md:h-[60vh]">
                 <Image
                   src={image.url}
                   alt={image.alt || ''}
                   fill
-                  style={{
-                    objectFit: 'contain',
-                  }}
-                  sizes="(max-width: 640px) 100vw, 75vw"
-                  quality={100}
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 75vw"
                   priority={index === 0}
                 />
               </div>
@@ -102,13 +90,6 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
           onClick={() => handleNavigation('next')}
         />
       </ShadcnCarousel>
-      <style jsx global>{`
-        @media (max-width: 640px) {
-          .carousel-slide {
-            padding-bottom: 75% !important; // 4:3 aspect ratio for mobile
-          }
-        }
-      `}</style>
     </div>
   );
 };

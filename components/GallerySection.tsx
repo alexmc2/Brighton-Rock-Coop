@@ -10,14 +10,14 @@ async function getImages() {
     const response = await fetch(`${baseUrl}/api/images`, {
       next: { revalidate: 0 },
     });
-    
+
     if (!response.ok) {
       console.error('Failed to fetch images:', response.statusText);
       return [];
     }
-    
+
     const data = await response.json();
-    
+
     return data.map((image: any) => ({
       url: image.secure_url,
       alt: image.public_id.split('/').pop(),
@@ -26,7 +26,7 @@ async function getImages() {
     }));
   } catch (error) {
     console.error('Error in getImages:', error);
-    return []; // Return empty array instead of throwing
+    return [];
   }
 }
 
@@ -34,22 +34,19 @@ export default async function GallerySection() {
   const images = await getImages();
 
   if (!images.length) {
-    return null; // Don't render section if no images
+    return null;
   }
 
   return (
     <section className="pb-10 bg-background">
       <FadeWrapper useCustomAnimation delay={200}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-card rounded-lg shadow-sm p-8">
-            <h2 className="text-xl md:text-2xl font-bold mb-7 text-foreground text-center">
+          <div className="bg-card rounded-lg shadow-sm p-4 sm:p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-bold mb-6 text-foreground text-center">
               Gallery
             </h2>
-
-            <div className="max-w-4xl mx-auto">
-              <div className="relative w-full">
-                <Carousel images={images} />
-              </div>
+            <div className="w-full max-w-4xl mx-auto">
+              <Carousel images={images} />
             </div>
           </div>
         </div>
