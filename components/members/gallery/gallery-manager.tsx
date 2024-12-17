@@ -20,7 +20,7 @@ export default function GalleryManager() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-4">
         <ImageUploader 
           onSuccess={() => {
             handleRefresh();

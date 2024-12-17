@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Trash2Icon } from 'lucide-react';
+import { Trash2Icon, DownloadIcon } from 'lucide-react';
 import { Button } from '@/components/members/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import ZoomableImage from '@/components/members/gallery/zoomable-image';
@@ -22,13 +22,21 @@ interface ImageGridProps {
   setIsLoading: (loading: boolean) => void;
 }
 
+interface CloudinaryImage {
+  public_id: string;
+  secure_url: string;
+  created_at: string;
+}
+
 export default function ImageGrid({
   refreshTrigger,
   setIsLoading,
 }: ImageGridProps) {
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<CloudinaryImage[]>([]);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showDownloadDialog, setShowDownloadDialog] = useState(false);
   const [imageToDelete, setImageToDelete] = useState<string | null>(null);
+  const [imageToDownload, setImageToDownload] = useState<{ url: string; name: string } | null>(null);
   const { toast } = useToast();
 
   const fetchImages = useCallback(async () => {
@@ -36,7 +44,13 @@ export default function ImageGrid({
     try {
       const response = await fetch('/members/api/images');
       const data = await response.json();
-      setImages(data);
+      // Sort images by creation date, newest first (top-left)
+      const sortedImages = data.sort(
+        (a: CloudinaryImage, b: CloudinaryImage) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+
+      setImages(sortedImages);
     } catch (error) {
       toast({
         title: 'Error',
@@ -85,24 +99,76 @@ export default function ImageGrid({
     }
   };
 
+  const handleDownloadClick = (imageUrl: string, fileName: string) => {
+    setImageToDownload({ url: imageUrl, name: fileName });
+    setShowDownloadDialog(true);
+  };
+
+  const handleDownload = async () => {
+    if (!imageToDownload) return;
+
+    try {
+      const response = await fetch(imageToDownload.url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${imageToDownload.name}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: 'Success',
+        description: 'Image download started',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to download image',
+        variant: 'destructive',
+      });
+    } finally {
+      setShowDownloadDialog(false);
+      setImageToDownload(null);
+    }
+  };
+
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {images.map((image) => (
-          <div key={image.public_id} className="relative group">
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+        {images.map((image, index) => (
+          <div
+            key={image.public_id}
+            className="relative group break-inside-avoid mb-4"
+          >
             <ZoomableImage
               src={image.secure_url}
               alt={image.public_id}
-              className="rounded-lg cursor-pointer"
+              className="rounded-lg cursor-pointer w-full h-auto"
+              priority={index < 6}
             />
-            <Button
-              variant="destructive"
-              size="icon"
-              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={() => handleDeleteClick(image.public_id)}
-            >
-              <Trash2Icon className="h-4 w-4" />
-            </Button>
+            <div className="absolute top-2 right-2 flex gap-2">
+              <Button
+                variant="secondary"
+                size="icon"
+                className="md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+                onClick={() =>
+                  handleDownloadClick(image.secure_url, image.public_id)
+                }
+              >
+                <DownloadIcon className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="destructive"
+                size="icon"
+                className="md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+                onClick={() => handleDeleteClick(image.public_id)}
+              >
+                <Trash2Icon className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         ))}
       </div>
@@ -112,17 +178,37 @@ export default function ImageGrid({
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this
-              image from the main website gallery.
+              Deleting this image will permanently remove it from the Co-op
+              website gallery. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-red-600 text-white hover:bg-red-700 dark:hover:bg-red-700 dark:bg-red-600"
+              className="transition-all duration-600 ease-in-out bg-red-600 text-white hover:bg-red-700 dark:hover:bg-red-700 dark:bg-red-600"
             >
               Delete Image
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Download Image</AlertDialogTitle>
+            <AlertDialogDescription>
+              Would you like to download this image?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDownload}
+              className="transition-all duration-300 ease-in-out"
+            >
+              Download
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

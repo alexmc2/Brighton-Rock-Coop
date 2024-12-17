@@ -44,7 +44,7 @@ export default function ImageUploader({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full max-w-xs">
+    <div className="flex flex-col gap-4 w-44 max-w-xs">
       <Button
         variant="default"
         className="w-full relative"
@@ -59,7 +59,7 @@ export default function ImageUploader({
         />
         <div className="flex items-center justify-center gap-2">
           <UploadIcon className={isUploading ? 'animate-spin' : ''} />
-          {isUploading ? 'Uploading...' : 'Choose Image'}
+          {isUploading ? 'Uploading...' : 'Upload Image'}
         </div>
       </Button>
     </div>
