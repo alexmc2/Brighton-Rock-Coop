@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Trash2Icon, DownloadIcon } from 'lucide-react';
 import { Button } from '@/components/members/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import Image from 'next/image';
+import ZoomableImage from './zoomable-image';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -159,15 +159,13 @@ export default function ImageGrid({
             key={image.public_id}
             className="relative group mb-4 break-inside-avoid"
           >
-            <Image
+            <ZoomableImage
               src={image.secure_url}
               alt={image.public_id}
-              width={800}
-              height={600}
               className="rounded-lg cursor-pointer w-full h-auto"
               priority={index < 6}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              quality={85}
+              quality={100}
             />
             <div className="absolute top-2 right-2 flex gap-2">
               <Button

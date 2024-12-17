@@ -39,7 +39,7 @@ export default function Header({
           <div className="flex">
             {/* Hamburger button */}
             <button
-              className="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 lg:hidden"
+              className="text-gray-500 dark:text-slate-300 hover:text-gray-600 dark:hover:text-gray-400 lg:hidden"
               aria-controls="sidebar"
               aria-expanded={sidebarOpen}
               onClick={() => {
@@ -72,7 +72,7 @@ export default function Header({
               >
                 <span className="sr-only">Search</span>
                 <svg
-                  className="fill-current text-gray-500/80 dark:text-gray-400/80"
+                  className="fill-current text-slate-500/80 dark:text-slate-300/80"
                   width={16}
                   height={16}
                   viewBox="0 0 16 16"
@@ -91,7 +91,7 @@ export default function Header({
             <DropdownHelp align="right" /> */}
             <ThemeToggle />
             {/*  Divider */}
-            <hr className="w-px h-6 bg-gray-200 dark:bg-gray-700/60 border-none" />
+            <hr className="w-px h-6 bg-slate-200 dark:bg-slate-700/60 border-none" />
             <DropdownProfile align="end" />
           </div>
         </div>

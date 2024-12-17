@@ -241,7 +241,7 @@ export default async function Dashboard() {
           className="absolute right-0 top-0 -mt-4 mr-16 pointer-events-none hidden xl:block"
           aria-hidden="true"
         >
-          <svg
+          {/* <svg
             width="319"
             height="198"
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -306,15 +306,15 @@ export default async function Dashboard() {
                 />
               </g>
             </g>
-          </svg>
+          </svg> */}
         </div>
 
         {/* Content */}
-        <div className="relative ">
-          <h1 className="text-xl md:text-3xl text-slate-50 font-semibold mb-1 md:py-2 py-3 md:px-2 px-2">
+        <div className="relative md:p-2 p-2">
+          <h1 className="text-xl md:text-3xl text-slate-50 dark:text-slate-200 font-semibold pb-4 md:pb-4">
             Welcome to the Brighton Rock Co-op Management App, {name} 👋
           </h1>
-          <p className="text-slate-100 text-md md:text-xl md:px-2 px-2">
+          <p className="dark:text-slate-300 text-slate-100 text-md md:text-xl ">
             Here&apos;s what&apos;s happening in the co-op today:
           </p>
         </div>

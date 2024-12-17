@@ -1,6 +1,5 @@
 // lib/cloudinary.ts
 import { v2 as cloudinary } from 'cloudinary';
-import { NextResponse } from 'next/server';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -21,11 +20,13 @@ export async function getCloudinaryImages() {
     return result.resources.map((resource: any) => {
       // Create an optimized URL with Cloudinary transformations
       const optimizedUrl = cloudinary.url(resource.public_id, {
+        format: 'webp', // Force WebP format
+        quality: 'auto:best', // High-quality auto optimization
         transformation: [
-          { width: 'auto', dpr: 'auto', quality: 'auto', fetch_format: 'auto' },
-          { responsive: true, width: 800, crop: 'scale' }
+          { width: 'auto', dpr: 'auto', fetch_format: 'auto' },
+          { responsive: true, width: 800, crop: 'scale' },
         ],
-        secure: true
+        secure: true,
       });
 
       return {
@@ -55,10 +56,12 @@ export async function deleteCloudinaryImage(publicId: string) {
 // Helper function to generate optimized Cloudinary URLs
 export function getOptimizedImageUrl(publicId: string, width: number = 800) {
   return cloudinary.url(publicId, {
+    format: 'webp',
+    quality: 'auto:best',
     transformation: [
-      { width: 'auto', dpr: 'auto', quality: 'auto', fetch_format: 'auto' },
-      { responsive: true, width: width, crop: 'scale' }
+      { width: 'auto', dpr: 'auto', fetch_format: 'auto' },
+      { width: width, crop: 'scale' },
     ],
-    secure: true
+    secure: true,
   });
 }

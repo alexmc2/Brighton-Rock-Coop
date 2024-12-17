@@ -7,6 +7,7 @@ interface ZoomableImageProps extends Omit<DetailedHTMLProps<ImgHTMLAttributes<HT
   src: string;
   alt: string;
   priority?: boolean;
+  quality?: number;
 }
 
 export default function ZoomableImage({

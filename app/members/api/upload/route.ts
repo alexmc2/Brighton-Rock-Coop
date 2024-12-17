@@ -26,6 +26,13 @@ export async function POST(request: Request) {
           {
             folder: 'coop-images',
             resource_type: 'auto',
+            format: 'webp',
+            quality: 'auto',
+            fetch_format: 'auto',
+            transformation: [
+              { width: 'auto', crop: 'scale' },
+              { quality: 'auto:best' }
+            ]
           },
           (error, result) => {
             if (error) reject(error);

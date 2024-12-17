@@ -54,10 +54,10 @@ export default function DoodlePollsList({
   // Load the saved preference when component mounts
   useEffect(() => {
     const savedShowClosed = localStorage.getItem('showClosedPolls');
-    if (savedShowClosed !== null) {
+    if (savedShowClosed !== null && savedShowClosed !== showClosed) {
       setShowClosed(savedShowClosed);
     }
-  }, []);
+  }, [setShowClosed, showClosed]);
 
   // Save preference whenever it changes
   useEffect(() => {
