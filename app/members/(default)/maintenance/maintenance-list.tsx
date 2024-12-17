@@ -1,7 +1,7 @@
 // app/(default)/maintenance/maintenance-list.tsx
 'use client';
 
-import { useState } from 'react';
+import { useQueryState } from 'nuqs';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import {
@@ -36,27 +36,34 @@ type HouseFilter = 'all' | '399' | '397' | '395';
 const ITEMS_PER_PAGE = 10;
 
 export default function MaintenanceList({ requests }: MaintenanceListProps) {
-  const [statusFilter, setStatusFilter] = useState<'all' | MaintenanceStatus>(
-    'all'
-  );
-  const [priorityFilter, setPriorityFilter] = useState<
-    'all' | MaintenancePriority
-  >('all');
-  const [houseFilter, setHouseFilter] = useState<HouseFilter>('all');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('created_desc');
-  const [currentPage, setCurrentPage] = useState(1);
+  // State management with URL parameters
+  const [status, setStatus] = useQueryState('status', {
+    defaultValue: 'all',
+    parse: (value): 'all' | MaintenanceStatus => value as any,
+  });
+  const [priority, setPriority] = useQueryState('priority', {
+    defaultValue: 'all',
+    parse: (value): 'all' | MaintenancePriority => value as any,
+  });
+  const [house, setHouse] = useQueryState('house', {
+    defaultValue: 'all',
+    parse: (value): HouseFilter => value as HouseFilter,
+  });
+  const [sortOrder, setSortOrder] = useQueryState<SortOrder>('sortOrder', {
+    defaultValue: 'created_desc',
+    parse: (value): SortOrder => value as SortOrder,
+  });
+  const [currentPage, setCurrentPage] = useQueryState('page', {
+    defaultValue: '1',
+    parse: (value) => value,
+  });
 
   // Filter and sort requests
   const filteredRequests = requests
     .filter((request) => {
-      if (statusFilter !== 'all' && request.status !== statusFilter)
-        return false;
-      if (priorityFilter !== 'all' && request.priority !== priorityFilter)
-        return false;
-      if (
-        houseFilter !== 'all' &&
-        request.house.name !== `${houseFilter} Kingsway`
-      )
+      if (status !== 'all' && request.status !== status) return false;
+      if (priority !== 'all' && request.priority !== priority) return false;
+      if (house !== 'all' && request.house.name !== `${house} Kingsway`)
         return false;
       return true;
     })
@@ -69,17 +76,21 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
   // Calculate pagination
   const totalItems = filteredRequests.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const startIndex = (parseInt(currentPage) - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
   const paginatedRequests = filteredRequests.slice(startIndex, endIndex);
 
   // Handle page changes
   const goToNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (parseInt(currentPage) < totalPages) {
+      setCurrentPage((parseInt(currentPage) + 1).toString());
+    }
   };
 
   const goToPreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (parseInt(currentPage) > 1) {
+      setCurrentPage((parseInt(currentPage) - 1).toString());
+    }
   };
 
   // Reset pagination when filters change
@@ -87,16 +98,16 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
     filterType: 'status' | 'priority' | 'house' | 'sort',
     value: string
   ) => {
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage('1'); // Reset to first page
     switch (filterType) {
       case 'status':
-        setStatusFilter(value as 'all' | MaintenanceStatus);
+        setStatus(value as 'all' | MaintenanceStatus);
         break;
       case 'priority':
-        setPriorityFilter(value as 'all' | MaintenancePriority);
+        setPriority(value as 'all' | MaintenancePriority);
         break;
       case 'house':
-        setHouseFilter(value as HouseFilter);
+        setHouse(value as HouseFilter);
         break;
       case 'sort':
         setSortOrder(value as SortOrder);
@@ -148,7 +159,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {/* Status Filter */}
             <Select
-              value={statusFilter}
+              value={status}
               onValueChange={(value: 'all' | MaintenanceStatus) => {
                 handleFilterChange('status', value);
               }}
@@ -174,7 +185,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
 
             {/* Priority Filter */}
             <Select
-              value={priorityFilter}
+              value={priority}
               onValueChange={(value: 'all' | MaintenancePriority) => {
                 handleFilterChange('priority', value);
               }}
@@ -194,7 +205,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
 
             {/* House Filter */}
             <Select
-              value={houseFilter}
+              value={house}
               onValueChange={(value: HouseFilter) => {
                 handleFilterChange('house', value);
               }}
@@ -373,7 +384,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
                 <li className="ml-3 first:ml-0">
                   <Button
                     onClick={goToPreviousPage}
-                    disabled={currentPage === 1}
+                    disabled={currentPage === '1'}
                     variant="outline"
                     size="sm"
                   >
@@ -383,7 +394,7 @@ export default function MaintenanceList({ requests }: MaintenanceListProps) {
                 <li className="ml-3 first:ml-0">
                   <Button
                     onClick={goToNextPage}
-                    disabled={currentPage >= totalPages}
+                    disabled={parseInt(currentPage) >= totalPages}
                     variant="outline"
                     size="sm"
                   >

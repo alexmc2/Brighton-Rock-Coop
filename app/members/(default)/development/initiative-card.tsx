@@ -143,25 +143,25 @@ const InitiativeCard: React.FC<InitiativeCardProps> = ({
         {isEvent && (
           <div className="space-y-2 mb-4">
             {initiative.event_date && (
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <Calendar className="w-4 h-4 mr-2" />
                 {format(new Date(initiative.event_date), 'EEEE, MMMM do yyyy')}
               </div>
             )}
             {initiative.start_time && (
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <Clock className="w-4 h-4 mr-2" />
                 {formatTime(initiative.start_time)}
               </div>
             )}
             {initiative.location && (
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <MapPin className="w-4 h-4 mr-2" />
                 {initiative.location}
               </div>
             )}
             {initiative.open_to_everyone && (
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                 <Users className="w-4 h-4 mr-2" />
                 {initiative.participants?.filter(
                   (p) => p.status !== 'not_going'
@@ -192,7 +192,7 @@ const InitiativeCard: React.FC<InitiativeCardProps> = ({
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
               <MessageSquare className="w-4 h-4 mr-1" />
               {initiative.comments?.length || 0}
             </div>

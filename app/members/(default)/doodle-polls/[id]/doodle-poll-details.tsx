@@ -156,7 +156,7 @@ export default function DoodlePollDetails({
               {poll.title}
             </h2>
           </div>
-          <div className="text-sm text-slate-600 dark:text-slate-400 space-y-3">
+          <div className="text-sm text-slate-600 dark:text-slate-300 space-y-3">
             <p className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
               <span className="font-medium">Type:</span>
               <span>{eventTypeToCalendarCategory(poll.event_type)}</span>
@@ -186,7 +186,7 @@ export default function DoodlePollDetails({
         <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
-            <span className="text-slate-600 dark:text-slate-400">Yes</span>
+            <span className="text-slate-600 dark:text-slate-300">Yes</span>
           </div>
           <div className="flex items-center gap-2">
             <svg
@@ -203,17 +203,17 @@ export default function DoodlePollDetails({
               <circle cx="12" cy="12" r="10" />
               <line x1="8" y1="12" x2="16" y2="12" />
             </svg>
-            <span className="text-slate-600 dark:text-slate-400">
+            <span className="text-slate-600 dark:text-slate-300">
               If need be
             </span>
           </div>
           <div className="flex items-center gap-2">
             <CircleSlash className="w-4 h-4 text-red-600 dark:text-red-400" />
-            <span className="text-slate-600 dark:text-slate-400">No</span>
+            <span className="text-slate-600 dark:text-slate-300">No</span>
           </div>
           <div className="flex items-center gap-2">
             <CircleSlash className="w-4 h-4 text-slate-300 dark:text-slate-600" />
-            <span className="text-slate-600 dark:text-slate-400">Pending</span>
+            <span className="text-slate-600 dark:text-slate-300">Pending</span>
           </div>
         </div>
 
@@ -228,19 +228,19 @@ export default function DoodlePollDetails({
                     key={slot.id}
                     className="p-4 text-center border-l border-r border-slate-200 dark:border-slate-600"
                   >
-                    <div className="text-sm text-slate-600 dark:text-slate-400">
+                    <div className="text-sm text-slate-600 dark:text-slate-300">
                       {slot.month}
                     </div>
                     <div className="text-xl font-bold text-slate-900 dark:text-white">
                       {slot.dayOfMonth}
                     </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">
+                    <div className="text-sm text-slate-600 dark:text-slate-300">
                       {slot.day}
                     </div>
                     {slot.times.map((time) => (
                       <div
                         key={time}
-                        className="text-xs text-slate-600 dark:text-slate-400 mt-1"
+                        className="text-xs text-slate-600 dark:text-slate-300 mt-1"
                       >
                         {time}
                       </div>
@@ -251,7 +251,7 @@ export default function DoodlePollDetails({
 
               {/* Participants count */}
               <div className="grid grid-cols-[180px_repeat(50,150px)] border-b border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
-                <div className="p-4 text-slate-600 dark:text-slate-400 text-sm">
+                <div className="p-4 text-slate-600 dark:text-slate-300 text-sm">
                   {participantsCount === 0
                     ? 'No responses yet'
                     : `${participantsCount} ${
@@ -274,7 +274,7 @@ export default function DoodlePollDetails({
               {/* Current user response section */}
               {!poll.closed && currentUserId && (
                 <div className="grid grid-cols-[180px_repeat(50,150px)] border-b border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
-                  <div className="p-4 flex items-center text-slate-600 dark:text-slate-400 text-sm">
+                  <div className="p-4 flex items-center text-slate-600 dark:text-slate-300 text-sm">
                     My Response:
                     {/* <span className="ml-2 font-medium text-slate-900 dark:text-white">
                       {currentUserParticipant?.user?.full_name ||

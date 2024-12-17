@@ -128,25 +128,25 @@ const SocialEventCard: React.FC<SocialEventCardProps> = ({ event }) => {
 
         <div className="space-y-2 mb-4">
           {event.event_date && (
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
               <Calendar className="w-4 h-4 mr-2" />
               {format(new Date(event.event_date), 'EEEE, MMMM do yyyy')}
             </div>
           )}
           {event.start_time && (
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
               <Clock className="w-4 h-4 mr-2" />
               {formatTime(event.start_time)}
             </div>
           )}
           {event.location && (
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
               <MapPin className="w-4 h-4 mr-2" />
               {event.location}
             </div>
           )}
           {event.open_to_everyone && (
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
               <Users className="w-4 h-4 mr-2" />
               {getParticipantCount()} / 12 participants
             </div>
@@ -165,7 +165,7 @@ const SocialEventCard: React.FC<SocialEventCardProps> = ({ event }) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
               <MessageSquare className="w-4 h-4 mr-1" />
               {event.comments?.length || 0}
             </div>

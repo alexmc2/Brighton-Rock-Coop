@@ -131,18 +131,18 @@ const DoodlePollCard: React.FC<DoodlePollCardProps> = ({ poll }) => {
           </h3>
         </Link>
 
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
+        <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 line-clamp-2">
           {poll.description}
         </p>
 
         <div className="space-y-2 mb-4">
-          <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+          <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
             <Calendar className="w-4 h-4 mr-2 shrink-0" />
             {poll.options.length} date option
             {poll.options.length !== 1 ? 's' : ''}
           </div>
           {mostPopular && mostPopular.count > 0 && (
-            <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
               <Clock className="w-4 h-4 mr-2 shrink-0" />
               Most popular:{' '}
               {format(new Date(mostPopular.option.date), 'EEE, MMM d')}
@@ -152,7 +152,7 @@ const DoodlePollCard: React.FC<DoodlePollCardProps> = ({ poll }) => {
               ({mostPopular.count} available)
             </div>
           )}
-          <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
+          <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
             <Users className="w-4 h-4 mr-2 shrink-0" />
             {participantCount}{' '}
             {participantCount === 1 ? 'response' : 'responses'}

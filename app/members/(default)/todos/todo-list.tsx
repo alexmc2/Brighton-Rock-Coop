@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useQueryState } from 'nuqs';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import {
@@ -37,24 +37,34 @@ type SortOrder = 'created_asc' | 'created_desc';
 const ITEMS_PER_PAGE = 10;
 
 export default function TodoList({ tasks }: TodoListProps) {
-  const [statusFilter, setStatusFilter] = useState<'all' | TodoStatus>('all');
-  const [todoTypeFilter, setTodoTypeFilter] = useState<'all' | TodoCategory>(
-    'all'
-  );
-  const [priorityFilter, setPriorityFilter] = useState<'all' | TodoPriority>(
-    'all'
-  );
-  const [sortOrder, setSortOrder] = useState<SortOrder>('created_desc');
-  const [currentPage, setCurrentPage] = useState(1);
+  // State management with URL parameters
+  const [status, setStatus] = useQueryState('status', {
+    defaultValue: 'all',
+    parse: (value): 'all' | TodoStatus => value as any,
+  });
+  const [todoType, setTodoType] = useQueryState('type', {
+    defaultValue: 'all',
+    parse: (value): 'all' | TodoCategory => value as any,
+  });
+  const [priority, setPriority] = useQueryState('priority', {
+    defaultValue: 'all',
+    parse: (value): 'all' | TodoPriority => value as any,
+  });
+  const [sortOrder, setSortOrder] = useQueryState<SortOrder>('sortOrder', {
+    defaultValue: 'created_desc',
+    parse: (value): SortOrder => value as SortOrder,
+  });
+  const [currentPage, setCurrentPage] = useQueryState('page', {
+    defaultValue: '1',
+    parse: (value) => value,
+  });
 
   // Filter tasks based on selected filters
   const filteredTasks = tasks
     .filter((task) => {
-      if (statusFilter !== 'all' && task.status !== statusFilter) return false;
-      if (todoTypeFilter !== 'all' && task.todo_type !== todoTypeFilter)
-        return false;
-      if (priorityFilter !== 'all' && task.priority !== priorityFilter)
-        return false;
+      if (status !== 'all' && task.status !== status) return false;
+      if (todoType !== 'all' && task.todo_type !== todoType) return false;
+      if (priority !== 'all' && task.priority !== priority) return false;
       return true;
     })
     .sort((a, b) => {
@@ -66,20 +76,20 @@ export default function TodoList({ tasks }: TodoListProps) {
   // Calculate pagination
   const totalItems = filteredTasks.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const startIndex = (parseInt(currentPage) - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
   const paginatedTasks = filteredTasks.slice(startIndex, endIndex);
 
   // Handle page changes
   const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    if (parseInt(currentPage) < totalPages) {
+      setCurrentPage((parseInt(currentPage) + 1).toString());
     }
   };
 
   const goToPreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+    if (parseInt(currentPage) > 1) {
+      setCurrentPage((parseInt(currentPage) - 1).toString());
     }
   };
 
@@ -88,16 +98,16 @@ export default function TodoList({ tasks }: TodoListProps) {
     filterType: 'status' | 'type' | 'priority' | 'sort',
     value: string
   ) => {
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage('1'); // Reset to first page
     switch (filterType) {
       case 'status':
-        setStatusFilter(value as 'all' | TodoStatus);
+        setStatus(value as 'all' | TodoStatus);
         break;
       case 'type':
-        setTodoTypeFilter(value as 'all' | TodoCategory);
+        setTodoType(value as 'all' | TodoCategory);
         break;
       case 'priority':
-        setPriorityFilter(value as 'all' | TodoPriority);
+        setPriority(value as 'all' | TodoPriority);
         break;
       case 'sort':
         setSortOrder(value as SortOrder);
@@ -147,7 +157,7 @@ export default function TodoList({ tasks }: TodoListProps) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {/* Status Filter */}
             <Select
-              value={statusFilter}
+              value={status}
               onValueChange={(value: 'all' | TodoStatus) => {
                 handleFilterChange('status', value);
               }}
@@ -169,7 +179,7 @@ export default function TodoList({ tasks }: TodoListProps) {
 
             {/* Type Filter */}
             <Select
-              value={todoTypeFilter}
+              value={todoType}
               onValueChange={(value: 'all' | TodoCategory) => {
                 handleFilterChange('type', value);
               }}
@@ -186,7 +196,7 @@ export default function TodoList({ tasks }: TodoListProps) {
 
             {/* Priority Filter */}
             <Select
-              value={priorityFilter}
+              value={priority}
               onValueChange={(value: 'all' | TodoPriority) => {
                 handleFilterChange('priority', value);
               }}
@@ -323,7 +333,7 @@ export default function TodoList({ tasks }: TodoListProps) {
           </div>
         </div>
 
-        {/* Pagination section - update styles */}
+        {/* Pagination section */}
         <div className="px-4 py-4 border-t border-slate-200 dark:border-slate-700">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <nav
@@ -335,7 +345,7 @@ export default function TodoList({ tasks }: TodoListProps) {
                 <li className="ml-3 first:ml-0">
                   <Button
                     onClick={goToPreviousPage}
-                    disabled={currentPage === 1}
+                    disabled={currentPage === '1'}
                     variant="outline"
                     size="sm"
                   >
@@ -345,7 +355,7 @@ export default function TodoList({ tasks }: TodoListProps) {
                 <li className="ml-3 first:ml-0">
                   <Button
                     onClick={goToNextPage}
-                    disabled={currentPage >= totalPages}
+                    disabled={parseInt(currentPage) >= totalPages}
                     variant="outline"
                     size="sm"
                   >

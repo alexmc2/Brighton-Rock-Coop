@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Button } from '@/components/members/ui/button';
 import InitiativeCard from './initiative-card';
@@ -18,7 +18,7 @@ import {
   InitiativeType,
 } from '@/types/members/development';
 import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
-import Link from 'next/link';
+import { useQueryState } from 'nuqs';
 
 interface InitiativeListProps {
   initiatives?: DevelopmentInitiativeWithDetails[];
@@ -33,17 +33,33 @@ export default function InitiativeList({
   initiatives: initialInitiatives = [],
 }: InitiativeListProps) {
   const supabase = createClientComponentClient();
-  const [initiatives, setInitiatives] = useState(initialInitiatives);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [typeFilter, setTypeFilter] = useState<'all' | InitiativeType>('all');
-  const [categoryFilter, setStatusFilter] = useState<
-    'all' | DevelopmentCategory
-  >('all');
-  const [statusFilter, setCategoryFilter] = useState<'all' | DevelopmentStatus>(
-    'all'
-  );
-  const [sortField, setSortField] = useState<SortField>('event_date');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+  const [initiatives, setInitiatives] = React.useState(initialInitiatives);
+
+  // State management with URL parameters
+  const [currentPage, setCurrentPage] = useQueryState('page', {
+    defaultValue: '1',
+    parse: (value) => value,
+  });
+  const [type, setType] = useQueryState('type', {
+    defaultValue: 'all',
+    parse: (value): 'all' | InitiativeType => value as any,
+  });
+  const [category, setCategory] = useQueryState('category', {
+    defaultValue: 'all',
+    parse: (value): 'all' | DevelopmentCategory => value as any,
+  });
+  const [status, setStatus] = useQueryState('status', {
+    defaultValue: 'all',
+    parse: (value): 'all' | DevelopmentStatus => value as any,
+  });
+  const [sortField, setSortField] = useQueryState<SortField>('sortField', {
+    defaultValue: 'event_date',
+    parse: (value): SortField => value as SortField,
+  });
+  const [sortOrder, setSortOrder] = useQueryState<SortOrder>('sortOrder', {
+    defaultValue: 'asc',
+    parse: (value): SortOrder => value as SortOrder,
+  });
 
   // Set up real-time subscription for participant updates
   useEffect(() => {
@@ -113,12 +129,9 @@ export default function InitiativeList({
   // Filter and sort initiatives
   const filteredInitiatives = initiatives
     .filter((initiative) => {
-      if (typeFilter !== 'all' && initiative.initiative_type !== typeFilter)
-        return false;
-      if (categoryFilter !== 'all' && initiative.category !== categoryFilter)
-        return false;
-      if (statusFilter !== 'all' && initiative.status !== statusFilter)
-        return false;
+      if (type !== 'all' && initiative.initiative_type !== type) return false;
+      if (category !== 'all' && initiative.category !== category) return false;
+      if (status !== 'all' && initiative.status !== status) return false;
       return true;
     })
     .sort((a, b) => {
@@ -136,7 +149,7 @@ export default function InitiativeList({
   // Pagination logic
   const totalItems = filteredInitiatives.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const startIndex = (parseInt(currentPage) - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
   const paginatedInitiatives = filteredInitiatives.slice(startIndex, endIndex);
 
@@ -169,10 +182,10 @@ export default function InitiativeList({
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <div className="w-full sm:w-auto">
           <Select
-            value={typeFilter}
+            value={type}
             onValueChange={(value: 'all' | InitiativeType) => {
-              setTypeFilter(value);
-              setCurrentPage(1);
+              setType(value);
+              setCurrentPage('1');
             }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
@@ -188,10 +201,10 @@ export default function InitiativeList({
 
         <div className="grid grid-cols-2 sm:flex items-center gap-3 w-full sm:w-auto">
           <Select
-            value={categoryFilter}
+            value={category}
             onValueChange={(value: 'all' | DevelopmentCategory) => {
-              setStatusFilter(value);
-              setCurrentPage(1);
+              setCategory(value);
+              setCurrentPage('1');
             }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
@@ -207,10 +220,10 @@ export default function InitiativeList({
           </Select>
 
           <Select
-            value={statusFilter}
+            value={status}
             onValueChange={(value: 'all' | DevelopmentStatus) => {
-              setCategoryFilter(value);
-              setCurrentPage(1);
+              setStatus(value);
+              setCurrentPage('1');
             }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
@@ -229,7 +242,7 @@ export default function InitiativeList({
             value={sortField}
             onValueChange={(value: SortField) => {
               setSortField(value);
-              setCurrentPage(1);
+              setCurrentPage('1');
             }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
@@ -245,7 +258,7 @@ export default function InitiativeList({
             value={sortOrder}
             onValueChange={(value: SortOrder) => {
               setSortOrder(value);
-              setCurrentPage(1);
+              setCurrentPage('1');
             }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
@@ -279,8 +292,8 @@ export default function InitiativeList({
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <Button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((parseInt(currentPage) - 1).toString())}
+            disabled={currentPage === '1'}
             variant="outline"
           >
             Previous
@@ -289,8 +302,8 @@ export default function InitiativeList({
             Page {currentPage} of {totalPages}
           </span>
           <Button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((parseInt(currentPage) + 1).toString())}
+            disabled={parseInt(currentPage) >= totalPages}
             variant="outline"
           >
             Next

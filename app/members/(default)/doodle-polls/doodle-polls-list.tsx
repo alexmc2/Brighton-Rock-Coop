@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@/components/members/ui/button';
 import {
   Select,
@@ -13,6 +13,7 @@ import {
 } from '@/components/members/ui/select';
 import { DoodlePoll, DoodleEventType } from '@/types/members/doodle';
 import DoodlePollCard from './doodle-poll-card';
+import { useQueryState } from 'nuqs';
 
 interface DoodlePollsListProps {
   polls: DoodlePoll[];
@@ -21,41 +22,53 @@ interface DoodlePollsListProps {
 
 const ITEMS_PER_PAGE = 6;
 
+type SortBy = 'event_date' | 'created_date';
+type SortOrder = 'asc' | 'desc';
+
 export default function DoodlePollsList({
   polls = [],
   currentUserId,
 }: DoodlePollsListProps) {
-  const [filters, setFilters] = useState({
-    type: 'all' as 'all' | DoodleEventType,
-    sortBy: 'Event Date',
-    sortOrder: 'Ascending',
-    currentPage: 1,
+  // State management with URL parameters
+  const [eventType, setEventType] = useQueryState('type', {
+    defaultValue: 'all',
+    parse: (value): 'all' | DoodleEventType => value as any,
   });
-  const [showClosed, setShowClosed] = useState(true);
+  const [sortBy, setSortBy] = useQueryState<SortBy>('sortBy', {
+    defaultValue: 'event_date',
+    parse: (value): SortBy => value as SortBy,
+  });
+  const [sortOrder, setSortOrder] = useQueryState<SortOrder>('sortOrder', {
+    defaultValue: 'asc',
+    parse: (value): SortOrder => value as SortOrder,
+  });
+  const [currentPage, setCurrentPage] = useQueryState('page', {
+    defaultValue: '1',
+    parse: (value) => value,
+  });
+  const [showClosed, setShowClosed] = useQueryState('showClosed', {
+    defaultValue: 'true',
+    parse: (value) => value,
+  });
 
   // Load the saved preference when component mounts
   useEffect(() => {
     const savedShowClosed = localStorage.getItem('showClosedPolls');
     if (savedShowClosed !== null) {
-      setShowClosed(JSON.parse(savedShowClosed));
-    } else {
-      // If no preference is saved, default to showing closed polls
-      setShowClosed(true);
-      localStorage.setItem('showClosedPolls', 'true');
+      setShowClosed(savedShowClosed);
     }
   }, []);
 
   // Save preference whenever it changes
   useEffect(() => {
-    localStorage.setItem('showClosedPolls', JSON.stringify(showClosed));
+    localStorage.setItem('showClosedPolls', showClosed);
   }, [showClosed]);
 
   // Filter and sort polls
   const filteredPolls = polls
     .filter((poll) => {
-      if (!showClosed && poll.closed) return false;
-      if (filters.type !== 'all' && poll.event_type !== filters.type)
-        return false;
+      if (showClosed === 'false' && poll.closed) return false;
+      if (eventType !== 'all' && poll.event_type !== eventType) return false;
       return true;
     })
     .sort((a, b) => {
@@ -65,12 +78,12 @@ export default function DoodlePollsList({
       const bDate = Math.min(
         ...b.options.map((opt) => new Date(opt.date).getTime())
       );
-      return filters.sortOrder === 'Ascending' ? aDate - bDate : bDate - aDate;
+      return sortOrder === 'asc' ? aDate - bDate : bDate - aDate;
     });
 
   // Compute pagination
   const totalPages = Math.ceil(filteredPolls.length / ITEMS_PER_PAGE);
-  const startIndex = (filters.currentPage - 1) * ITEMS_PER_PAGE;
+  const startIndex = (parseInt(currentPage) - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredPolls.length);
   const paginatedPolls = filteredPolls.slice(startIndex, endIndex);
 
@@ -80,15 +93,23 @@ export default function DoodlePollsList({
     ...Array.from(new Set(polls.map((p) => p.event_type))),
   ] as const;
 
+  const formatEventType = (type: string) => {
+    if (type === 'all') return 'All';
+    if (type === 'social_event') return 'Co-op Social';
+    if (type === 'development_event') return 'Development';
+    return type.replace('_', ' ');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <div className="grid grid-cols-2 sm:flex items-center gap-3 w-full sm:w-auto">
           <Select
-            value={filters.type}
-            onValueChange={(value: typeof filters.type) =>
-              setFilters((prev) => ({ ...prev, type: value }))
-            }
+            value={eventType}
+            onValueChange={(value: typeof eventType) => {
+              setEventType(value);
+              setCurrentPage('1');
+            }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="All" />
@@ -96,56 +117,52 @@ export default function DoodlePollsList({
             <SelectContent>
               {eventTypes.map((type) => (
                 <SelectItem key={type} value={type}>
-                  {type === 'all'
-                    ? 'All'
-                    : type === 'social_event'
-                    ? 'Co-op Social'
-                    : type === 'development_event'
-                    ? 'Development'
-                    : type.replace('_', ' ')}
+                  {formatEventType(type)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
           <Select
-            value={filters.sortBy}
-            onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, sortBy: value }))
-            }
+            value={sortBy}
+            onValueChange={(value: SortBy) => {
+              setSortBy(value);
+              setCurrentPage('1');
+            }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Event Date" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Event Date">Event Date</SelectItem>
-              <SelectItem value="Created Date">Created Date</SelectItem>
+              <SelectItem value="event_date">Event Date</SelectItem>
+              <SelectItem value="created_date">Created Date</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="grid grid-cols-2 sm:flex items-center gap-3 w-full sm:w-auto">
           <Select
-            value={filters.sortOrder}
-            onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, sortOrder: value }))
-            }
+            value={sortOrder}
+            onValueChange={(value: SortOrder) => {
+              setSortOrder(value);
+              setCurrentPage('1');
+            }}
           >
             <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Ascending" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Ascending">Ascending</SelectItem>
-              <SelectItem value="Descending">Descending</SelectItem>
+              <SelectItem value="asc">Ascending</SelectItem>
+              <SelectItem value="desc">Descending</SelectItem>
             </SelectContent>
           </Select>
 
           <Button
-            variant={showClosed ? 'outline' : 'default'}
-            onClick={() => setShowClosed(!showClosed)}
+            variant={showClosed === 'true' ? 'outline' : 'default'}
+            onClick={() => setShowClosed(showClosed === 'true' ? 'false' : 'true')}
             className="w-full sm:w-auto"
           >
-            {showClosed ? 'Hide Closed Polls' : 'Show Closed Polls'}
+            {showClosed === 'true' ? 'Hide Closed Polls' : 'Show Closed Polls'}
           </Button>
         </div>
       </div>
@@ -167,28 +184,27 @@ export default function DoodlePollsList({
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <Button
-            onClick={() =>
-              setFilters((prev) => ({
-                ...prev,
-                currentPage: prev.currentPage - 1,
-              }))
-            }
-            disabled={filters.currentPage === 1}
+            onClick={() => {
+              const newPage = Math.max(1, parseInt(currentPage) - 1).toString();
+              setCurrentPage(newPage);
+            }}
+            disabled={currentPage === '1'}
             variant="outline"
           >
             Previous
           </Button>
           <span className="text-sm text-slate-600 dark:text-slate-400">
-            Page {filters.currentPage} of {totalPages}
+            Page {currentPage} of {totalPages}
           </span>
           <Button
-            onClick={() =>
-              setFilters((prev) => ({
-                ...prev,
-                currentPage: prev.currentPage + 1,
-              }))
-            }
-            disabled={filters.currentPage === totalPages}
+            onClick={() => {
+              const newPage = Math.min(
+                totalPages,
+                parseInt(currentPage) + 1
+              ).toString();
+              setCurrentPage(newPage);
+            }}
+            disabled={parseInt(currentPage) === totalPages}
             variant="outline"
           >
             Next

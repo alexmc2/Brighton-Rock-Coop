@@ -314,7 +314,7 @@ export default async function Dashboard() {
           <h1 className="text-xl md:text-3xl text-slate-50 font-semibold mb-1 md:py-2 py-3 md:px-2 px-2">
             Welcome to the Brighton Rock Co-op Management App, {name} 👋
           </h1>
-            <p className="text-slate-100 text-md md:text-xl md:px-2 px-2">
+          <p className="text-slate-100 text-md md:text-xl md:px-2 px-2">
             Here&apos;s what&apos;s happening in the co-op today:
           </p>
         </div>
@@ -322,7 +322,7 @@ export default async function Dashboard() {
 
       {/* Roles Section */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-600 dark:text-gray-100 mb-6">
+        <h2 className="text-2xl font-bold text-gray-600 dark:text-slate-200 mb-6">
           Co-op Roles
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -336,11 +336,11 @@ export default async function Dashboard() {
                 <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-violet-500/10 dark:bg-violet-500/15 text-violet-600 dark:text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-colors duration-300 ease-in-out">
                   {role.icon}
                 </div>
-                <h3 className="text-xl sm:text-2xl md:text-xl lg:text-xl font-semibold text-gray-600 dark:text-gray-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-400">
+                <h3 className="text-xl sm:text-2xl md:text-xl lg:text-xl font-semibold text-gray-600 dark:text-slate-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-400">
                   {role.name}
                 </h3>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300">
+              <p className="text-sm text-gray-600 dark:text-slate-300 group-hover:text-gray-700 dark:group-hover:text-gray-300">
                 {role.description}
               </p>
             </Link>
@@ -350,7 +350,7 @@ export default async function Dashboard() {
 
       {/* Houses Section */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-200 mb-6">
           Houses
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -358,25 +358,17 @@ export default async function Dashboard() {
             <Link
               key={house.name}
               href={house.href}
-              className="group flex flex-col p-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-300/50 dark:border-gray-700 hover:border-slate-100 dark:hover:border-coop-800 transition-all duration-300 ease-in-out hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.08)]"
+              className="group flex flex-col p-6 py-10 bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-300/50 dark:border-gray-700 hover:border-slate-100 dark:hover:border-coop-800 transition-all duration-300 ease-in-out hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.08)]"
             >
               <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl sm:text-2xl md:text-xl lg:text-xl font-semibold text-gray-600 dark:text-gray-300 group-hover:text-emerald-700 dark:group-hover:text-emerald-400">
+                <h3 className="text-xl sm:text-2xl md:text-xl lg:text-xl font-semibold text-gray-600 dark:text-slate-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-400">
                   {house.name} Kingsway
                 </h3>
                 <div
                   className={`w-2 h-2 rounded-full ${house.statusColor}`}
                 ></div>
               </div>
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  <span className="font-medium">{house.residents}</span>{' '}
-                  residents
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Status: <span className="font-medium">{house.status}</span>
-                </p>
-              </div>
+              <div className="space-y-2"></div>
             </Link>
           ))}
         </div>

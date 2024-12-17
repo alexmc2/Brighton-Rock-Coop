@@ -4,6 +4,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import '../styles/globals.css';
 import { Roboto } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { type ReactNode } from 'react';
 
 // Initialize the Roboto font
 const roboto = Roboto({
@@ -71,8 +73,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Analytics />
+          <NuqsAdapter>
+            {children}
+            <Analytics />
+          </NuqsAdapter>
         </ThemeProvider>
       </body>
     </html>

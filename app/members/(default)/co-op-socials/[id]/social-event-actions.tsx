@@ -98,7 +98,7 @@ export default function SocialEventActions({
         .rpc('delete_social_event', { p_event_id: event.id })
         .throwOnError();
 
-      router.refresh(); // Refresh the server components
+      // Navigate back to the list view - the real-time subscription will handle the UI update
       router.push('/members/co-op-socials');
     } catch (error) {
       console.error('Error deleting event:', error);
