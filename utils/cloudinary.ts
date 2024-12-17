@@ -10,15 +10,19 @@ cloudinary.config({
 
 export async function getCloudinaryImages() {
   try {
-    const result = await cloudinary.search
-      .expression('folder:coop-images/*')
-      .sort_by('public_id', 'desc')
-      .max_results(500)
-      .execute();
+    const result = await cloudinary.api.resources({
+      type: 'upload',
+      prefix: 'coop-images/',
+      max_results: 500,
+      direction: 'desc',
+      sort_by: ['created_at', 'uploaded_at'],
+    });
 
     return result.resources.map((resource: any) => ({
       public_id: resource.public_id,
       secure_url: resource.secure_url,
+      created_at: resource.created_at,
+      uploaded_at: resource.uploaded_at,
       width: resource.width,
       height: resource.height,
     }));
@@ -35,15 +39,5 @@ export async function deleteCloudinaryImage(publicId: string) {
   } catch (error) {
     console.error('Error deleting image:', error);
     return false;
-  }
-}
-
-export async function handleImageRequest() {
-  try {
-    const images = await getCloudinaryImages();
-    return NextResponse.json(images);
-  } catch (error) {
-    console.error('Error in API route:', error);
-    return NextResponse.json({ error: 'Failed to fetch images' }, { status: 500 });
   }
 }

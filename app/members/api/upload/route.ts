@@ -1,5 +1,4 @@
 // app/members/api/upload/route.ts
-
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 
@@ -15,17 +14,12 @@ export async function POST(request: Request) {
     const file = formData.get('file') as File;
 
     if (!file) {
-      return NextResponse.json(
-        { error: 'No file provided' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Upload to Cloudinary
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
@@ -44,9 +38,6 @@ export async function POST(request: Request) {
     return NextResponse.json(result);
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json(
-      { error: 'Upload failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
   }
-} 
+}

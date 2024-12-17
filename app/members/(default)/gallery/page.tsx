@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import GalleryManager from '@/components/members/gallery/gallery-manager';
+import GalleryManager from '@/app/members/(default)/gallery/gallery-manager';
 
 export const metadata: Metadata = {
   title: 'Gallery Management - Co-op',

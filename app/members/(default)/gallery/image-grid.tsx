@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Trash2Icon, DownloadIcon } from 'lucide-react';
 import { Button } from '@/components/members/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import ZoomableImage from '@/components/members/gallery/zoomable-image';
+import ZoomableImage from '@/app/members/(default)/gallery/zoomable-image';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,7 +36,10 @@ export default function ImageGrid({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showDownloadDialog, setShowDownloadDialog] = useState(false);
   const [imageToDelete, setImageToDelete] = useState<string | null>(null);
-  const [imageToDownload, setImageToDownload] = useState<{ url: string; name: string } | null>(null);
+  const [imageToDownload, setImageToDownload] = useState<{
+    url: string;
+    name: string;
+  } | null>(null);
   const { toast } = useToast();
 
   const fetchImages = useCallback(async () => {
@@ -44,12 +47,10 @@ export default function ImageGrid({
     try {
       const response = await fetch('/members/api/images');
       const data = await response.json();
-      // Sort images by creation date, newest first (top-left)
       const sortedImages = data.sort(
         (a: CloudinaryImage, b: CloudinaryImage) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       );
-
       setImages(sortedImages);
     } catch (error) {
       toast({
@@ -137,11 +138,11 @@ export default function ImageGrid({
 
   return (
     <>
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
         {images.map((image, index) => (
           <div
             key={image.public_id}
-            className="relative group break-inside-avoid mb-4"
+            className="relative group mb-4 break-inside-avoid"
           >
             <ZoomableImage
               src={image.secure_url}
@@ -151,7 +152,7 @@ export default function ImageGrid({
             />
             <div className="absolute top-2 right-2 flex gap-2">
               <Button
-                variant="secondary"
+                variant="default"
                 size="icon"
                 className="md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
                 onClick={() =>
@@ -194,7 +195,10 @@ export default function ImageGrid({
         </AlertDialogContent>
       </AlertDialog>
 
-      <AlertDialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
+      <AlertDialog
+        open={showDownloadDialog}
+        onOpenChange={setShowDownloadDialog}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Download Image</AlertDialogTitle>
@@ -204,10 +208,7 @@ export default function ImageGrid({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDownload}
-              className="transition-all duration-300 ease-in-out"
-            >
+            <AlertDialogAction onClick={handleDownload}>
               Download
             </AlertDialogAction>
           </AlertDialogFooter>

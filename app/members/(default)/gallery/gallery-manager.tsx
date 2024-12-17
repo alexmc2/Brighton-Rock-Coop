@@ -3,8 +3,7 @@
 
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-
-import ImageUploader from '@/components/members/gallery/image-uploader';
+import ImageUploader from '@/app/members/(default)/gallery/image-uploader';
 import ImageGrid from './image-grid';
 import { Button } from '@/components/ui/button';
 import { ReloadIcon } from '@radix-ui/react-icons';
@@ -15,41 +14,34 @@ export default function GalleryManager() {
   const { toast } = useToast();
 
   const handleRefresh = () => {
-    setRefreshTrigger(prev => prev + 1);
+    setRefreshTrigger((prev) => prev + 1);
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center gap-4">
-        <ImageUploader 
+        <ImageUploader
           onSuccess={() => {
             handleRefresh();
             toast({
-              title: "Success",
-              description: "Image uploaded successfully",
+              title: 'Success',
+              description: 'Image uploaded successfully',
             });
           }}
           onError={(error) => {
             toast({
-              title: "Error",
+              title: 'Error',
               description: error,
-              variant: "destructive",
+              variant: 'destructive',
             });
           }}
         />
-        <Button 
-          variant="outline" 
-          onClick={handleRefresh}
-          disabled={isLoading}
-        >
+        <Button variant="outline" onClick={handleRefresh} disabled={isLoading}>
           <ReloadIcon className="mr-2 h-4 w-4" />
           Refresh
         </Button>
       </div>
-      <ImageGrid 
-        refreshTrigger={refreshTrigger}
-        setIsLoading={setIsLoading}
-      />
+      <ImageGrid refreshTrigger={refreshTrigger} setIsLoading={setIsLoading} />
     </div>
   );
 }
