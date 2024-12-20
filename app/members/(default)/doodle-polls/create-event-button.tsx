@@ -33,7 +33,7 @@ import {
   RadioGroupItem,
 } from '@/components/members/ui/radio-group';
 import { Label } from '@/components/members/ui/label';
-import { CalendarClock, CheckCircle2, CircleSlash, Minus } from 'lucide-react';
+import { CalendarClock, CheckCircle2, Minus } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -51,12 +51,6 @@ interface OptionScore {
   maybeCount: number;
   noCount: number;
 }
-
-const getEventTable = (eventType: DoodlePoll['event_type']): string => {
-  if (eventType === 'social_event') return 'social_events';
-  if (eventType === 'development_event') return 'development_initiatives';
-  return 'calendar_events';
-};
 
 export default function CreateEventButton({
   poll,
@@ -142,15 +136,19 @@ export default function CreateEventButton({
       } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
       const selectedTimeSlot = options.find((o) => o.id === selectedOption);
       if (!selectedTimeSlot) throw new Error('No time slot selected');
 
       const mapping = participationMapping[poll.event_type];
       if (!mapping) throw new Error('Invalid event type');
-
-      // Determine the event table based on event type
-      let eventTable: string;
-      let eventData: any;
 
       const eventDateTime = new Date(selectedTimeSlot.date);
       if (selectedTimeSlot.start_time) {
@@ -176,159 +174,34 @@ export default function CreateEventButton({
       let createdEventId: string;
 
       if (poll.event_type === 'social_event') {
-        eventTable = 'social_events';
-        eventData = {
-          title: poll.title,
-          description: poll.description,
-          category: poll.category,
-          location: poll.location,
-          created_by: user.id,
-          event_date: eventDateTime.toISOString(),
-          start_time: selectedTimeSlot.start_time || null,
-          duration: durationInHours ? `${durationInHours} hours` : null,
-          status: 'upcoming',
-          open_to_everyone: true,
-        };
-
-        // Create the social event first
-        const { data: event, error: eventError } = await supabase
-          .from(eventTable)
-          .insert(eventData)
+        // Create a social event
+        const { data: socialEvent, error: socialEventError } = await supabase
+          .from('social_events')
+          .insert({
+            title: poll.title,
+            description: poll.description,
+            category: poll.category,
+            location: poll.location,
+            created_by: user.id,
+            event_date: eventDateTime.toISOString(),
+            start_time: selectedTimeSlot.start_time || null,
+            duration: durationInHours ? `${durationInHours} hours` : null,
+            status: 'upcoming',
+            open_to_everyone: true,
+          })
           .select()
           .single();
 
-        if (eventError) {
-          console.error('Event creation error:', eventError);
-          throw new Error(`Failed to create event: ${eventError.message}`);
+        if (socialEventError) {
+          console.error('Event creation error:', socialEventError);
+          throw new Error(
+            `Failed to create event: ${socialEventError.message}`
+          );
         }
 
-        createdEventId = event.id;
+        createdEventId = socialEvent.id;
 
-        // Create calendar event entry for social event
-        const calendarEventData = {
-          title: poll.title,
-          description: poll.description,
-          start_time: eventDateTime.toISOString(),
-          end_time: endDateTime.toISOString(),
-          event_type: poll.event_type,
-          category: 'social_event',
-          created_by: user.id,
-          reference_id: createdEventId,
-          updated_at: new Date().toISOString(),
-        };
-
-        const { error: calendarError } = await supabase
-          .from('calendar_events')
-          .insert(calendarEventData);
-
-        if (calendarError) {
-          console.error('Calendar event creation error:', calendarError);
-          throw new Error('Failed to create calendar event');
-        }
-      } else if (poll.event_type === 'development_event') {
-        eventTable = 'development_initiatives';
-        eventData = {
-          title: poll.title,
-          description: poll.description,
-          category: poll.category || 'general',
-          location: poll.location,
-          created_by: user.id,
-          event_date: eventDateTime.toISOString(),
-          start_time: selectedTimeSlot.start_time || null,
-          duration: durationInHours ? `${durationInHours} hours` : null,
-          status: 'active',
-          initiative_type: 'event',
-          priority: 'medium',
-          open_to_everyone: true,
-        };
-
-        // Create the development initiative first
-        const { data: event, error: eventError } = await supabase
-          .from(eventTable)
-          .insert(eventData)
-          .select()
-          .single();
-
-        if (eventError) {
-          console.error('Event creation error:', eventError);
-          throw new Error(`Failed to create event: ${eventError.message}`);
-        }
-
-        createdEventId = event.id;
-
-        // Now create the participants
-        const participantsToCreate = participants.map((p) => ({
-          event_id: createdEventId,
-          user_id: p.user_id,
-          status: mapping.statusValues[p.responses[selectedOption] || 'no'],
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        }));
-
-        if (participantsToCreate.length > 0) {
-          const { error: participantsError } = await supabase
-            .from('event_participants')
-            .insert(participantsToCreate);
-
-          if (participantsError) {
-            console.error('Participant creation error:', participantsError);
-            throw new Error('Failed to create event participants');
-          }
-        }
-
-        // Create calendar event entry
-        const calendarEventData = {
-          title: poll.title,
-          description: poll.description,
-          start_time: eventDateTime.toISOString(),
-          end_time: endDateTime.toISOString(),
-          event_type: poll.event_type,
-          category: 'development_event',
-          created_by: user.id,
-          reference_id: createdEventId,
-          updated_at: new Date().toISOString(),
-        };
-
-        const { error: calendarError } = await supabase
-          .from('calendar_events')
-          .insert(calendarEventData);
-
-        if (calendarError) {
-          console.error('Calendar event creation error:', calendarError);
-          throw new Error('Failed to create calendar event');
-        }
-      } else {
-        // Handle all other calendar event types
-        eventTable = 'calendar_events';
-        eventData = {
-          title: poll.title,
-          description: poll.description,
-          start_time: eventDateTime.toISOString(),
-          end_time: endDateTime.toISOString(),
-          event_type: poll.event_type,
-          category: poll.event_type,
-          created_by: user.id,
-          reference_id: poll.id,
-          updated_at: new Date().toISOString(),
-        };
-      }
-
-      // Create the event
-      const { data: event, error: eventError } = await supabase
-        .from(eventTable)
-        .insert(eventData)
-        .select()
-        .single();
-
-      if (eventError) {
-        console.error('Event creation error:', eventError);
-        throw new Error(`Failed to create event: ${eventError.message}`);
-      }
-
-      createdEventId = event.id;
-
-      // Create participants based on poll responses
-      if (poll.event_type === 'social_event') {
+        // Create participants for the social event
         const participantsToCreate = participants.map((p) => ({
           event_id: createdEventId,
           user_id: p.user_id,
@@ -346,25 +219,126 @@ export default function CreateEventButton({
             throw new Error('Failed to create event participants');
           }
         }
+
+        // Create a corresponding calendar event with the same structure as the new modal code
+        const { error: calendarError } = await supabase
+          .from('calendar_events')
+          .insert({
+            title: poll.title,
+            description: poll.description,
+            start_time: eventDateTime.toISOString(),
+            end_time: endDateTime.toISOString(),
+            event_type: poll.event_type,
+            category: 'Co-op Social', // Match the new modal code
+            subcategory: poll.category, // Use the poll category as subcategory
+            created_by: user.id,
+            reference_id: createdEventId,
+            updated_at: new Date().toISOString(),
+            full_name: profile?.full_name || null,
+          });
+
+        if (calendarError) {
+          console.error('Calendar event creation error:', calendarError);
+          throw new Error('Failed to create calendar event');
+        }
       } else if (poll.event_type === 'development_event') {
-        const participantsToCreate = participants.map((p) => ({
-          event_id: createdEventId,
-          user_id: p.user_id,
-          status: mapping.statusValues[p.responses[selectedOption] || 'no'],
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        }));
+        // Development event logic remains the same
+        const { data: devEvent, error: devEventError } = await supabase
+          .from('development_initiatives')
+          .insert({
+            title: poll.title,
+            description: poll.description,
+            category: poll.category || 'general',
+            location: poll.location,
+            created_by: user.id,
+            event_date: eventDateTime.toISOString(),
+            start_time: selectedTimeSlot.start_time || null,
+            duration: durationInHours ? `${durationInHours} hours` : null,
+            status: 'active',
+            initiative_type: 'event',
+            priority: 'medium',
+            open_to_everyone: true,
+          })
+          .select()
+          .single();
+
+        if (devEventError) {
+          console.error('Event creation error:', devEventError);
+          throw new Error(`Failed to create event: ${devEventError.message}`);
+        }
+
+        createdEventId = devEvent.id;
+
+        // Create participants for the development event
+        const participantsToCreate = participants
+          .filter((p) => p.responses[selectedOption] === 'yes' || p.responses[selectedOption] === 'maybe')
+          .map((p) => ({
+            event_id: createdEventId,
+            user_id: p.user_id,
+            status: mapping.statusValues[p.responses[selectedOption] || 'no'],
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          }));
 
         if (participantsToCreate.length > 0) {
-          const { error: participantsError } = await supabase
-            .from('event_participants')
-            .insert(participantsToCreate)
-            .select();
-          if (participantsError) {
-            console.error('Participant creation error:', participantsError);
-            throw new Error('Failed to create event participants');
+          // Insert participants one by one to handle RLS policies
+          for (const participant of participantsToCreate) {
+            const { error: participantError } = await supabase
+              .from('event_participants')
+              .insert(participant);
+
+            if (participantError) {
+              console.error('Participant creation error:', participantError);
+              // Continue with other participants even if one fails
+              console.warn(`Failed to add participant ${participant.user_id}`);
+            }
           }
         }
+
+        const { error: calendarError } = await supabase
+          .from('calendar_events')
+          .insert({
+            title: poll.title,
+            description: poll.description,
+            start_time: eventDateTime.toISOString(),
+            end_time: endDateTime.toISOString(),
+            event_type: poll.event_type,
+            category: 'Development',
+            created_by: user.id,
+            reference_id: createdEventId,
+            updated_at: new Date().toISOString(),
+            full_name: profile?.full_name || null,
+          });
+
+        if (calendarError) {
+          console.error('Calendar event creation error:', calendarError);
+          throw new Error('Failed to create calendar event');
+        }
+      } else {
+        // Other event types - unchanged
+        const { data: calendarEvent, error: calendarError } = await supabase
+          .from('calendar_events')
+          .insert({
+            title: poll.title,
+            description: poll.description,
+            start_time: eventDateTime.toISOString(),
+            end_time: endDateTime.toISOString(),
+            event_type: poll.event_type,
+            category: poll.event_type,
+            created_by: user.id,
+            reference_id: poll.id,
+            updated_at: new Date().toISOString(),
+            full_name: profile?.full_name || null,
+          })
+          .select()
+          .single();
+
+        if (calendarError) {
+          console.error('Calendar event creation error:', calendarError);
+          throw new Error('Failed to create calendar event');
+        }
+
+        createdEventId = calendarEvent.id;
       }
 
       // Update the poll status
@@ -412,7 +386,7 @@ export default function CreateEventButton({
   const bestOption = getBestOption();
   const optionScores = options
     .map((option) => getOptionScore(option.id))
-    .sort((a, b) => b.score - a.score); // Sort by score in descending order
+    .sort((a, b) => b.score - a.score);
 
   // Auto-select the best option initially
   if (bestOption && !selectedOption) {
@@ -444,9 +418,6 @@ export default function CreateEventButton({
 
           <div className="space-y-4">
             <div>
-              {/* <Label className="text-sm text-slate-900 dark:text-slate-300">
-                Select Time Slot
-              </Label> */}
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
                 Choose when to schedule the event
               </p>
@@ -463,7 +434,8 @@ export default function CreateEventButton({
                       'flex items-center space-x-3 p-4 rounded-lg border transition-colors duration-200',
                       score.option.id === selectedOption
                         ? 'border-green-200 dark:border-green-800 bg-green-100 dark:bg-green-900/80'
-                        : score.option.id === bestOption.option.id && score.option.id !== selectedOption
+                        : score.option.id === bestOption.option.id &&
+                          score.option.id !== selectedOption
                         ? 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40'
                         : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/40'
                     )}
@@ -514,9 +486,12 @@ export default function CreateEventButton({
       <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
         <AlertDialogContent className="bg-white dark:bg-slate-900">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-slate-900 dark:text-slate-100">Create Event</AlertDialogTitle>
+            <AlertDialogTitle className="text-slate-900 dark:text-slate-100">
+              Create Event
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-slate-500 dark:text-slate-400">
-              This will close the poll and add the event to the calendar. Do you wish to proceed?
+              This will close the poll and add the event to the calendar. Do you
+              wish to proceed?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
