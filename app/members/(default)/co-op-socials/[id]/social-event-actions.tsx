@@ -306,7 +306,9 @@ export default function SocialEventActions({
                     <SelectItem value="board_games">Board Games</SelectItem>
                     <SelectItem value="tv">TV</SelectItem>
                     <SelectItem value="book_club">Book Club</SelectItem>
-                    <SelectItem value="christmas_dinner">Christmas Dinner</SelectItem>
+                    <SelectItem value="christmas_dinner">
+                      Christmas Dinner
+                    </SelectItem>
                     <SelectItem value="bike_ride">Bike Ride</SelectItem>
                     <SelectItem value="party">Party</SelectItem>
                     <SelectItem value="hang_out">Hang Out</SelectItem>

@@ -20,7 +20,7 @@ export default function MaintenanceHeader({ houses }: MaintenanceHeaderProps) {
       {/* Left: Title */}
       <div className="mb-4 sm:mb-0">
         <h1 className="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">
-          Maintenance ✨
+          Maintenance 🛠️
         </h1>
       </div>
 
