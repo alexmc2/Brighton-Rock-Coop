@@ -98,7 +98,7 @@ export default function ExpenseClaims() {
       case 'pending':
         return 'Pending';
       case 'paid':
-        return 'paid';
+        return 'Paid';
       case 'rejected':
         return 'Rejected';
     }
